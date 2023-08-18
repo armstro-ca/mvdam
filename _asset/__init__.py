@@ -16,9 +16,10 @@ class Asset():
 
 
     def get(self):
-        self.sdk_handle.asset.get(params={'operator':'other_thing'})
-
-        """url = "https://api.mediavalet.com/assets/urn:uuid:bb93be4f-89d6-0086-e619-8d52e3ee08ce/keywords?includeSoftDeleted=<boolean>"
+        """
+        https://docs.mediavalet.com/#22e41739-3b8b-40e6-ade7-b70406a318e4
+        
+        url = "https://api.mediavalet.com/assets/urn:uuid:bb93be4f-89d6-0086-e619-8d52e3ee08ce/keywords?includeSoftDeleted=<boolean>"
 
         payload={}
         headers = {
@@ -29,8 +30,31 @@ class Asset():
         response = requests.request("GET", url, headers=headers, data=payload)
 
         print(response.text)"""
+        self.sdk_handle.asset.get(params={'operator':'other_thing'})
+
+
+    def put(self):
+        """
+        https://docs.mediavalet.com/#62f7d9bd-793a-4eb4-928c-f5d216d09de8
+
+        url = "https://api.mediavalet.com/assets/urn:uuid:bb93be4f-89d6-0086-e619-8d52e3ee08ce"
+
+        payload = "{\n  \"id\": \"<uuid>\",\n  \"filename\": \"<string>\",\n  \"title\": \"<string>\",\n  \"description\": \"<string>\",\n  \"fileSizeInBytes\": \"<long>\"\n}"
+        headers = {
+        'Ocp-Apim-Subscription-Key': '<uuid>',
+        'Authorization': '<bG9sIHlvdSB0aGluayB0aGlzIHdhcyBhIHJlYWwgdG9rZW4/>'
+        }
+
+        response = requests.request("PUT", url, headers=headers, data=payload)
+
+        print(response.text)
+
+        """
 
     def delete(self):
+        """
+        https://docs.mediavalet.com/#03402a0b-4509-4338-aa2f-478f99fb996c
+        
         url = "https://api.mediavalet.com/assets/urn:uuid:bb93be4f-89d6-0086-e619-8d52e3ee08ce/keywords/esse consequat"
 
         payload={}
@@ -41,10 +65,4 @@ class Asset():
 
         response = requests.request("DELETE", url, headers=headers, data=payload)
 
-        print(response.text)
-
-    def action(self):
-        if hasattr(self, self.verb) and callable(func := getattr(self, self.verb)):
-            func()
-        else:
-            print('need to throw exception here')
+        print(response.text)"""
