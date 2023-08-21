@@ -7,17 +7,42 @@ def auth():
     client = Client()
 
 @app.command()
-def account(operator: str, other_thing: str):
+def account(verb: str, **kwargs: dict):
     """
-    docstring
+    Passes verb and kwargs to same named module
+
+    This is intentionally permissive to allow validation
+    to be maintained solely in the module.
+
+    Parameters
+    ----------
+    verb : str
+        The action to be executed
+    **kwargs
+        The args to be passed
+
     """
-    client = Client()
-    client.account.get(params={operator:other_thing})
+    from _account import Account
+    verb = verb.lower()
+    _account = Account(verb, **kwargs)
+
+    _account.action()
 
 @app.command()
-def asset(verb: str, **kwargs):
+def asset(verb: str, **kwargs: dict):
     """
-    docstring
+    Passes verb and kwargs to same named module
+
+    This is intentionally permissive to allow validation
+    to be maintained solely in the module.
+
+    Parameters
+    ----------
+    verb : str
+        The action to be executed
+    **kwargs
+        The args to be passed
+
     """
     from _asset import Asset
     verb = verb.lower()
@@ -28,7 +53,18 @@ def asset(verb: str, **kwargs):
 @app.command()
 def keyword(verb: str, **kwargs):
     """
-    docstring
+    Passes verb and kwargs to same named module.
+
+    This is intentionally permissive to allow validation
+    to be maintained solely in the module.
+    
+    Parameters
+    ----------
+    verb : str
+        The action to be executed
+    **kwargs
+        The args to be passed
+
     """
     from _keyword import Keyword
     verb = verb.lower()
