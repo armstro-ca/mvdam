@@ -2,7 +2,7 @@ from mvsdk.rest import Client
 
 class Asset():
 
-    def __init__(self, verb: str, **kwargs: dict):
+    def __init__(self, session: dict, verb: str, asset_id: str):
         """
         Initialise the Asset class
         
@@ -14,24 +14,40 @@ class Asset():
             The URL of the page to be scraped
 
         """
+        self.session = session
         self.verb = verb
-        self.kwargs = kwargs
-
+        self.asset_id = asset_id
+        
         self.sdk_handle = Client()
 
         self.verbs =[
             'get', 
             'post', 
-            'delete'
+            'delete',
+            'get-keywords'
             ]
 
 
     def get(self):
         """
-        Execute the asset GET call with the initialised Asset object.
+        Execute the GET asset call with the initialised Asset object.
         """
         self.sdk_handle.asset.get(params={'operator':'other_thing'})
 
+    def get_keywords(self):
+        """
+        Execute the GET asset keywords call with the initialised Asset object.
+        """
+        response = self.sdk_handle.asset.get_keywords(
+            object_id=f'urn:uuid:{self.asset_id}'
+            )
+        
+        if response['status'] == 200:
+            print(f'{response}')
+        elif response['status'] == 404:
+            print(f'Asset with ID {self.asset_id} was not found.')
+        else:
+            print(f'Error: {response}')
 
     def put(self):
         """
@@ -61,4 +77,4 @@ class Asset():
         if hasattr(self, self.verb) and callable(func := getattr(self, self.verb)):
             func()
         else:
-            print('need to throw exception here')
+            print('Action passed did not match valid options')
