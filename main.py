@@ -1,11 +1,52 @@
-import typer
-from typing_extensions import Annotated
-from typing import Optional
 import json
 import time
+import os
+import logging
+
+from typing import Optional
+from typing_extensions import Annotated
+import typer
+
+
+logging.basicConfig(
+    filename='api.log', 
+    filemode='w', 
+    format='%(name)s - %(levelname)s - %(message)s', 
+    level=os.getenv('LOGLEVEL') or logging.DEBUG
+    )
 
 app = typer.Typer()
 session = {}
+
+def autocomplete(endpoint: str, incomplete: str):
+    completion = []
+    for name, help_text in valid_completion_items[endpoint]:
+        if name.startswith(incomplete):
+            completion_item = (name, help_text)
+            completion.append(completion_item)
+    return completion
+
+def get_session() -> dict:
+    """
+    Loads local session file
+    """
+    try:
+        with open('.session', 'r') as session_file:
+            logging.debug('active session file found')
+            return json.load(session_file)
+    except FileNotFoundError:
+        logging.debug('no active session file found')
+        return {}
+
+def check_session(session: dict) -> bool:
+    """
+    Checks if session is still valid
+    """
+    if session['json']['expires_at'] >= time.time():
+        print(f"Log: Session expiry ({session['json']['expires_at']}) later than current time ({time.time()})")
+        return True
+    else:
+        return False
 
 @app.command()
 def asset(
@@ -16,33 +57,39 @@ def asset(
         )
     ],
     asset_id: Annotated[
-        str,
+        Optional[str],
         typer.Option(
-            help="The asset ID for the action to be taken upon"
-        )
-    ]
+            help="The asset ID for the action to be taken upon",
+            rich_help_panel="Single",
+            show_default=False
+            )
+        ] = None,
+    bulk: Annotated[
+        Optional[str],
+        typer.Option(
+            help="The username to be used with password flow",
+            rich_help_panel="Bulk",
+            show_default=False
+            )
+        ] = None
     ):
     """
-    Passes verb and kwargs to same named module
-
-    This is intentionally permissive to allow validation
-    to be maintained solely in the module.
-
-    Parameters
-    ----------
-    verb : str
-        The action to be executed
-    **kwargs
-        The args to be passed
-
+    Actions available are currently:
+    get
+    get-keywords
     """
+    logging.info("asset executed")
     if check_session(session):
+        logging.debug("active session found")
         from _asset import Asset
         action = action.lower()
         _asset = Asset(session, action, asset_id)
 
+        logging.debug('executing %s on %s', action, asset_id)
         _asset.action()
     else:
+        logging.debug("no active session found")
+
         print('Session not valid. Please use "connect auth" to obtain a valid session first.')
 
 @app.command()
@@ -64,7 +111,7 @@ def connect(
         Optional[str],
         typer.Option(
             help="The username to be used with password flow",
-            rich_help_panel="Password Flow"
+            rich_help_panel="Password Flow",
         )
     ] = None,
     password: Annotated[
@@ -72,6 +119,20 @@ def connect(
         typer.Option(
             help="The password to be used with password flow",
             rich_help_panel="Password Flow"
+        )
+    ] = None,
+    client_id: Annotated[
+        Optional[str],
+        typer.Option(
+            help="The clientId to be used with password flow",
+            rich_help_panel="Password Flow",
+        )
+    ] = None,
+    client_secret: Annotated[
+        Optional[str],
+        typer.Option(
+            help="The clientSecret to be used with password flow",
+            rich_help_panel="Password Flow",
         )
     ] = None
     ):
@@ -89,9 +150,13 @@ def connect(
         The args to be passed
 
     """
+    logging.info("connect executed")
+
     from _connect import Connect
     action = action.lower()
-    _connect = Connect(action, username=username, password=password, grant_type=grant_type)
+    logging.debug('executing %s (type: %s)', action, grant_type)
+    _connect = Connect(action, username=username, password=password, client_id=client_id, 
+                       client_secret=client_secret, grant_type=grant_type)
 
     _connect.action()
 
@@ -115,28 +180,13 @@ def keyword(verb: str, **kwargs):
     verb = verb.lower()
     _keyword = Keyword(verb, **kwargs)
 
-    _keyword.action()    
+    _keyword.action()
 
-def get_session() -> dict:
-    """
-    Loads local session file
-    """
-    try:
-        with open('.session', 'r') as session_file:
-            return json.load(session_file)
-    except FileNotFoundError as error:
-        print(f'log fnf error for session file {error}')
-        return {}
+valid_completion_items = [
+    {'asset': ('get', 'get-keywords')}
+]
 
-def check_session(session: dict) -> bool:
-    """
-    Checks if session is still valid
-    """
-    if session['json']['expires_at'] >= time.time():
-        print(f"Log: Session expiry ({session['json']['expires_at']}) later than current time ({time.time()})")
-        return True
-    else:
-        return False
+
 
 if __name__ == "__main__":
     session = get_session()

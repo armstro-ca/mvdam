@@ -20,6 +20,14 @@ class Asset():
         
         self.sdk_handle = Client()
 
+        self.headers = {
+                'Content-Type': 'application/x-www-form-urlencoded',
+                'Authorization': f'Basic {self.session["json"]["access_token"]}',
+                'User-Agent': 'PostmanRuntime/7.32.3',
+                'Accept': '*/*',
+                'Host': 'iam-qa.mediavalet.com'
+            }
+        
         self.verbs =[
             'get', 
             'post', 
@@ -27,6 +35,21 @@ class Asset():
             'get-keywords'
             ]
 
+    def delete_keywords(self):
+        """
+        Execute the GET asset keywords call with the initialised Asset object.
+        """
+        response = self.sdk_handle.asset.delete_keywords(
+            headers=self.headers,
+            object_id=f'urn:uuid:{self.asset_id}'
+            )
+        
+        if response['status'] == 200:
+            print(f'{response}')
+        elif response['status'] == 404:
+            print(f'Asset with ID {self.asset_id} was not found.')
+        else:
+            print(f'Error: {response}')
 
     def get(self):
         """
@@ -39,6 +62,7 @@ class Asset():
         Execute the GET asset keywords call with the initialised Asset object.
         """
         response = self.sdk_handle.asset.get_keywords(
+            headers=self.headers,
             object_id=f'urn:uuid:{self.asset_id}'
             )
         
