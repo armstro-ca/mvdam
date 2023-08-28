@@ -1,8 +1,11 @@
+import json
+import logging
+
 from mvsdk.rest import Client
 
 class Asset():
 
-    def __init__(self, session: dict, verb: str, asset_id: str):
+    def __init__(self, session: dict, verb: str, asset_id: str, verbose: bool):
         """
         Initialise the Asset class
         
@@ -17,15 +20,14 @@ class Asset():
         self.session = session
         self.verb = verb
         self.asset_id = asset_id
+        self.verbose = verbose
         
         self.sdk_handle = Client()
 
         self.headers = {
                 'Content-Type': 'application/x-www-form-urlencoded',
-                'Authorization': f'Basic {self.session["json"]["access_token"]}',
-                'User-Agent': 'PostmanRuntime/7.32.3',
-                'Accept': '*/*',
-                'Host': 'iam-qa.mediavalet.com'
+                'Authorization': f'Bearer {self.session["json"]["access_token"]}',
+                'User-Agent': 'MVDAM_CLI/0.1.0'
             }
         
         self.verbs =[
@@ -35,64 +37,81 @@ class Asset():
             'get-keywords'
             ]
 
-    def delete_keywords(self):
-        """
-        Execute the GET asset keywords call with the initialised Asset object.
-        """
-        response = self.sdk_handle.asset.delete_keywords(
-            headers=self.headers,
-            object_id=f'urn:uuid:{self.asset_id}'
-            )
-        
-        if response['status'] == 200:
-            print(f'{response}')
-        elif response['status'] == 404:
-            print(f'Asset with ID {self.asset_id} was not found.')
-        else:
-            print(f'Error: {response}')
-
-    def get(self):
-        """
-        Execute the GET asset call with the initialised Asset object.
-        """
-        self.sdk_handle.asset.get(params={'operator':'other_thing'})
-
-    def get_keywords(self):
-        """
-        Execute the GET asset keywords call with the initialised Asset object.
-        """
-        response = self.sdk_handle.asset.get_keywords(
-            headers=self.headers,
-            object_id=f'urn:uuid:{self.asset_id}'
-            )
-        
-        if response['status'] == 200:
-            print(f'{response}')
-        elif response['status'] == 404:
-            print(f'Asset with ID {self.asset_id} was not found.')
-        else:
-            print(f'Error: {response}')
+    # --------------
+    # ASSET
+    # --------------
 
     def put(self):
         """
         
         """
 
+    def get(self):
+        """
+        Execute the GET asset call with the initialised Asset object.
+        """
+        self.sdk_handle.asset.get(
+            headers = self.headers,
+            object_id = self.asset_id
+            )
+
     def delete(self):
         """
-        https://docs.mediavalet.com/#03402a0b-4509-4338-aa2f-478f99fb996c
+        Execute the DELETE asset call with the initialised Asset object.
+        """
+
+    def rename_asset(self):
+        """
+        Composite method to RENAME asset with the initialised Asset object.
+        """
+
+    # --------------
+    # ASSET KEYWORDS
+    # --------------
+
+    def delete_keywords(self):
+        """
+        Execute the GET asset keywords call with the initialised Asset object.
+        """
+        response = self.sdk_handle.asset.delete_keywords(
+            headers = self.headers,
+            object_id = self.asset_id
+            )
         
-        url = "https://api.mediavalet.com/assets/urn:uuid:bb93be4f-89d6-0086-e619-8d52e3ee08ce/keywords/esse consequat"
+        if response['status'] == 200:
+            print(f'{response}')
+        elif response['status'] == 404:
+            print(f'Asset with ID {self.asset_id} was not found.')
+        else:
+            print(f'Error: {response}')
 
-        payload={}
-        headers = {
-        'Ocp-Apim-Subscription-Key': '<uuid>',
-        'Authorization': '<bG9sIHlvdSB0aGluayB0aGlzIHdhcyBhIHJlYWwgdG9rZW4/>'
-        }
+    def get_keywords(self):
+        """
+        Execute the GET asset keywords call with the initialised Asset object.
+        """
+        self.headers['Accept'] = 'application/json'
 
-        response = requests.request("DELETE", url, headers=headers, data=payload)
+        response = self.sdk_handle.asset.get_keywords(
+            headers=self.headers,
+            object_id=self.asset_id
+            )
+        
+        if response['status'] == 200:
+            if self.verbose:
+                print(json.dumps(response, indent=4))
+            else:
+                keywords = []
+                for keyword in response['json']['payload']:
+                    keywords.append(keyword['keywordName'])
+                print(f'Keywords for asset {self.asset_id}: {keywords}')
+        elif response['status'] == 404:
+            print(f'Asset with ID {self.asset_id} was not found.')
+        else:
+            print(f'Error: {response}')
 
-        print(response.text)"""
+    # --------------
+    # GENERIC ACTION
+    # --------------
 
     def action(self):
         """

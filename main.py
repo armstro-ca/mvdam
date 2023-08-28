@@ -43,7 +43,7 @@ def check_session(session: dict) -> bool:
     Checks if session is still valid
     """
     if session['json']['expires_at'] >= time.time():
-        print(f"Log: Session expiry ({session['json']['expires_at']}) later than current time ({time.time()})")
+        logging.debug(f"Log: Session expiry ({session['json']['expires_at']}) later than current time ({time.time()})")
         return True
     else:
         return False
@@ -71,7 +71,8 @@ def asset(
             rich_help_panel="Bulk",
             show_default=False
             )
-        ] = None
+        ] = None,
+    verbose: bool = False,
     ):
     """
     Actions available are currently:
@@ -83,7 +84,7 @@ def asset(
         logging.debug("active session found")
         from _asset import Asset
         action = action.lower()
-        _asset = Asset(session, action, asset_id)
+        _asset = Asset(session, action, asset_id, verbose)
 
         logging.debug('executing %s on %s', action, asset_id)
         _asset.action()
@@ -161,7 +162,14 @@ def connect(
     _connect.action()
 
 @app.command()
-def keyword(verb: str, **kwargs):
+def keyword(
+        action: Annotated[
+        str,
+        typer.Argument(
+            help="The action to be applied to the asset"
+            )
+        ]
+    ):
     """
     Passes verb and kwargs to same named module.
 
@@ -174,18 +182,25 @@ def keyword(verb: str, **kwargs):
         The action to be executed
     **kwargs
         The args to be passed
-
     """
-    from _keyword import Keyword
-    verb = verb.lower()
-    _keyword = Keyword(verb, **kwargs)
+    logging.info("keyword executed")
+    if check_session(session):
+        logging.debug("active session found")
+        from _keyword import Keyword
+        action = action.lower()
+        _keyword = Keyword(session, action)
 
-    _keyword.action()
+        logging.debug('executing %s', action)
+        _keyword.action()
+    else:
+        logging.debug("no active session found")
+
+        print('Session not valid. Please use "connect auth" to obtain a valid session first.')
+
 
 valid_completion_items = [
     {'asset': ('get', 'get-keywords')}
 ]
-
 
 
 if __name__ == "__main__":
