@@ -5,7 +5,7 @@ from mvsdk.rest import Client
 
 class Asset():
 
-    def __init__(self, session: dict, verb: str, asset_id: str, verbose: bool):
+    def __init__(self, session: dict, verb: str, asset_id: str, verbose: bool, keywords: str):
         """
         Initialise the Asset class
         
@@ -21,6 +21,7 @@ class Asset():
         self.verb = verb
         self.asset_id = asset_id
         self.verbose = verbose
+        self.keywords = keywords.split(',')
         
         self.sdk_handle = Client()
 
@@ -34,7 +35,8 @@ class Asset():
             'get', 
             'post', 
             'delete',
-            'get-keywords'
+            'get-keywords',
+            'delete-keywords'
             ]
 
     # --------------
@@ -69,11 +71,11 @@ class Asset():
     # ASSET KEYWORDS
     # --------------
 
-    def delete_keywords(self):
+    def delete_keyword(self):
         """
         Execute the GET asset keywords call with the initialised Asset object.
         """
-        response = self.sdk_handle.asset.delete_keywords(
+        response = self.sdk_handle.asset.delete_keyword(
             headers = self.headers,
             object_id = self.asset_id
             )
@@ -86,6 +88,28 @@ class Asset():
             print(f'Error: {response}')
 
     def get_keywords(self):
+        """
+        Execute the GET asset keywords call with the initialised Asset object.
+        """
+        response = self.sdk_handle.asset.get_keywords(
+            headers=self.headers,
+            object_id=self.asset_id
+            )
+        
+        if response['status'] == 200:
+            if self.verbose:
+                print(json.dumps(response, indent=4))
+            else:
+                keywords = []
+                for keyword in response['json']['payload']:
+                    keywords.append(keyword['keywordName'])
+                print(f'Keywords for asset {self.asset_id}: {keywords}')
+        elif response['status'] == 404:
+            print(f'Asset with ID {self.asset_id} was not found.')
+        else:
+            print(f'Error: {response}')
+
+    def set_keywords(self):
         """
         Execute the GET asset keywords call with the initialised Asset object.
         """

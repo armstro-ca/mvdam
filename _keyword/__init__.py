@@ -1,10 +1,11 @@
+import json
 import logging
 
 from mvsdk.rest import Client
 
 class Keyword():
 
-    def __init__(self, session: dict, verb: str):
+    def __init__(self, session: dict, verb: str, verbose: bool, keywords: str):
         """
         Initialise the Keyword class
         
@@ -18,15 +19,15 @@ class Keyword():
         """
         self.session = session
         self.verb = verb
+        self.verbose = verbose
+        self.keywords = keywords.split(',')
 
         self.sdk_handle = Client()
 
         self.headers = {
                 'Content-Type': 'application/x-www-form-urlencoded',
-                'Authorization': f'Basic {self.session["json"]["access_token"]}',
-                'User-Agent': 'MVDAM_CLI/0.1.0',
-                'Accept': '*/*',
-                'Host': 'iam-qa.mediavalet.com'
+                'Authorization': f'Bearer {self.session["json"]["access_token"]}',
+                'User-Agent': 'MVDAM_CLI/0.1.0'
             }
 
         self.verbs =[
@@ -35,26 +36,46 @@ class Keyword():
             'delete'
             ]
 
+    # --------------
+    # KEYWORD
+    # --------------
+
+    def create(self):
+        """
+        Execute the asset GET call with the initialised Asset object.
+        """
+        for keyword in self.keywords:
+            self.sdk_handle.keyword.create(headers = self.headers, data = keyword)
 
     def get(self):
         """
         Execute the asset GET call with the initialised Asset object.
         """
         logging.debug('Client instace is: %s', type(self.sdk_handle))
-        response = self.sdk_handle.keyword.get()
+        response = self.sdk_handle.keyword.get(headers = self.headers)
 
         if response['status'] == 200:
-            print(f'{response}')
+            if self.verbose:
+                print(json.dumps(response, indent=4))
+            else:
+                keywords = {}
+                for keyword in response['json']['payload']:
+                    keywords[keyword['id']] = keyword['keywordName']
+                print(f'Keywords available: {keywords}')
         elif response['status'] == 404:
             print('404 returned.')
         else:
             print(f'Error: {response}')
 
-    def delete(self):
+    def update(self):
         """
         Execute the asset GET call with the initialised Asset object.
         """
-        self.sdk_handle.keyword.delete(params={'operator':'other_thing'})
+        self.sdk_handle.keyword.update(params={'operator':'other_thing'})
+
+    # --------------
+    # GENERIC ACTION
+    # --------------
 
     def action(self):
         """
@@ -64,4 +85,4 @@ class Keyword():
         if hasattr(self, self.verb) and callable(func := getattr(self, self.verb)):
             func()
         #except Exception as error:
-        logging.error('need to throw exception here %s', error)
+        #logging.error('need to throw exception here')# %s', error)

@@ -59,7 +59,7 @@ def asset(
     asset_id: Annotated[
         Optional[str],
         typer.Option(
-            help="The asset ID for the action to be taken upon",
+            help="The asset ID for the action to be taken upon (eg: --asset-id 151b33b1-4c30-4968-bbd1-525ad812e357)",
             rich_help_panel="Single",
             show_default=False
             )
@@ -67,24 +67,47 @@ def asset(
     bulk: Annotated[
         Optional[str],
         typer.Option(
-            help="The username to be used with password flow",
+            help="",
             rich_help_panel="Bulk",
             show_default=False
             )
         ] = None,
-    verbose: bool = False,
+    keywords: Annotated[
+        Optional[str],
+        typer.Option(
+            help="The keywords for the action to be taken upon as a comma seperated string (eg: --keywords field,sky,road,sunset)",
+            rich_help_panel="Single",
+            show_default=False
+            )
+        ] = "",
+    verbose: Annotated[
+        bool,
+        typer.Option(
+            help="Get full API response in Pretty Printed JSON",
+            show_default=False
+            )
+        ] = False,
+    raw: Annotated[
+        bool,
+        typer.Option(
+            help="Get full API response in unformatted JSON",
+            show_default=False
+            )
+        ] = False
     ):
     """
+    Interact with the MVDAM Assets.
     Actions available are currently:
     get
     get-keywords
+    delete-keyword
     """
     logging.info("asset executed")
     if check_session(session):
         logging.debug("active session found")
         from _asset import Asset
         action = action.lower()
-        _asset = Asset(session, action, asset_id, verbose)
+        _asset = Asset(session, action, asset_id, verbose, keywords)
 
         logging.debug('executing %s on %s', action, asset_id)
         _asset.action()
@@ -163,12 +186,34 @@ def connect(
 
 @app.command()
 def keyword(
-        action: Annotated[
+    action: Annotated[
         str,
         typer.Argument(
             help="The action to be applied to the asset"
             )
-        ]
+        ],
+    keywords: Annotated[
+        Optional[str],
+        typer.Option(
+            help="The keywords for the action to be taken upon as a comma seperated string (eg: --keywords field,sky,road,sunset)",
+            rich_help_panel="Single",
+            show_default=False
+            )
+        ] = "",
+    verbose: Annotated[
+        bool,
+        typer.Option(
+            help="Get full API response in Pretty Printed JSON",
+            show_default=False
+            )
+        ] = False,
+    raw: Annotated[
+        bool,
+        typer.Option(
+            help="Get full API response in unformatted JSON",
+            show_default=False
+            )
+        ] = False
     ):
     """
     Passes verb and kwargs to same named module.
@@ -188,7 +233,7 @@ def keyword(
         logging.debug("active session found")
         from _keyword import Keyword
         action = action.lower()
-        _keyword = Keyword(session, action)
+        _keyword = Keyword(session, action, verbose, keywords)
 
         logging.debug('executing %s', action)
         _keyword.action()
