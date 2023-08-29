@@ -51,10 +51,9 @@ class Keyword():
         """
         Execute the asset GET call with the initialised Asset object.
         """
-        logging.debug('Client instace is: %s', type(self.sdk_handle))
         response = self.sdk_handle.keyword.get(headers = self.headers)
 
-        if response['status'] == 200:
+        if response['status'] >= 200 and < 300:
             if self.verbose:
                 print(json.dumps(response, indent=4))
             else:

@@ -11,7 +11,7 @@ import typer
 logging.basicConfig(
     filename='api.log', 
     filemode='w', 
-    format='%(name)s - %(levelname)s - %(message)s', 
+    format='%(asctime)s — %(name)s — %(levelname)s — %(funcName)s:%(lineno)d — %(message)s',
     level=os.getenv('LOGLEVEL') or logging.DEBUG
     )
 
