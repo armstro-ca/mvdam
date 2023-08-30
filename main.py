@@ -1,5 +1,6 @@
-import json
-import time
+"""
+MAIN top level module containing MVDAM CLI
+"""
 import os
 import logging
 
@@ -7,10 +8,11 @@ from typing import Optional
 from typing_extensions import Annotated
 import typer
 
+from _connect import session as se
 
 logging.basicConfig(
-    filename='api.log', 
-    filemode='w', 
+    filename='api.log',
+    filemode='w',
     format='%(asctime)s — %(name)s — %(levelname)s — %(funcName)s:%(lineno)d — %(message)s',
     level=os.getenv('LOGLEVEL') or logging.DEBUG
     )
@@ -26,27 +28,6 @@ def autocomplete(endpoint: str, incomplete: str):
             completion.append(completion_item)
     return completion
 
-def get_session() -> dict:
-    """
-    Loads local session file
-    """
-    try:
-        with open('.session', 'r') as session_file:
-            logging.debug('active session file found')
-            return json.load(session_file)
-    except FileNotFoundError:
-        logging.debug('no active session file found')
-        return {}
-
-def check_session(session: dict) -> bool:
-    """
-    Checks if session is still valid
-    """
-    if session['json']['expires_at'] >= time.time():
-        logging.debug(f"Log: Session expiry ({session['json']['expires_at']}) later than current time ({time.time()})")
-        return True
-    else:
-        return False
 
 @app.command()
 def asset(
@@ -64,14 +45,6 @@ def asset(
             show_default=False
             )
         ] = None,
-    bulk: Annotated[
-        Optional[str],
-        typer.Option(
-            help="",
-            rich_help_panel="Bulk",
-            show_default=False
-            )
-        ] = None,
     keywords: Annotated[
         Optional[str],
         typer.Option(
@@ -80,17 +53,10 @@ def asset(
             show_default=False
             )
         ] = "",
-    verbose: Annotated[
-        bool,
+    verbosity: Annotated[
+        str,
         typer.Option(
-            help="Get full API response in Pretty Printed JSON",
-            show_default=False
-            )
-        ] = False,
-    raw: Annotated[
-        bool,
-        typer.Option(
-            help="Get full API response in unformatted JSON",
+            help="Choose the verbosity of the response (eg: --verbosity [verbose, raw, bulk])",
             show_default=False
             )
         ] = False
@@ -103,18 +69,18 @@ def asset(
     delete-keyword
     """
     logging.info("asset executed")
-    if check_session(session):
+    if se.check_session(session):
         logging.debug("active session found")
         from _asset import Asset
         action = action.lower()
-        _asset = Asset(session, action, asset_id, verbose, keywords)
+        _asset = Asset(session, action, asset_id, verbosity, keywords)
 
         logging.debug('executing %s on %s', action, asset_id)
         _asset.action()
     else:
         logging.debug("no active session found")
 
-        print('Session not valid. Please use "connect auth" to obtain a valid session first.')
+        print('Session expired. Please use "connect auth" to obtain a valid session first.')
 
 @app.command()
 def connect(
@@ -123,7 +89,7 @@ def connect(
         typer.Argument(
             help="Either auth or renew credentials"
         )
-    ], 
+    ],
     grant_type: Annotated[
         Optional[str],
         typer.Option(
@@ -179,7 +145,7 @@ def connect(
     from _connect import Connect
     action = action.lower()
     logging.debug('executing %s (type: %s)', action, grant_type)
-    _connect = Connect(action, username=username, password=password, client_id=client_id, 
+    _connect = Connect(action, username=username, password=password, client_id=client_id,
                        client_secret=client_secret, grant_type=grant_type)
 
     _connect.action()
@@ -195,22 +161,15 @@ def keyword(
     keywords: Annotated[
         Optional[str],
         typer.Option(
-            help="The keywords for the action to be taken upon as a comma seperated string (eg: --keywords field,sky,road,sunset)",
+            help="The keywords for the action to be taken upon as a comma separated string (eg: --keywords field,sky,road,sunset)",
             rich_help_panel="Single",
             show_default=False
             )
         ] = "",
-    verbose: Annotated[
-        bool,
+    verbosity: Annotated[
+        str,
         typer.Option(
-            help="Get full API response in Pretty Printed JSON",
-            show_default=False
-            )
-        ] = False,
-    raw: Annotated[
-        bool,
-        typer.Option(
-            help="Get full API response in unformatted JSON",
+            help="Choose the verbosity of the response (eg: --verbosity [verbose, raw, bulk])",
             show_default=False
             )
         ] = False
@@ -229,11 +188,11 @@ def keyword(
         The args to be passed
     """
     logging.info("keyword executed")
-    if check_session(session):
+    if se.check_session(session):
         logging.debug("active session found")
         from _keyword import Keyword
         action = action.lower()
-        _keyword = Keyword(session, action, verbose, keywords)
+        _keyword = Keyword(session, action, verbosity, keywords)
 
         logging.debug('executing %s', action)
         _keyword.action()
@@ -249,5 +208,5 @@ valid_completion_items = [
 
 
 if __name__ == "__main__":
-    session = get_session()
+    session = se.get_session()
     app()

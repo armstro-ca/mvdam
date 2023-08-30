@@ -1,11 +1,37 @@
+"""
+ASSET module containing Asset class
+"""
 import json
 import logging
 
 from mvsdk.rest import Client
 
 class Asset():
+    """
+    Asset Class exposing the following methods:
+    __init__
 
-    def __init__(self, session: dict, verb: str, asset_id: str, verbose: bool, keywords: str):
+    -- Asset --
+    get
+
+    delete
+
+    put
+
+    rename
+
+    -- Asset Keyword --
+    add-keywords
+
+    delete-keywords
+
+    set-keywords
+
+    get-keywords
+
+    """
+
+    def __init__(self, session: dict, verb: str, asset_id: str, verbosity: str, keywords: str):
         """
         Initialise the Asset class
         
@@ -20,9 +46,12 @@ class Asset():
         self.session = session
         self.verb = verb
         self.asset_id = asset_id
-        self.verbose = verbose
+        self.verbosity = verbosity
         self.keywords = keywords
-        
+
+        logging.debug('Verbosity level set to %s', self.verbosity)
+        self.bulk = True if self.verbosity == "bulk" else False
+
         self.sdk_handle = Client()
 
         self.headers = {
@@ -30,28 +59,23 @@ class Asset():
                 'Authorization': f'Bearer {self.session["json"]["access_token"]}',
                 'User-Agent': 'MVDAM_CLI/0.1.0'
             }
-        
+
         self.verbs =[
             'get', 
             'post', 
             'delete',
-            'get-keywords',
-            'delete-keywords',
-            'create-keywords'
+            'delete_keywords',
+            'create_keywords',
+            'get_keywords',
+            'set_keywords'
             ]
 
     # --------------
     # ASSET
     # --------------
-
-    def put(self):
-        """
-        
-        """
-
     def get(self):
         """
-        Execute the GET asset call with the initialised Asset object.
+        Execute the GET asset call with the Asset object.
         """
         self.sdk_handle.asset.get(
             headers = self.headers,
@@ -60,12 +84,17 @@ class Asset():
 
     def delete(self):
         """
-        Execute the DELETE asset call with the initialised Asset object.
+        Execute the DELETE asset call with the Asset object.
         """
 
-    def rename_asset(self):
+    def put(self):
         """
-        Composite method to RENAME asset with the initialised Asset object.
+        Execute the PUT asset call with the Asset object.
+        """
+
+    def rename(self):
+        """
+        Composite method to RENAME asset with the Asset object.
         """
 
     # --------------
@@ -74,16 +103,21 @@ class Asset():
 
     def add_keywords(self):
         """
-        Execute the CREATE asset keywords call with the initialised Asset object.
+        Execute the CREATE asset keywords call with the Asset object.
         """
         response = self.sdk_handle.asset.create_keywords(
             data = json.dumps(self.keywords.split(',')),
             headers = self.headers,
-            object_id = self.asset_id
+            object_id = self.asset_id,
+            bulk=self.bulk
             )
-        
+
+        if self.bulk:
+            logging.debug('Bulk response:\n%s', response)
+            return response
+
         if 200 <= response['status'] < 300:
-            print(f'{response["json"]}')
+            print(f'Keywords {" and".join(self.keywords.replace(",",", ").rsplit(",", 1))} added to {self.asset_id}')
         elif response['status'] == 404:
             print(f'Asset with ID {self.asset_id} was not found.')
         else:
@@ -92,48 +126,65 @@ class Asset():
 
     def delete_keywords(self):
         """
-        Execute the DELETE asset keywords call with the initialised Asset object.
+        Execute the DELETE asset keywords call with the Asset object.
         """
 
+        # TODO: Consider caching this for bulk performance
         response = self.sdk_handle.keyword.get(headers = self.headers)
 
         existing_keywords = {}
         for existing_keyword in response['json']['payload']:
-                    existing_keywords[existing_keyword['keywordName']] = existing_keyword['id']
+            existing_keywords[existing_keyword['keywordName']] = existing_keyword['id']
 
-        print(existing_keywords)
-        print(self.keywords)
+        bulk_response = []
 
         for keyword in self.keywords.split(','):
             try:
+                logging.debug('Existing keyword to be deleted:\n[%s] - [%s]',
+                              keyword, existing_keywords[keyword])
                 response = self.sdk_handle.asset.delete_keyword(
                     headers = self.headers,
                     object_id = self.asset_id,
-                    object_action = f'keywords/{existing_keywords[keyword]}'
+                    object_action = f'keywords/{existing_keywords[keyword]}',
+                    bulk=self.bulk
                     )
-                
-                if 200 <= response['status'] < 300:
-                    print(f'{response}')
-                elif response['status'] == 404:
-                    print(f'Asset with ID {self.asset_id} did not have keyword {keyword} associated with it.')
+
+                if self.bulk:
+                    logging.debug('Bulk response:\n%s', response)
+                    bulk_response.append(response)
                 else:
-                    print(f'Error: {response}')
+                    if 200 <= response['status'] < 300:
+                        print(f'Keyword {keyword} removed from {self.asset_id}')
+                    elif response['status'] == 404:
+                        print(f'Asset with ID {self.asset_id} did not have keyword {keyword} associated with it.')
+                    else:
+                        print(f'Error: {response}')
             except Exception as error:
-                print(f'{error}')
-        
-        
+                print(f'Exception when deleting keywords: {error}')
+
+            if self.bulk: return bulk_response
 
     def get_keywords(self):
         """
-        Execute the GET asset keywords call with the initialised Asset object.
+        Execute the GET asset keywords call with the Asset object.
         """
+        if self.asset_id is None:
+            logging.info('AssetID required to get asset keywords. Please retry with --asset-id assetID as a parameter.')
+            print('AssetID required to get asset keywords. Please retry with --asset-id assetID as a parameter.')
+            return
+
         response = self.sdk_handle.asset.get_keywords(
             headers=self.headers,
-            object_id=self.asset_id
+            object_id=self.asset_id,
+            bulk=self.bulk
             )
-        
+
+        if self.bulk:
+            logging.debug('Bulk response:\n%s', response)
+            return response
+
         if response['status'] == 200:
-            if self.verbose:
+            if self.verbosity == "verbose":
                 print(json.dumps(response, indent=4))
             else:
                 keywords = []
@@ -147,13 +198,19 @@ class Asset():
 
     def set_keywords(self):
         """
-        Execute the GET asset keywords call with the initialised Asset object.
+        Execute the SET asset keywords call with the Asset object.
         """
+        if self.asset_id is None:
+            logging.info('AssetID required to get asset keywords. Please retry with --asset-id assetID as a parameter.')
+            print('AssetID required to get asset keywords. Please retry with --asset-id assetID as a parameter.')
+            return
+        
         response = self.sdk_handle.asset.get_keywords(
             headers=self.headers,
-            object_id=self.asset_id
+            object_id=self.asset_id,
+            bulk = False
             )
-        
+
         current_keywords = []
         for keyword in response['json']['payload']:
             current_keywords.append(keyword['keywordName'])
@@ -164,13 +221,26 @@ class Asset():
         keywords_to_remove = current_keywords.difference(new_keywords)
         keywords_to_add = new_keywords.difference(current_keywords)
 
-        self.keywords = ','.join(str(s) for s in keywords_to_remove)
-        logging.debug(f'Keywords to remove: {self.keywords}')
-        self.delete_keywords()
+        bulk_response = []
 
-        self.keywords = ','.join(str(s) for s in keywords_to_add)
-        logging.debug(f'Keywords to add: {self.keywords}')
-        self.add_keywords()
+        if not (keywords_to_remove or keywords_to_add):
+            print(f'No difference between {" and".join(self.keywords.replace(",",", ").rsplit(",", 1))} '
+                  'and existing keywords set for Asset ({self.asset_id})')
+
+        if keywords_to_remove:
+            self.keywords = ','.join(str(s) for s in keywords_to_remove)
+            logging.debug('Keywords to remove: [%s]', self.keywords)
+            response = self.delete_keywords()
+
+            if self.bulk: bulk_response.append(response)
+
+        if keywords_to_add:
+            self.keywords = ','.join(str(s) for s in keywords_to_add)
+            logging.debug('Keywords to add: [%s]', self.keywords)
+            response = self.add_keywords()
+
+            if self.bulk: bulk_response.append(response)
+
 
     # --------------
     # GENERIC ACTION
@@ -180,7 +250,10 @@ class Asset():
         """
         Passthrough function calling the verb required
         """
+        self.verb = self.verb.replace("-", "_")
         if hasattr(self, self.verb) and callable(func := getattr(self, self.verb)):
             func()
         else:
-            print('Action passed did not match valid options')
+            print(f'Action {self.verb} did not match any of the valid options.')
+            print(f'Did you mean {" or".join(", ".join(self.verbs).rsplit(",", 1))}?')
+
