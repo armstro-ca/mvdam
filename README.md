@@ -43,21 +43,19 @@ Before we do anything, lets just take a moment to familiarise ourselves with the
 mvdam --help
 ```
 
-❯ python3 main.py --help
-``` bash                                                                                                                                                           
- Usage: main.py [OPTIONS] COMMAND [ARGS]...                                                                                                                 
-                                                                                                                                                            
-╭─ Options ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╮
-│ --install-completion        [bash|zsh|fish|powershell|pwsh]  Install completion for the specified shell. [default: None]                                 │
-│ --show-completion           [bash|zsh|fish|powershell|pwsh]  Show completion for the specified shell, to copy it or customize the installation.          │
-│                                                              [default: None]                                                                             │
-│ --help                                                       Show this message and exit.                                                                 │
-╰──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯
-╭─ Commands ───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╮
-│ asset        Interact with the MVDAM Assets. Actions available are currently: get get-keywords delete-keyword                                            │
-│ connect      Passes verb and kwargs to same named module                                                                                                 │
-│ keyword      Passes verb and kwargs to same named module.                                                                                                │
-╰──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯
+``` bash
+❯ python main.py --help
+                                                                                                                                           
+ Usage: main.py [OPTIONS] COMMAND [ARGS]...                                                                                                
+                                                                                                                                           
+╭─ Options ───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╮
+│ --help                                                       Show this message and exit.                                                │
+╰─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯
+╭─ Commands ──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╮
+│ asset        The `asset` operator gives you access to the assets and all aspects related to them.                                       │
+│ connect      Connect the CLI to your MediaValet instance by authenticating it and creating a session.                                   │
+│ keyword      The keyword operator acts upon keywords in the abstract.                                                                   │
+╰─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯
 ```
 
 You can use the `--help` option at any time to get more information on the action you are looking at.
