@@ -1,6 +1,3 @@
-# MVSDK Readme.md
-#project/mediavalet/mvdam
-
 # MediaValet MVDAM CLI
 
 A Command Line Interface (CLI) to your MediaValet DAM instance. Interact with your assets and metadata via this CLI.
