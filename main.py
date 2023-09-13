@@ -9,6 +9,7 @@ from typing_extensions import Annotated
 import typer
 
 from _connect import session as se
+from _bulk import BulkObject, Bulk
 
 logging.basicConfig(
     filename='api.log',
@@ -62,11 +63,13 @@ def asset(
         ] = False
     ):
     """
-    Interact with the MVDAM Assets.
+    The `asset` operator gives you access to the assets and all aspects related to them.
+
     Actions available are currently:
-    get
+    add-keywords
+    delete-keywords
     get-keywords
-    delete-keyword
+    set-keywords
     """
     logging.info("asset executed")
     if se.check_session(session):
@@ -76,7 +79,18 @@ def asset(
         _asset = Asset(session, action, asset_id, verbosity, keywords)
 
         logging.debug('executing %s on %s', action, asset_id)
-        _asset.action()
+        response = _asset.action()
+        if isinstance(response, BulkObject):
+            bulk_requests = response.get_bulk_body()
+
+            bulk_requests['headers']['Content-Length'] = str(len(bulk_requests['payload']))
+
+            print(f'{bulk_requests["headers"]}')
+            print(f'{bulk_requests["payload"]}')
+
+            _bulk = Bulk(session, verbosity)
+
+            print(f'{_bulk.post(bulk_requests)}')
     else:
         logging.debug("no active session found")
 
@@ -127,26 +141,19 @@ def connect(
     ] = None
     ):
     """
-    Passes verb and kwargs to same named module
+    Connect the CLI to your MediaValet instance by authenticating it and creating a session.
 
-    This is intentionally permissive to allow validation
-    to be maintained solely in the module.
-
-    Parameters
-    ----------
-    verb : str
-        The action to be executed
-    **kwargs
-        The args to be passed
-
+    Actions available are currently:
+    auth
     """
     logging.info("connect executed")
 
     from _connect import Connect
     action = action.lower()
     logging.debug('executing %s (type: %s)', action, grant_type)
-    _connect = Connect(action, username=username, password=password, client_id=client_id,
-                       client_secret=client_secret, grant_type=grant_type)
+    _connect = Connect(action, username=username, password=password,
+                       client_id=client_id, client_secret=client_secret,
+                       grant_type=grant_type, auth_url=None, api_url=None)
 
     _connect.action()
 
@@ -175,17 +182,10 @@ def keyword(
         ] = False
     ):
     """
-    Passes verb and kwargs to same named module.
+    The keyword operator acts upon keywords in the abstract.
 
-    This is intentionally permissive to allow validation
-    to be maintained solely in the module.
-    
-    Parameters
-    ----------
-    verb : str
-        The action to be executed
-    **kwargs
-        The args to be passed
+    Actions available are currently:
+    get
     """
     logging.info("keyword executed")
     if se.check_session(session):
