@@ -15,8 +15,8 @@ from mvsdk.rest.bulk import BulkContainer
 logging.basicConfig(
     filename='api.log',
     filemode='w',
-    format=('%(asctime)s — %(name)s — %(levelname)s — %(funcName)s',
-            ':%(lineno)d — %(message)s'),
+    format='%(asctime)s — %(name)s — %(levelname)s — %(funcName)s\
+        :%(lineno)d — %(message)s',
     level=os.getenv('LOGLEVEL') or logging.DEBUG
     )
 
@@ -44,8 +44,8 @@ def asset(
     asset_id: Annotated[
         Optional[str],
         typer.Option(
-            help=('The asset ID for the action to be taken upon (eg: --asset-id ',
-                  '151b33b1-4c30-4968-bbd1-525ad812e357)'),
+            help='The asset ID for the action to be taken upon (eg: --asset-id \
+                151b33b1-4c30-4968-bbd1-525ad812e357)',
             rich_help_panel="Single",
             show_default=False
             )
@@ -53,8 +53,8 @@ def asset(
     keywords: Annotated[
         Optional[str],
         typer.Option(
-            help=('The keywords for the action to be taken upon as a comma separated ',
-                  'string (eg: --keywords field,sky,road,sunset)'),
+            help='The keywords for the action to be taken upon as a comma separated \
+                string (eg: --keywords field,sky,road,sunset)',
             rich_help_panel="Single",
             show_default=False
             )
@@ -62,8 +62,8 @@ def asset(
     verbosity: Annotated[
         str,
         typer.Option(
-            help=('Choose the verbosity of the response (eg: --verbosity ',
-                  '[verbose, raw, bulk])'),
+            help='Choose the verbosity of the response (eg: --verbosity \
+                [verbose, raw, bulk])',
             show_default=False
             )
         ] = False
@@ -175,8 +175,8 @@ def keyword(
     keywords: Annotated[
         Optional[str],
         typer.Option(
-            help=('The keywords for the action to be taken upon as a comma separated ',
-                  'string (eg: --keywords field,sky,road,sunset)'),
+            help='The keywords for the action to be taken upon as a comma separated \
+                string (eg: --keywords field,sky,road,sunset)',
             rich_help_panel="Single",
             show_default=False
             )
@@ -184,12 +184,12 @@ def keyword(
     verbosity: Annotated[
         str,
         typer.Option(
-            help=('Choose the verbosity of the response',
-                  '(eg: --verbosity [verbose, raw, bulk])'),
+            help='Choose the verbosity of the response \
+                (eg: --verbosity [verbose, raw, bulk])',
             show_default=False
             )
         ] = False
-    ):
+        ):
     """
     The keyword operator acts upon keywords in the abstract.
 
