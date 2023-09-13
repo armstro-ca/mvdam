@@ -6,12 +6,13 @@ import logging
 
 from mvsdk.rest import Client
 
+
 class Keyword():
 
     def __init__(self, session: dict, verb: str, verbosity: str, keywords: str):
         """
         Initialise the Keyword class
-        
+
         Parameters
         ----------
         verb : str
@@ -30,9 +31,9 @@ class Keyword():
 
         self.sdk_handle = Client()
 
-        self.verbs =[
-            'get', 
-            'post', 
+        self.verbs = [
+            'get',
+            'post',
             'delete'
             ]
 
@@ -47,7 +48,7 @@ class Keyword():
         for keyword in self.keywords.split(','):
             self.sdk_handle.keyword.create(
                 auth=self.session["json"]["access_token"],
-                data = keyword)
+                data=keyword)
 
     def get(self):
         """

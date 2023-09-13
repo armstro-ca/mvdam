@@ -1,9 +1,9 @@
 import time
 import json
 import logging
-#import jwt
 
 from _connect import Connect
+
 
 def get_session() -> dict:
     """
@@ -16,6 +16,7 @@ def get_session() -> dict:
     except FileNotFoundError:
         logging.debug('no session file found')
         return {}
+
 
 def check_session(session: dict) -> bool:
     """
