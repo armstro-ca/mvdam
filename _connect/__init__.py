@@ -90,8 +90,9 @@ class Connect():
             if response['status'] == 200:
                 session_file = open('.session', 'w')
 
-                # TODO: Don't need to do this if check_session() is checking against JWT value
-                response['json']['expires_at'] = time.time() + response['json']['expires_in']
+                # TODO: Don't need to do if check_session() is checking against JWT
+                session_expiry = time.time() + response['json']['expires_in']
+                response['json']['expires_at'] = session_expiry
                 session_file.write(json.dumps(response))
                 print('Auth successful')
             else:
@@ -117,7 +118,8 @@ class Connect():
 
         if response['status'] == 200:
             session_file = open('.session', 'w')
-            response['json']['expires_at'] = time.time() + response['json']['expires_in']
+            session_expiry = time.time() + response['json']['expires_in']
+            response['json']['expires_at'] = session_expiry
             session_file.write(json.dumps(response))
         else:
             logging.info('Auth API response: %s', {response["status"]})

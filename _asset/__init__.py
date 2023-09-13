@@ -33,7 +33,8 @@ class Asset():
 
     """
 
-    def __init__(self, session: dict, verb: str, asset_id: str, verbosity: str, keywords: str):
+    def __init__(self, session: dict, verb: str, asset_id: str,
+                 verbosity: str, keywords: str):
         """
         Initialise the Asset class
 
@@ -116,7 +117,8 @@ class Asset():
             return self.bulk_container
 
         if 200 <= response['status'] < 300:
-            print(f'Keywords {" and".join(self.keywords.replace(",",", ").rsplit(",", 1))}'
+            keyword_list = self.keywords.replace(",",", ").rsplit(",", 1)
+            print(f'Keywords {" and".join(keyword_list)}'
                   f' added to {self.asset_id}')
         elif response['status'] == 404:
             print(f'Asset with ID {self.asset_id} was not found.')

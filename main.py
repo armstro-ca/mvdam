@@ -15,7 +15,8 @@ from mvsdk.rest.bulk import BulkContainer
 logging.basicConfig(
     filename='api.log',
     filemode='w',
-    format='%(asctime)s — %(name)s — %(levelname)s — %(funcName)s:%(lineno)d — %(message)s',
+    format=('%(asctime)s — %(name)s — %(levelname)s — %(funcName)s',
+            ':%(lineno)d — %(message)s'),
     level=os.getenv('LOGLEVEL') or logging.DEBUG
     )
 
@@ -43,7 +44,8 @@ def asset(
     asset_id: Annotated[
         Optional[str],
         typer.Option(
-            help="The asset ID for the action to be taken upon (eg: --asset-id 151b33b1-4c30-4968-bbd1-525ad812e357)",
+            help=('The asset ID for the action to be taken upon (eg: --asset-id ',
+                  '151b33b1-4c30-4968-bbd1-525ad812e357)'),
             rich_help_panel="Single",
             show_default=False
             )
@@ -51,7 +53,8 @@ def asset(
     keywords: Annotated[
         Optional[str],
         typer.Option(
-            help="The keywords for the action to be taken upon as a comma seperated string (eg: --keywords field,sky,road,sunset)",
+            help=('The keywords for the action to be taken upon as a comma separated ',
+                  'string (eg: --keywords field,sky,road,sunset)'),
             rich_help_panel="Single",
             show_default=False
             )
@@ -59,11 +62,12 @@ def asset(
     verbosity: Annotated[
         str,
         typer.Option(
-            help="Choose the verbosity of the response (eg: --verbosity [verbose, raw, bulk])",
+            help=('Choose the verbosity of the response (eg: --verbosity ',
+                  '[verbose, raw, bulk])'),
             show_default=False
             )
         ] = False
-    ):
+        ):
     """
     The `asset` operator gives you access to the assets and all aspects related to them.
 
@@ -85,7 +89,8 @@ def asset(
         if isinstance(response, BulkContainer):
             bulk_requests = response.get_bulk_body()
 
-            bulk_requests['headers']['Content-Length'] = str(len(bulk_requests['payload']))
+            payload_length = str(len(bulk_requests['payload']))
+            bulk_requests['headers']['Content-Length'] = payload_length
 
             _bulk = Bulk(session, verbosity)
 
@@ -93,7 +98,8 @@ def asset(
     else:
         logging.debug("no active session found")
 
-        print('Session expired. Please use "connect auth" to obtain a valid session first.')
+        print('Session expired.',
+              'Please use "connect auth" to obtain a valid session.')
 
 
 @app.command()
@@ -139,9 +145,9 @@ def connect(
             rich_help_panel="Password Flow",
         )
     ] = None
-    ):
+        ):
     """
-    Connect the CLI to your MediaValet instance by authenticating it and creating a session.
+    Connect the CLI to your MediaValet instance by authenticating.
 
     Actions available are currently:
     auth
@@ -169,7 +175,8 @@ def keyword(
     keywords: Annotated[
         Optional[str],
         typer.Option(
-            help="The keywords for the action to be taken upon as a comma separated string (eg: --keywords field,sky,road,sunset)",
+            help=('The keywords for the action to be taken upon as a comma separated ',
+                  'string (eg: --keywords field,sky,road,sunset)'),
             rich_help_panel="Single",
             show_default=False
             )
@@ -177,7 +184,8 @@ def keyword(
     verbosity: Annotated[
         str,
         typer.Option(
-            help="Choose the verbosity of the response (eg: --verbosity [verbose, raw, bulk])",
+            help=('Choose the verbosity of the response',
+                  '(eg: --verbosity [verbose, raw, bulk])'),
             show_default=False
             )
         ] = False
@@ -200,7 +208,8 @@ def keyword(
     else:
         logging.debug("no active session found")
 
-        print('Session not valid. Please use "connect auth" to obtain a valid session first.')
+        print('Session not valid. Please use "connect auth" to ',
+              'obtain a valid session first.')
 
 
 valid_completion_items = [
