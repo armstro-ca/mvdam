@@ -5,7 +5,7 @@ import json
 import logging
 
 from mvsdk.rest import Client
-from _bulk.bulk_object import BulkObject
+from mvsdk.rest.bulk import BulkContainer
 
 
 class Asset():
@@ -54,7 +54,7 @@ class Asset():
         logging.debug('Verbosity level set to %s', self.verbosity)
         if self.verbosity == "bulk":
             self.bulk = True
-            self.bulk_object = BulkObject()
+            self.bulk_container = BulkContainer()
         else:
             self.bulk = False
 
@@ -112,8 +112,8 @@ class Asset():
             )
 
         if self.bulk:
-            self.bulk_object.add_request(response)
-            return self.bulk_object
+            self.bulk_container.add_request(response)
+            return self.bulk_container
 
         if 200 <= response['status'] < 300:
             print(f'Keywords {" and".join(self.keywords.replace(",",", ").rsplit(",", 1))}'
@@ -149,7 +149,7 @@ class Asset():
                     )
 
                 if self.bulk:
-                    self.bulk_object.add_request(response)
+                    self.bulk_container.add_request(response)
                 else:
                     if 200 <= response['status'] < 300:
                         print(f'Keyword {keyword} removed from {self.asset_id}')
@@ -161,7 +161,7 @@ class Asset():
             except Exception as error:
                 print(f'Exception when deleting keywords: {error}')
 
-        return self.bulk_object if self.bulk else True
+        return self.bulk_container if self.bulk else True
 
     def get_keywords(self):
         """
@@ -181,8 +181,8 @@ class Asset():
             )
 
         if self.bulk:
-            self.bulk_object.add_request(response)
-            return self.bulk_object
+            self.bulk_container.add_request(response)
+            return self.bulk_container
 
         if response['status'] == 200:
             if self.verbosity == "verbose":
@@ -239,7 +239,7 @@ class Asset():
             logging.debug('Keywords to add: [%s]', self.keywords)
             response = self.add_keywords()
 
-        return self.bulk_object if self.bulk else True
+        return self.bulk_container if self.bulk else True
 
     # --------------
     # GENERIC ACTION

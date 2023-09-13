@@ -7,7 +7,6 @@ Chunk up bulk requests by rate. n/y mins.
 import logging
 
 from mvsdk.rest import Client
-from _bulk.bulk_object import BulkObject
 
 
 class Bulk():
@@ -38,5 +37,5 @@ class Bulk():
             data=payload,
             auth=self.session["json"]["access_token"]
             )
-        
+
         return response

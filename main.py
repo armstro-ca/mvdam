@@ -9,7 +9,8 @@ from typing_extensions import Annotated
 import typer
 
 from _connect import session as se
-from _bulk import BulkObject, Bulk
+from _bulk import Bulk
+from mvsdk.rest.bulk import BulkContainer
 
 logging.basicConfig(
     filename='api.log',
@@ -81,13 +82,10 @@ def asset(
 
         logging.debug('executing %s on %s', action, asset_id)
         response = _asset.action()
-        if isinstance(response, BulkObject):
+        if isinstance(response, BulkContainer):
             bulk_requests = response.get_bulk_body()
 
             bulk_requests['headers']['Content-Length'] = str(len(bulk_requests['payload']))
-
-            print(f'{bulk_requests["headers"]}')
-            print(f'{bulk_requests["payload"]}')
 
             _bulk = Bulk(session, verbosity)
 
