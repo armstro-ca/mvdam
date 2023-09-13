@@ -2,10 +2,11 @@
 CONNECT module containing Connect class
 """
 import os
-import base64
 import time
 import json
 import logging
+
+from dotenv import load_dotenv
 from mvsdk.rest import Client
 
 
@@ -21,7 +22,6 @@ class Connect():
     """
 
     def __init__(self, verb: str, **kwargs: dict):
-                 #username: str, password: str, grant_type: str):
         """
         Initialise the Asset class
         
@@ -33,6 +33,9 @@ class Connect():
             The URL of the page to be scraped
         """
         self.verb = verb
+
+        load_dotenv()
+
         try:
             self.grant_type = kwargs['grant_type']
         except KeyError:
@@ -51,21 +54,7 @@ class Connect():
         except KeyError:
             self.refresh_token = None
 
-        self._auth_string = base64.b64encode(
-            bytes(f'{self.client_id}:{self.client_secret}',
-            'utf-8"')
-            )
-        self._auth_string = self._auth_string.decode("utf-8")
-
         self.sdk_handle = Client()
-
-        self.headers = {
-                'Content-Type': 'application/x-www-form-urlencoded',
-                'Authorization': f'Basic {self._auth_string}',
-                'User-Agent': 'PostmanRuntime/7.32.3',
-                'Accept': '*/*',
-                'Host': 'iam-qa.mediavalet.com'
-            }
 
         self.verbs =[
             'get', 
@@ -76,7 +65,7 @@ class Connect():
 
     def auth(self):
         """
-        Authorize the user by call with the initialised Connect object.
+        Authorize the user by call with the Connect object.
         """
         if self.grant_type == 'password' or 'refresh_token':
 
@@ -86,13 +75,17 @@ class Connect():
                 'password': self.password,
                 'scope': 'openid api offline_access'
             }
-            domain_action = 'token'
-            #try:
+
+            auth = {
+                'client_id': self.client_id,
+                'client_secret': self.client_secret
+            }
+
+            logging.debug(auth)
+
             response = self.sdk_handle.connect.auth(
-                params="",
-                headers=self.headers,
                 data=data,
-                domain_action=domain_action
+                auth=auth
                 )
 
             if response['status'] == 200:
@@ -101,18 +94,16 @@ class Connect():
                 ## TODO: Don't need to do this if check_session() is checking against JWT value
                 response['json']['expires_at'] = time.time() + response['json']['expires_in']
                 session_file.write(json.dumps(response))
+                print(f'Auth successful')
             else:
                 print(f'Auth API response: {response["status"]}')
-
-            #except Exception as error:
-            #    print(f'Failure to authenticate; {error}')
 
         elif self.grant_type == 'auth-code':
             print("Auth-Code flow not yet implemented. Please use password flow.")
 
     def refresh(self):
         """
-        Execute the auth GET call with the initialised Connect object.
+        Execute the auth GET call with the Connect object.
         """
         data = {
             'refresh_token': self.refresh_token,
@@ -120,13 +111,9 @@ class Connect():
             'client_secret': self.client_secret,
             'grant_type': 'refresh_token'
         }
-        domain_action = 'token'
 
         response = self.sdk_handle.connect.auth(
-            params="",
-            headers=self.headers,
-            data=data,
-            domain_action=domain_action
+            data=data
             )
 
         if response['status'] == 200:
@@ -134,7 +121,7 @@ class Connect():
             response['json']['expires_at'] = time.time() + response['json']['expires_in']
             session_file.write(json.dumps(response))
         else:
-            print(f'Auth API response: {response["status"]}')
+            logging.info(f'Auth API response: {response["status"]}')
 
     def action(self):
         """

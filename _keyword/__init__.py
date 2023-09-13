@@ -30,12 +30,6 @@ class Keyword():
 
         self.sdk_handle = Client()
 
-        self.headers = {
-                'Content-Type': 'application/x-www-form-urlencoded',
-                'Authorization': f'Bearer {self.session["json"]["access_token"]}',
-                'User-Agent': 'MVDAM_CLI/0.1.0'
-            }
-
         self.verbs =[
             'get', 
             'post', 
@@ -51,13 +45,17 @@ class Keyword():
         Execute the asset GET call with the Asset object.
         """
         for keyword in self.keywords.split(','):
-            self.sdk_handle.keyword.create(headers = self.headers, data = keyword)
+            self.sdk_handle.keyword.create(
+                auth=self.session["json"]["access_token"],
+                data = keyword)
 
     def get(self):
         """
         Execute the asset GET call with the Asset object.
         """
-        response = self.sdk_handle.keyword.get(headers = self.headers)
+        response = self.sdk_handle.keyword.get(
+            auth=self.session["json"]["access_token"]
+            )
 
         if 200 <= response['status'] < 300:
             if self.verbosity == 'verbose':
@@ -71,12 +69,6 @@ class Keyword():
             print('404 returned.')
         else:
             print(f'Error: {response}')
-
-    def update(self):
-        """
-        Execute the asset GET call with the Asset object.
-        """
-        self.sdk_handle.keyword.update(params={'operator':'other_thing'})
 
     # --------------
     # GENERIC ACTION
