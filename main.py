@@ -21,6 +21,7 @@ logging.basicConfig(
 app = typer.Typer()
 session = {}
 
+
 def autocomplete(endpoint: str, incomplete: str):
     completion = []
     for name, help_text in valid_completion_items[endpoint]:
@@ -96,6 +97,7 @@ def asset(
 
         print('Session expired. Please use "connect auth" to obtain a valid session first.')
 
+
 @app.command()
 def connect(
     action: Annotated[
@@ -156,6 +158,7 @@ def connect(
                        grant_type=grant_type, auth_url=None, api_url=None)
 
     _connect.action()
+
 
 @app.command()
 def keyword(

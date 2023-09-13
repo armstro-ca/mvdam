@@ -24,7 +24,7 @@ class Connect():
     def __init__(self, verb: str, **kwargs: dict):
         """
         Initialise the Asset class
-        
+
         Parameters
         ----------
         verb : str
@@ -56,12 +56,11 @@ class Connect():
 
         self.sdk_handle = Client()
 
-        self.verbs =[
-            'get', 
-            'post', 
+        self.verbs = [
+            'get',
+            'post',
             'delete'
             ]
-
 
     def auth(self):
         """
@@ -91,10 +90,10 @@ class Connect():
             if response['status'] == 200:
                 session_file = open('.session', 'w')
 
-                ## TODO: Don't need to do this if check_session() is checking against JWT value
+                # TODO: Don't need to do this if check_session() is checking against JWT value
                 response['json']['expires_at'] = time.time() + response['json']['expires_in']
                 session_file.write(json.dumps(response))
-                print(f'Auth successful')
+                print('Auth successful')
             else:
                 print(f'Auth API response: {response["status"]}')
 
@@ -121,7 +120,7 @@ class Connect():
             response['json']['expires_at'] = time.time() + response['json']['expires_in']
             session_file.write(json.dumps(response))
         else:
-            logging.info(f'Auth API response: {response["status"]}')
+            logging.info('Auth API response: %s', {response["status"]})
 
     def action(self):
         """

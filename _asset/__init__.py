@@ -36,7 +36,7 @@ class Asset():
     def __init__(self, session: dict, verb: str, asset_id: str, verbosity: str, keywords: str):
         """
         Initialise the Asset class
-        
+
         Parameters
         ----------
         verb : str
@@ -60,9 +60,9 @@ class Asset():
 
         self.sdk_handle = Client()
 
-        self.verbs =[
-            'get', 
-            'post', 
+        self.verbs = [
+            'get',
+            'post',
             'delete',
             'delete_keywords',
             'create_keywords',
@@ -78,7 +78,7 @@ class Asset():
         Execute the GET asset call with the Asset object.
         """
         self.sdk_handle.asset.get(
-            object_id = self.asset_id
+            object_id=self.asset_id
             )
 
     def delete(self):
@@ -241,7 +241,6 @@ class Asset():
 
         return self.bulk_object if self.bulk else True
 
-
     # --------------
     # GENERIC ACTION
     # --------------
@@ -256,4 +255,3 @@ class Asset():
         else:
             print(f'Action {self.verb} did not match any of the valid options.')
             print(f'Did you mean {" or".join(", ".join(self.verbs).rsplit(",", 1))}?')
-

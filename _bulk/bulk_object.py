@@ -1,6 +1,6 @@
 import base64
 import time
-import urllib3
+
 
 class BulkObject:
     def __init__(self):
@@ -11,15 +11,15 @@ class BulkObject:
 
     def get_all_requests(self):
         return self.bulk_requests
-    
+
     def get_bulk_body(self):
         bulk_requests = {}
         boundary_string = base64.b64encode(
                 bytes(f'MediaValetCLI bulk request initiated @ {time.time()}', 'utf-8"')
                 ).decode("utf-8")
-        
+
         boundary_string = 'c6c2ed020aadd284efd61a7c9d4dfe94'
-        
+
         bulk_requests['headers'] = {'Content-Type': f'multipart/mixed; boundary={boundary_string}'}
 
         bulk_request_payloads = []
