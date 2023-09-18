@@ -20,7 +20,7 @@ jobs:
         run: pip install -r requirements.txt pyinstaller
       
       - name: Build EXE
-        run: pyinstaller main.py --distpath dist --workpath build --onefile --icon=favicon-32x32.ico --name mvdam.exe --noconfirm --clean
+        run: pyinstaller main.py --distpath dist/${{ matrix.os }} --workpath build --onefile --icon=favicon-32x32.ico --name mvdam.exe --noconfirm --clean
 
       # Optionally verify that it works (provided that it does not need user interaction)
       - uses: actions/upload-artifact@v3
