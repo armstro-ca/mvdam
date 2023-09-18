@@ -2,6 +2,8 @@
 
 [![Lint & Unit Tests](https://github.com/armstro-ca/mvdam/actions/workflows/unittest.yml/badge.svg)](https://github.com/armstro-ca/mvdam/actions/workflows/unittest.yml)
 
+[![Compile EXE binary](https://github.com/armstro-ca/mvdam/actions/workflows/compile_binary.yml/badge.svg)](https://github.com/armstro-ca/mvdam/actions/workflows/compile_binary.yml)
+
 A Command Line Interface (CLI) to your MediaValet DAM instance. Interact with your assets and metadata via this CLI.
 
 ## ⚡️ Quick start
