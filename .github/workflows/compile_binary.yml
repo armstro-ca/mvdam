@@ -23,6 +23,6 @@ jobs:
         run: pyinstaller main.py --distpath dist --workpath build --onefile --icon=favicon-32x32.ico --name mvdam.exe --noconfirm --clean
 
       # Optionally verify that it works (provided that it does not need user interaction)
-      - uses: actions/upload-artifact@v2
+      - uses: actions/upload-artifact@v3
         with:
-          path: dist/*
+          path: dist/${{ matrix.os }}/*
