@@ -21,8 +21,6 @@ jobs:
       
       - name: Build EXE
         run: pyinstaller main.py \
-          --distpath dist \
-          --workpath build \
           --onefile \
           --icon=facicon-32x32.ico \
           --name mvdam.exe \
