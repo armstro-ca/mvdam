@@ -11,9 +11,8 @@ jobs:
         os: ['windows-latest', 'ubuntu-latest', 'macos-latest']
 
     steps:
-      - name: Check out repository code
-        uses: actions/checkout@v3
-        uses: actions/setup-python@v2
+      - uses: actions/checkout@v3
+      - uses: actions/setup-python@v2
         with:
           python-version: 3.7
 
@@ -29,7 +28,7 @@ jobs:
       - run: echo "🍏 This job's status is ${{ job.status }}."
       
       - name: Build EXE
-      - run: pyinstaller main.py \
+        run: pyinstaller main.py \
           --distpath dist \
           --workpath build \
           --onefile \
