@@ -1,6 +1,6 @@
 name: Compile EXE binary
 
-on: [push]
+on: [published]
 
 jobs:
   build:
@@ -12,7 +12,7 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
-      - uses: actions/setup-python@v2
+      - uses: actions/setup-python@v4
         with:
           python-version: 3.11
 
@@ -20,7 +20,7 @@ jobs:
         run: pip install -r requirements.txt pyinstaller
       
       - name: Build EXE
-        run: pyinstaller main.py --distpath dist --workpath build --onefile --icon=favicon-32x32.ico --name mvdam.exe --noconfirm --clean
+        run: pyinstaller main.py --distpath dist --workpath build --onefile --icon=favicon-32x32.ico --name mvdam --noconfirm --clean
 
       # Optionally verify that it works (provided that it does not need user interaction)
       - uses: actions/upload-artifact@v3
