@@ -38,7 +38,12 @@ def asset(
     action: Annotated[
         str,
         typer.Argument(
-            help="The action to be applied to the asset"
+            help="""The action to be applied to the asset.
+Actions available are currently:
+add-keywords
+delete-keywords
+get-keywords
+set-keywords"""
         )
     ],
     asset_id: Annotated[
@@ -70,12 +75,6 @@ def asset(
         ):
     """
     The `asset` operator gives you access to the assets and all aspects related to them.
-
-    Actions available are currently:
-    add-keywords
-    delete-keywords
-    get-keywords
-    set-keywords
     """
     logging.info("asset executed")
     if se.check_session(session):
@@ -103,11 +102,13 @@ def asset(
 
 
 @app.command()
-def connect(
+def auth(
     action: Annotated[
         str,
         typer.Argument(
-            help="Either auth or renew credentials"
+            help="""Either auth or renew credentials.
+Credentials can be presented as args (outlined below),
+can be set as environment variables or can be set in a .env file"""
         )
     ],
     grant_type: Annotated[
@@ -148,9 +149,6 @@ def connect(
         ):
     """
     Connect the CLI to your MediaValet instance by authenticating.
-
-    Actions available are currently:
-    auth
     """
     logging.info("connect executed")
 
@@ -169,7 +167,9 @@ def keyword(
     action: Annotated[
         str,
         typer.Argument(
-            help="The action to be applied to the asset"
+            help="""The action to be applied to the asset.
+Actions available are currently:
+get"""
             )
         ],
     keywords: Annotated[
@@ -192,9 +192,6 @@ def keyword(
         ):
     """
     The keyword operator acts upon keywords in the abstract.
-
-    Actions available are currently:
-    get
     """
     logging.info("keyword executed")
     if se.check_session(session):
