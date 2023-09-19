@@ -103,14 +103,6 @@ set-keywords"""
 
 @app.command()
 def auth(
-    action: Annotated[
-        str,
-        typer.Argument(
-            help="""Either auth or renew credentials.
-Credentials can be presented as args (outlined below),
-can be set as environment variables or can be set in a .env file"""
-        )
-    ],
     grant_type: Annotated[
         Optional[str],
         typer.Option(
@@ -149,13 +141,17 @@ can be set as environment variables or can be set in a .env file"""
         ):
     """
     Connect the CLI to your MediaValet instance by authenticating.
+
+    Create an authenticated session.
+    Credentials can be presented as args (outlined below),
+    can be set as environment variables or can be set in a .env file
     """
     logging.info("connect executed")
 
     from _connect import Connect
-    action = action.lower()
-    logging.debug('executing %s (type: %s)', action, grant_type)
-    _connect = Connect(action, username=username, password=password,
+
+    logging.debug('executing auth (type: %s)', grant_type)
+    _connect = Connect('auth', username=username, password=password,
                        client_id=client_id, client_secret=client_secret,
                        grant_type=grant_type, auth_url=None, api_url=None)
 
