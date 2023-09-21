@@ -1,0 +1,5 @@
+# Never enforce `E501` (line length violations).
+ignore = ["E501"]
+
+# But use a different line length.
+line-length = 120
