@@ -4,6 +4,7 @@ ASSET module containing Asset class
 import json
 import logger
 
+from _bulk import Bulk
 from mvsdk.rest import Client
 from mvsdk.rest.bulk import BulkContainer
 
@@ -152,9 +153,8 @@ class Asset():
 
             if self.bulk:
                 self.bulk_container.add_request(response)
-                return self.bulk_container
 
-            if 200 <= response['status'] < 300:
+            elif 200 <= response['status'] < 300:
                 self.log.info('Keyword %s removed from %s', keyword, self.asset_id)
 
             elif response['status'] == 404:
@@ -252,7 +252,21 @@ class Asset():
         """
         self.verb = self.verb.replace("-", "_")
         if hasattr(self, self.verb) and callable(func := getattr(self, self.verb)):
-            return func()
+            response = func()
+
+            if isinstance(response, BulkContainer):
+                bulk_requests = response.get_bulk_body()
+
+                self.log.debug('Bulk Request: %s', bulk_requests)
+
+                payload_length = str(len(bulk_requests['payload']))
+                bulk_requests['headers']['Content-Length'] = payload_length
+
+                _bulk = Bulk(self.session)
+
+                print(f'{_bulk.post(bulk_requests)}')
+            else:
+                return response
         else:
             self.log.warning('Action %s did not match any of the valid options.', self.verb)
             self.log.warning('Did you mean %s?', " or".join(", ".join(self.verbs).rsplit(",", 1)))

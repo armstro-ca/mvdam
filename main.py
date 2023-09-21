@@ -7,8 +7,7 @@ from typing_extensions import Annotated
 import typer
 
 from _connect import session as se
-from _bulk import Bulk
-from mvsdk.rest.bulk import BulkContainer
+
 
 log = logger.get_logger(__name__)
 log.info("Logging initiated")
@@ -83,17 +82,6 @@ set-keywords"""
 
         response = _asset.action()
 
-        if isinstance(response, BulkContainer):
-            bulk_requests = response.get_bulk_body()
-
-            log.debug('Bulk Request: %s', bulk_requests)
-
-            payload_length = str(len(bulk_requests['payload']))
-            bulk_requests['headers']['Content-Length'] = payload_length
-
-            _bulk = Bulk(session)
-
-            print(f'{_bulk.post(bulk_requests)}')
     else:
         log.debug("no active session found")
 
