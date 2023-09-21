@@ -1,8 +1,11 @@
 name: Compile EXE binary
 
-on:
-  release:
-    types: [published]
+#on:
+#  release:
+#    types: [published]
+
+on: [push]
+
 
 jobs:
   build:
