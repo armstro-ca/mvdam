@@ -2,14 +2,14 @@
 KEYWORD module containing Keyword class
 """
 import json
-import logging
+import logger
 
 from mvsdk.rest import Client
 
 
 class Keyword():
 
-    def __init__(self, session: dict, verb: str, verbosity: str, keywords: str):
+    def __init__(self, session: dict, verb: str, keywords: str):
         """
         Initialise the Keyword class
 
@@ -21,13 +21,11 @@ class Keyword():
             The URL of the page to be scraped
 
         """
+        self.log = logger.get_logger(__name__)
+
         self.session = session
         self.verb = verb
-        self.verbosity = verbosity
         self.keywords = keywords
-
-        logging.debug('Verbosity level set to %s', self.verbosity)
-        self.bulk = True if self.verbosity == "bulk" else False
 
         self.sdk_handle = Client()
 
@@ -59,17 +57,20 @@ class Keyword():
             )
 
         if 200 <= response['status'] < 300:
-            if self.verbosity == 'verbose':
-                print(json.dumps(response, indent=4))
-            else:
-                keywords = {}
-                for keyword in response['json']['payload']:
-                    keywords[keyword['id']] = keyword['keywordName']
-                print(f'Keywords available: {keywords}')
+            self.log.debug(json.dumps(response, indent=4))
+
+            keywords = {}
+            for keyword in response['json']['payload']:
+                keywords[keyword['id']] = keyword['keywordName']
+
+            print(f'Keywords available: {keywords}')
+
+            return keywords
+
         elif response['status'] == 404:
-            print('404 returned.')
+            self.log.warning('404 returned')
         else:
-            print(f'Error: {response}')
+            self.log.error('Error: %s', response)
 
     # --------------
     # GENERIC ACTION
@@ -83,5 +84,5 @@ class Keyword():
         if hasattr(self, self.verb) and callable(func := getattr(self, self.verb)):
             func()
         else:
-            print(f'Action {self.verb} did not match any of the valid options.')
-            print(f'Did you mean {" or".join(", ".join(self.verbs).rsplit(",", 1))}?')
+            self.log.warning('Action %s did not match any of the valid options.', self.verb)
+            self.log.warning('Did you mean %s?', " or".join(", ".join(self.verbs).rsplit(",", 1)))

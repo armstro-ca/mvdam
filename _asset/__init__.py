@@ -2,7 +2,7 @@
 ASSET module containing Asset class
 """
 import json
-import logging
+import logger
 
 from mvsdk.rest import Client
 from mvsdk.rest.bulk import BulkContainer
@@ -34,7 +34,7 @@ class Asset():
     """
 
     def __init__(self, session: dict, verb: str, asset_id: str,
-                 verbosity: str, keywords: str):
+                 keywords: str, bulk: bool = False):
         """
         Initialise the Asset class
 
@@ -46,18 +46,16 @@ class Asset():
             The URL of the page to be scraped
 
         """
+        self.log = logger.get_logger(__name__)
+
         self.session = session
         self.verb = verb
         self.asset_id = asset_id
-        self.verbosity = verbosity
         self.keywords = keywords
+        self.bulk = bulk
 
-        logging.debug('Verbosity level set to %s', self.verbosity)
-        if self.verbosity == "bulk":
-            self.bulk = True
+        if self.bulk:
             self.bulk_container = BulkContainer()
-        else:
-            self.bulk = False
 
         self.sdk_handle = Client()
 
@@ -115,15 +113,17 @@ class Asset():
         if self.bulk:
             self.bulk_container.add_request(response)
             return self.bulk_container
-
+        
         if 200 <= response['status'] < 300:
-            keyword_list = self.keywords.replace(",",", ").rsplit(",", 1)
-            print(f'Keywords {" and".join(keyword_list)}'
-                  f' added to {self.asset_id}')
+            keyword_list = self.keywords.replace(",", ", ").rsplit(",", 1)
+            self.log.info('Keywords %s added to %s',
+                          " and".join(keyword_list), self.asset_id)
+            
         elif response['status'] == 404:
-            print(f'Asset with ID {self.asset_id} was not found.')
+            self.log.warning('Asset with ID %s was not found.', self.asset_id)
+
         else:
-            print(f'Error: {response}')
+            self.log.error('Error: %s', response)
 
     def delete_keywords(self):
         """
@@ -140,28 +140,29 @@ class Asset():
             existing_keywords[existing_keyword['keywordName']] = existing_keyword['id']
 
         for keyword in self.keywords.split(','):
-            try:
-                logging.debug('Existing keyword to be deleted:\n[%s] - [%s]',
-                              keyword, existing_keywords[keyword])
-                response = self.sdk_handle.asset.delete_keyword(
-                    object_id=self.asset_id,
-                    object_action=f'keywords/{existing_keywords[keyword]}',
-                    auth=self.session["json"]["access_token"],
-                    bulk=self.bulk
-                    )
+            self.log.debug('Existing keyword to be deleted:\n[%s] - [%s]',
+                           keyword, existing_keywords[keyword])
+            
+            response = self.sdk_handle.asset.delete_keyword(
+                object_id=self.asset_id,
+                object_action=f'keywords/{existing_keywords[keyword]}',
+                auth=self.session["json"]["access_token"],
+                bulk=self.bulk
+                )
 
-                if self.bulk:
-                    self.bulk_container.add_request(response)
-                else:
-                    if 200 <= response['status'] < 300:
-                        print(f'Keyword {keyword} removed from {self.asset_id}')
-                    elif response['status'] == 404:
-                        print(f'Asset with ID {self.asset_id} did not have '
-                              'keyword {keyword} associated with it.')
-                    else:
-                        print(f'Error: {response}')
-            except Exception as error:
-                print(f'Exception when deleting keywords: {error}')
+            if self.bulk:
+                self.bulk_container.add_request(response)
+                return self.bulk_container
+
+            if 200 <= response['status'] < 300:
+                self.log.info('Keyword %s removed from %s', keyword, self.asset_id)
+
+            elif response['status'] == 404:
+                self.log.warning('Asset with ID %s did not have keyword %s \
+                                 associated with it.', self.asset_id, keyword)
+                
+            else:
+                self.log.error('Error: %s', response)
 
         return self.bulk_container if self.bulk else True
 
@@ -170,10 +171,8 @@ class Asset():
         Execute the GET asset keywords call with the Asset object.
         """
         if self.asset_id is None:
-            logging.info('AssetID required to get asset keywords. '
-                         'Please retry with --asset-id assetID as a parameter.')
-            print('AssetID required to get asset keywords. '
-                  'Please retry with --asset-id assetID as a parameter.')
+            self.log.info('AssetID required to get asset keywords. '
+                          'Please retry with --asset-id assetID as a parameter.')
             return
 
         response = self.sdk_handle.asset.get_keywords(
@@ -185,30 +184,30 @@ class Asset():
         if self.bulk:
             self.bulk_container.add_request(response)
             return self.bulk_container
-
+        
         if response['status'] == 200:
-            if self.verbosity == "verbose":
-                print(json.dumps(response, indent=4))
-            else:
-                keywords = []
-                for keyword in response['json']['payload']:
-                    keywords.append(keyword['keywordName'])
-                print(f'Keywords for asset {self.asset_id}: {keywords}')
+            self.log.debug(json.dumps(response, indent=4))
+
+            keywords = []
+            for keyword in response['json']['payload']:
+                keywords.append(keyword['keywordName'])
+
+            self.log.info('Keywords for asset %s: %s', self.asset_id, keywords)
+
         elif response['status'] == 404:
-            print(f'Asset with ID {self.asset_id} was not found.')
+            self.log.warning('Asset with ID %s was not found.', self.asset_id)
+
         else:
-            print(f'Error: {response}')
+            self.log.error(f'Error: %s', response)
 
     def set_keywords(self):
         """
         Execute the SET asset keywords call with the Asset object.
         """
         if self.asset_id is None:
-            logging.info('AssetID required to get asset keywords. '
+            self.log.info('AssetID required to get asset keywords. '
                          'Please retry with --asset-id assetID as a parameter.')
-            print('AssetID required to get asset keywords. '
-                  'Please retry with --asset-id assetID as a parameter.')
-            return
+            return self.asset_id
 
         response = self.sdk_handle.asset.get_keywords(
             object_id=self.asset_id,
@@ -233,12 +232,12 @@ class Asset():
 
         if keywords_to_remove:
             self.keywords = ','.join(str(s) for s in keywords_to_remove)
-            logging.debug('Keywords to remove: [%s]', self.keywords)
+            self.log.debug('Keywords to remove: [%s]', self.keywords)
             response = self.delete_keywords()
 
         if keywords_to_add:
             self.keywords = ','.join(str(s) for s in keywords_to_add)
-            logging.debug('Keywords to add: [%s]', self.keywords)
+            self.log.debug('Keywords to add: [%s]', self.keywords)
             response = self.add_keywords()
 
         return self.bulk_container if self.bulk else True
@@ -255,5 +254,5 @@ class Asset():
         if hasattr(self, self.verb) and callable(func := getattr(self, self.verb)):
             return func()
         else:
-            print(f'Action {self.verb} did not match any of the valid options.')
-            print(f'Did you mean {" or".join(", ".join(self.verbs).rsplit(",", 1))}?')
+            self.log.warning('Action %s did not match any of the valid options.', self.verb)
+            self.log.warning('Did you mean %s?', " or".join(", ".join(self.verbs).rsplit(",", 1)))

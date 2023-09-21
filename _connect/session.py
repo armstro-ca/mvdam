@@ -1,8 +1,10 @@
 import time
 import json
-import logging
+import logger
 
 from _connect import Connect
+
+log = logger.get_logger(__name__)
 
 
 def get_session() -> dict:
@@ -11,10 +13,10 @@ def get_session() -> dict:
     """
     try:
         with open('.session', 'r') as session_file:
-            logging.debug('session file found')
+            log.debug('session file found')
             return json.load(session_file)
     except FileNotFoundError:
-        logging.debug('no session file found')
+        log.debug('no session file found')
         return {}
 
 
@@ -29,11 +31,11 @@ def check_session(session: dict) -> bool:
     # https://auth0.com/blog/how-to-handle-jwt-in-python/
 
     if session['json']['expires_at'] >= time.time():
-        logging.debug("Log: Session expiry (%s) later than current time (%s)",
+        log.debug("Log: Session expiry (%s) later than current time (%s)",
                       session['json']['expires_at'], time.time())
 
         ## TODO: check if session is within n period of expiring and _then_ refresh
-        logging.debug('executing refresh')
+        log.debug('executing refresh')
         _connect = Connect('refresh', client_id=None, client_secret=None,
                            refresh_token=session['json']['refresh_token'])
 

@@ -4,7 +4,7 @@ CONNECT module containing Connect class
 import os
 import time
 import json
-import logging
+import logger
 
 from dotenv import load_dotenv
 from mvsdk.rest import Client
@@ -32,6 +32,8 @@ class Connect():
         kwargs : dict
             The URL of the page to be scraped
         """
+        self.log = logger.get_logger(__name__)
+        
         self.verb = verb
 
         load_dotenv()
@@ -80,7 +82,7 @@ class Connect():
                 'client_secret': self.client_secret
             }
 
-            logging.debug(auth)
+            self.log.debug(auth)
 
             response = self.sdk_handle.connect.auth(
                 data=data,
@@ -94,12 +96,12 @@ class Connect():
                 session_expiry = time.time() + response['json']['expires_in']
                 response['json']['expires_at'] = session_expiry
                 session_file.write(json.dumps(response))
-                print('Auth successful')
+                self.log.info('Auth successful')
             else:
-                print(f'Auth API response: {response["status"]}')
+                self.log.warning('Auth API response: %s', response["status"])
 
         elif self.grant_type == 'auth-code':
-            print("Auth-Code flow not yet implemented. Please use password flow.")
+            self.log.warning("Auth-Code flow not yet implemented. Please use password flow.")
 
     def refresh(self):
         """
@@ -122,7 +124,7 @@ class Connect():
             response['json']['expires_at'] = session_expiry
             session_file.write(json.dumps(response))
         else:
-            logging.info('Auth API response: %s', {response["status"]})
+            self.log.info('Auth API response: %s', {response["status"]})
 
     def action(self):
         """
@@ -132,5 +134,5 @@ class Connect():
         if hasattr(self, self.verb) and callable(func := getattr(self, self.verb)):
             func()
         else:
-            print(f'Action {self.verb} did not match any of the valid options.')
-            print(f'Did you mean {" or".join(", ".join(self.verbs).rsplit(",", 1))}?')
+            self.log.warning('Action %s did not match any of the valid options.', self.verb)
+            self.log.warning('Did you mean %s?', " or".join(", ".join(self.verbs).rsplit(",", 1)))

@@ -4,10 +4,9 @@ ASSET module containing Asset class
 Recommendation (Felipe):
 Chunk up bulk requests by rate. n/y mins.
 """
-import logging
+import logger
 
 from mvsdk.rest import Client
-
 
 class Bulk():
     """
@@ -15,9 +14,11 @@ class Bulk():
 
     """
 
-    def __init__(self, session: dict, verbosity: str):
+    def __init__(self, session: dict):
+        
+        self.log = logger.get_logger(__name__)
+
         self.session = session
-        self.verbosity = verbosity
 
         self.sdk_handle = Client()
 
@@ -30,7 +31,7 @@ class Bulk():
         headers = bulk_requests['headers']
         payload = bulk_requests['payload']
 
-        logging.debug(headers)
+        self.log.debug(headers)
 
         response = self.sdk_handle.bulk.post(
             headers=headers,

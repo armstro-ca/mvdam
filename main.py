@@ -1,9 +1,7 @@
 """
 MAIN top level module containing MVDAM CLI
 """
-import os
-import logging
-
+import logger
 from typing import Optional
 from typing_extensions import Annotated
 import typer
@@ -12,25 +10,11 @@ from _connect import session as se
 from _bulk import Bulk
 from mvsdk.rest.bulk import BulkContainer
 
-logging.basicConfig(
-    filename='api.log',
-    filemode='w',
-    format='%(asctime)s — %(name)s — %(levelname)s — %(funcName)s\
-        :%(lineno)d — %(message)s',
-    level=os.getenv('LOGLEVEL') or logging.DEBUG
-    )
+log = logger.get_logger(__name__)
+log.info("Logging initiated")
 
 app = typer.Typer()
 session = {}
-
-
-def autocomplete(endpoint: str, incomplete: str):
-    completion = []
-    for name, help_text in valid_completion_items[endpoint]:
-        if name.startswith(incomplete):
-            completion_item = (name, help_text)
-            completion.append(completion_item)
-    return completion
 
 
 @app.command()
@@ -64,11 +48,17 @@ set-keywords"""
             show_default=False
             )
         ] = "",
-    verbosity: Annotated[
-        str,
+    verbose: Annotated[
+        bool,
         typer.Option(
-            help='Choose the verbosity of the response (eg: --verbosity \
-                [verbose, raw, bulk])',
+            help='Set the output to increased verbosity',
+            show_default=False
+            )
+        ] = False,
+    bulk: Annotated[
+        bool,
+        typer.Option(
+            help='Set the operation to use the bulk endpoint',
             show_default=False
             )
         ] = False
@@ -76,29 +66,39 @@ set-keywords"""
     """
     The `asset` operator gives you access to the assets and all aspects related to them.
     """
-    logging.info("asset executed")
+    if verbose:
+        logger.set_console_verbose()
+        log.debug('Verbose console logging set')
+
+    log.debug("Asset option executed")
+
     if se.check_session(session):
-        logging.debug("active session found")
+        log.debug("active session found")
         from _asset import Asset
         action = action.lower()
-        _asset = Asset(session, action, asset_id, verbosity, keywords)
 
-        logging.debug('executing %s on %s', action, asset_id)
+        log.debug('executing %s on %s', action, asset_id)
+
+        _asset = Asset(session, action, asset_id, keywords, bulk)
+
         response = _asset.action()
+
         if isinstance(response, BulkContainer):
             bulk_requests = response.get_bulk_body()
+
+            log.debug('Bulk Request: %s', bulk_requests)
 
             payload_length = str(len(bulk_requests['payload']))
             bulk_requests['headers']['Content-Length'] = payload_length
 
-            _bulk = Bulk(session, verbosity)
+            _bulk = Bulk(session)
 
             print(f'{_bulk.post(bulk_requests)}')
     else:
-        logging.debug("no active session found")
+        log.debug("no active session found")
 
-        print('Session expired.',
-              'Please use "connect auth" to obtain a valid session.')
+        log.info('Session expired.\
+              Please use "connect auth" to obtain a valid session.')
 
 
 @app.command()
@@ -137,7 +137,14 @@ def auth(
             help="The clientSecret to be used with password flow",
             rich_help_panel="Password Flow",
         )
-    ] = None
+    ] = None,
+    verbose: Annotated[
+        bool,
+        typer.Option(
+            help='Set the output to increased verbosity',
+            show_default=False
+            )
+        ] = False
         ):
     """
     Connect the CLI to your MediaValet instance by authenticating.
@@ -146,11 +153,15 @@ def auth(
     Credentials can be presented as args (outlined below),
     can be set as environment variables or can be set in a .env file
     """
-    logging.info("connect executed")
+    if verbose:
+        logger.set_console_verbose()
+        log.debug('Verbose console logging set')
+
+    log.debug("Connect option executed")
 
     from _connect import Connect
 
-    logging.debug('executing auth (type: %s)', grant_type)
+    log.debug('executing auth (type: %s)', grant_type)
     _connect = Connect('auth', username=username, password=password,
                        client_id=client_id, client_secret=client_secret,
                        grant_type=grant_type, auth_url=None, api_url=None)
@@ -177,8 +188,8 @@ get"""
             show_default=False
             )
         ] = "",
-    verbosity: Annotated[
-        str,
+    verbose: Annotated[
+        bool,
         typer.Option(
             help='Choose the verbosity of the response \
                 (eg: --verbosity [verbose, raw, bulk])',
@@ -189,25 +200,25 @@ get"""
     """
     The keyword operator acts upon keywords in the abstract.
     """
-    logging.info("keyword executed")
+    if verbose:
+        logger.set_console_verbose()
+        log.debug('Verbose console logging set')
+    
+    log.debug("Keyword option executed")
+
     if se.check_session(session):
-        logging.debug("active session found")
+        log.debug("active session found")
         from _keyword import Keyword
         action = action.lower()
-        _keyword = Keyword(session, action, verbosity, keywords)
+        _keyword = Keyword(session, action, keywords)
 
-        logging.debug('executing %s', action)
+        log.debug('executing %s', action)
         _keyword.action()
     else:
-        logging.debug("no active session found")
+        log.debug("no active session found")
 
         print('Session not valid. Please use "connect auth" to ',
               'obtain a valid session first.')
-
-
-valid_completion_items = [
-    {'asset': ('get', 'get-keywords')}
-]
 
 
 if __name__ == "__main__":
