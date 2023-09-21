@@ -198,7 +198,7 @@ class Asset():
             self.log.warning('Asset with ID %s was not found.', self.asset_id)
 
         else:
-            self.log.error(f'Error: %s', response)
+            self.log.error('Error: %s', response)
 
     def set_keywords(self):
         """
@@ -206,7 +206,7 @@ class Asset():
         """
         if self.asset_id is None:
             self.log.info('AssetID required to get asset keywords. '
-                         'Please retry with --asset-id assetID as a parameter.')
+                          'Please retry with --asset-id assetID as a parameter.')
             return self.asset_id
 
         response = self.sdk_handle.asset.get_keywords(

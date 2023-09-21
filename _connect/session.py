@@ -32,9 +32,9 @@ def check_session(session: dict) -> bool:
 
     if session['json']['expires_at'] >= time.time():
         log.debug("Log: Session expiry (%s) later than current time (%s)",
-                      session['json']['expires_at'], time.time())
+                  session['json']['expires_at'], time.time())
 
-        ## TODO: check if session is within n period of expiring and _then_ refresh
+        # TODO: check if session is within n period of expiring and _then_ refresh
         log.debug('executing refresh')
         _connect = Connect('refresh', client_id=None, client_secret=None,
                            refresh_token=session['json']['refresh_token'])

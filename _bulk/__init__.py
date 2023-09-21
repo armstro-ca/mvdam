@@ -8,6 +8,7 @@ import logger
 
 from mvsdk.rest import Client
 
+
 class Bulk():
     """
     Bulk Class exposing the following methods:
@@ -15,7 +16,7 @@ class Bulk():
     """
 
     def __init__(self, session: dict):
-        
+
         self.log = logger.get_logger(__name__)
 
         self.session = session

@@ -33,7 +33,7 @@ class Connect():
             The URL of the page to be scraped
         """
         self.log = logger.get_logger(__name__)
-        
+
         self.verb = verb
 
         load_dotenv()
