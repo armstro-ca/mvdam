@@ -26,7 +26,8 @@ Actions available are currently:
 add-keywords
 delete-keywords
 get-keywords
-set-keywords"""
+set-keywords
+set-keywords-with-csv"""
         )
     ],
     asset_id: Annotated[
@@ -47,21 +48,21 @@ set-keywords"""
             show_default=False
             )
         ] = "",
+    csv: Annotated[
+        Optional[str],
+        typer.Option(
+            help='The filename of the csv for use with set-keywords-with-csv option.',
+            rich_help_panel="Single",
+            show_default=False
+            )
+        ] = "",
     verbose: Annotated[
         bool,
         typer.Option(
             help='Set the output to increased verbosity',
             show_default=False
             )
-        ] = False,
-    bulk: Annotated[
-        bool,
-        typer.Option(
-            help='Set the operation to use the bulk endpoint',
-            show_default=False
-            )
-        ] = False
-        ):
+        ] = False:
     """
     The `asset` operator gives you access to the assets and all aspects related to them.
     """
@@ -78,7 +79,7 @@ set-keywords"""
 
         log.debug('executing %s on %s', action, asset_id)
 
-        _asset = Asset(session, action, asset_id, keywords, bulk)
+        _asset = Asset(session, action, asset_id, csv, keywords)
 
         response = _asset.action()
 
