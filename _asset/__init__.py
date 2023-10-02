@@ -2,9 +2,9 @@
 ASSET module containing Asset class
 """
 import json
+import pathlib
 import logger
 import pandas as pd
-import pathlib
 
 from _bulk import Bulk
 from mvsdk.rest import Client
@@ -155,7 +155,7 @@ class Asset():
         for keyword in keywords.split(','):
             try:
                 self.log.debug('Existing keyword to be deleted:\n[%s] - [%s]',
-                            keyword, self.existing_keywords[keyword])
+                               keyword, self.existing_keywords[keyword])
 
                 response = self.sdk_handle.asset.delete_keyword(
                     object_id=asset_id,
@@ -178,7 +178,7 @@ class Asset():
                 else:
                     self.log.error('Error %s: %s', response.status_code, response.text)
             except KeyError:
-                self.log.error('Deletion requested for non-existant keyword:\n[%s]', keyword)
+                self.log.error('Deletion requested for non-existent keyword:\n[%s]', keyword)
 
         if self.bulk:
             return self.bulk
@@ -193,7 +193,7 @@ class Asset():
             self.log.info('AssetID required to get asset keywords. '
                           'Please retry with --asset-id assetID as a parameter.')
             return
-        
+
         response = self.get_asset_keywords(asset_id=self.asset_id)
 
         if self.bulk:
@@ -272,7 +272,7 @@ class Asset():
         # initiate instance of bulk endpoint
         bulk = Bulk(self.session)
 
-        # open the csv file within context 
+        # open the csv file within context
         with open(self.csv, 'r') as f:
             df = pd.read_csv(f)
 
@@ -287,7 +287,8 @@ class Asset():
                 for index, row in df_batch.iterrows():
                     asset_id = row["System.Id"]
                     new_keywords = ''.join(row["Keywords"]).replace(', ', ',')
-                    self.log.info('Processing #%s [%s] with keywords [%s]', index, asset_id, new_keywords)
+                    self.log.info('Processing #%s [%s] with keywords [%s]',
+                                  index, asset_id, new_keywords)
                     bulk_request.add_request(self.get_asset_keywords(asset_id=asset_id, bulk=True))
 
                 # Send the BulkRequest object to the bulk handle
@@ -295,10 +296,11 @@ class Asset():
                 self.log.debug(request)
 
                 response = bulk.post(request)
-                
+
                 bulk_response = BulkResponse(response)
 
-                self.log.info('Get Keywords Response status = [%s], returned in [%s]', response.status_code, response.elapsed)
+                self.log.info('Get Keywords Response status = [%s], returned in [%s]',
+                              response.status_code, response.elapsed)
                 self.log.debug(bulk_response.get_response)
 
                 missing_keywords = []
@@ -308,7 +310,7 @@ class Asset():
                 for index, row in df_batch.iterrows():
                     try:
                         response = bulk_response.get_response[index % batch_size]
-                    
+
                         if int(response['status_code']) >= 300:
                             error_count += 1
                             self.dump_current_row(response)
@@ -318,17 +320,18 @@ class Asset():
                             self.existing_keywords.update(self.get_existing_keywords(response))
                             current_keywords = self.get_current_keywords(response)
                             new_keywords = row["Keywords"].split(', ')
-                            missing_keywords.append(self.get_keywords_missing(set(current_keywords), set(new_keywords)))
-                            surplus_keywords.append(self.get_keywords_surplus(set(current_keywords), set(new_keywords)))
+                            missing_keywords.append(
+                                self.get_keywords_missing(set(current_keywords), set(new_keywords))
+                                )
+                            surplus_keywords.append(
+                                self.get_keywords_surplus(set(current_keywords), set(new_keywords))
+                                )
                     except IndexError:
                         missing_keywords.append('')
                         surplus_keywords.append('')
 
                 self.log.info('missing_keywords: %s', missing_keywords)
                 self.log.info('surplus_keywords: %s', surplus_keywords)
-
-                #df_batch['missing_keywords'] = missing_keywords
-                #df_batch['surplus_keywords'] = surplus_keywords
 
                 df_batch = df_batch.assign(missing_keywords=missing_keywords)
                 df_batch = df_batch.assign(surplus_keywords=surplus_keywords)
@@ -344,7 +347,11 @@ class Asset():
                     if missing_keywords != '':
                         self.log.info('Processing addition for #%s [%s] with keywords [%s]',
                                       index, asset_id, missing_keywords)
-                        self.add_keywords(asset_id=asset_id, keywords=missing_keywords, bulk=bulk_request)
+                        self.add_keywords(
+                            asset_id=asset_id,
+                            keywords=missing_keywords,
+                            bulk=bulk_request
+                            )
                     else:
                         self.log.info('Skipping addition for #%s [%s]', index, asset_id)
 
@@ -354,13 +361,14 @@ class Asset():
                     request = bulk_request.get_payload()
                     self.log.debug(request)
                 else:
-                    self.log.debug(f'No requests to post. Skipping.')
+                    self.log.debug('No requests to post. Skipping.')
 
                 response = bulk.post(request)
 
                 bulk_response = BulkResponse(response)
-                
-                self.log.info('Add Keywords Response status = [%s], returned in [%s]', response.status_code, response.elapsed)
+
+                self.log.info('Add Keywords Response status = [%s], returned in [%s]',
+                              response.status_code, response.elapsed)
 
                 self.log.debug(response)
 
@@ -371,7 +379,7 @@ class Asset():
 
                 #   Deletions second
                 bulk_request = BulkRequest()
-                
+
                 for index, row in df_batch.iterrows():
                     asset_id: str = row["System.Id"]
                     surplus_keywords = row["surplus_keywords"]
@@ -380,7 +388,11 @@ class Asset():
                         self.log.info('Processing deletion for #%s [%s] with keywords [%s]',
                                       index, asset_id, surplus_keywords)
                         try:
-                            self.delete_keywords(asset_id=asset_id, keywords=surplus_keywords, bulk=bulk_request)
+                            self.delete_keywords(
+                                asset_id=asset_id,
+                                keywords=surplus_keywords,
+                                bulk=bulk_request
+                                )
                         except KeyError as error:
                             self.log.error('KeyError building delete bulk: %s\n%s', error, row)
                             self.log.error('Existing Keywords; %s', self.existing_keywords)
@@ -394,13 +406,14 @@ class Asset():
                     request = bulk_request.get_payload()
                     self.log.debug(request)
                 else:
-                    self.log.debug(f'No requests to post. Skipping.')
+                    self.log.debug('No requests to post. Skipping.')
 
                 response = bulk.post(request)
 
                 bulk_response = BulkResponse(response)
 
-                self.log.info('Delete Keywords Response status = [%s], returned in [%s]', response.status_code, response.elapsed)
+                self.log.info('Delete Keywords Response status = [%s], returned in [%s]',
+                              response.status_code, response.elapsed)
 
                 self.log.debug(response)
 
@@ -471,25 +484,21 @@ class Asset():
     def get_existing_keywords(self, response: dict):
         keywords = {}
 
-        #self.log.debug('Existing keywords found: %s', response)
-
         for keyword in json.loads(response['payload']):
             keywords[keyword['keywordName']] = keyword['id']
 
         return keywords
-        
+
     def get_current_keywords(self, response: dict):
         keywords = []
-
-        #self.log.debug('Current keywords found: %s', response)
 
         for keyword in json.loads(response['payload']):
             keywords.append(keyword['keywordName'])
 
         return keywords
-    
+
     def dump_current_row(self, response):
-        file = pathlib.Path("execptions.txt")
+        file = pathlib.Path("exceptions.txt")
 
         try:
             with file.open(mode='a') as f:
