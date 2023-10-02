@@ -148,36 +148,37 @@ class Asset():
 
         if len(self.existing_keywords) == 0:
             response = self.get_asset_keywords(asset_id=asset_id)
-            
-            response_json = response.json()
 
-            for existing_keyword in response_json['payload']:
+            for existing_keyword in response.json()['payload']:
                 self.existing_keywords[existing_keyword['keywordName']] = existing_keyword['id']
 
         for keyword in keywords.split(','):
-            self.log.debug('Existing keyword to be deleted:\n[%s] - [%s]',
-                           keyword, self.existing_keywords[keyword])
+            try:
+                self.log.debug('Existing keyword to be deleted:\n[%s] - [%s]',
+                            keyword, self.existing_keywords[keyword])
 
-            response = self.sdk_handle.asset.delete_keyword(
-                object_id=asset_id,
-                object_action=f'keywords/{self.existing_keywords[keyword]}',
-                auth=self.session["access_token"],
-                bulk=True if bulk else False
-                )
+                response = self.sdk_handle.asset.delete_keyword(
+                    object_id=asset_id,
+                    object_action=f'keywords/{self.existing_keywords[keyword]}',
+                    auth=self.session["access_token"],
+                    bulk=True if bulk else False
+                    )
 
-            if bulk:
-                bulk.add_request(response)
-                continue
+                if bulk:
+                    bulk.add_request(response)
+                    continue
 
-            elif 200 <= response.status_code < 300:
-                self.log.info('Keyword %s removed from %s', keyword, asset_id)
+                elif 200 <= response.status_code < 300:
+                    self.log.info('Keyword %s removed from %s', keyword, asset_id)
 
-            elif response.status_code == 404:
-                self.log.warning('Asset with ID %s did not have keyword %s \
-                                 associated with it.', asset_id, keyword)
+                elif response.status_code == 404:
+                    self.log.warning('Asset with ID %s did not have keyword %s \
+                                    associated with it.', asset_id, keyword)
 
-            else:
-                self.log.error('Error %s: %s', response.status_code, response.text)
+                else:
+                    self.log.error('Error %s: %s', response.status_code, response.text)
+            except KeyError:
+                self.log.error('Deletion requested for non-existant keyword:\n[%s]', keyword)
 
         if self.bulk:
             return self.bulk
@@ -198,15 +199,13 @@ class Asset():
         if self.bulk:
             self.bulk_request.add_request(response)
             return self.bulk_request
-        
-        response_json = response.json()
 
         if response.status_code == 200:
-            self.log.debug(json.dumps(response_json, indent=4))
+            self.log.debug(json.dumps(response.json(), indent=4))
 
             keywords = []
 
-            for keyword in response_json['payload']:
+            for keyword in response.json()['payload']:
                 keywords.append(keyword['keywordName'])
 
             self.log.info('Keywords for asset %s: %s', self.asset_id, keywords)
@@ -230,16 +229,10 @@ class Asset():
                           'Please retry with --asset-id assetID as a parameter.')
             return asset_id
 
-        response = self.sdk_handle.asset.get_keywords(
-            object_id=asset_id,
-            auth=self.session["access_token"],
-            bulk=False
-            )
-        
-        response_json = response.json()
+        response = self.get_asset_keywords(asset_id=asset_id)
 
         current_keywords = []
-        for keyword in response_json['payload']:
+        for keyword in response.json()['payload']:
             current_keywords.append(keyword['keywordName'])
 
         self.log.debug('Current keywords for [%s]:[%s]', asset_id, current_keywords)
@@ -251,9 +244,8 @@ class Asset():
         keywords_to_add = new_keywords.difference(current_keywords)
 
         if not (keywords_to_remove or keywords_to_add):
-            print('No difference between '
-                  f'{" and".join(self.keywords.replace(",",", ").rsplit(",", 1))} '
-                  f'and existing keywords set for Asset ({asset_id})')
+            self.log.debug('No difference between %s and existing keywords set for Asset %s',
+                           " and".join(self.keywords.replace(",", ", ").rsplit(",", 1)), asset_id)
 
         if keywords_to_remove:
             self.keywords = ','.join(str(s) for s in keywords_to_remove)
@@ -274,7 +266,7 @@ class Asset():
         This is a purpose built, bulk only, method.
         """
         # set the size of the bulk batches to post at any one time
-        batch_size: int = 2
+        batch_size: int = 100
         error_count: int = 0
 
         # initiate instance of bulk endpoint
@@ -335,8 +327,11 @@ class Asset():
                 self.log.info('missing_keywords: %s', missing_keywords)
                 self.log.info('surplus_keywords: %s', surplus_keywords)
 
-                df_batch['missing_keywords'] = missing_keywords
-                df_batch['surplus_keywords'] = surplus_keywords
+                #df_batch['missing_keywords'] = missing_keywords
+                #df_batch['surplus_keywords'] = surplus_keywords
+
+                df_batch = df_batch.assign(missing_keywords=missing_keywords)
+                df_batch = df_batch.assign(surplus_keywords=surplus_keywords)
 
                 # Build the BulkRequest to post the updates
                 #   Additions first
@@ -431,7 +426,7 @@ class Asset():
                 _bulk = Bulk(self.session)
 
                 # get contents of bulk object and post to sdk
-                print(f'{_bulk.post(response.get_payload())}')
+                _bulk.post(response.get_payload())
             else:
                 return response
         else:
@@ -456,10 +451,9 @@ class Asset():
         self.log.debug('new_keywords: [%s]', new_keywords)
 
         keywords_to_remove = current_keywords.difference(new_keywords)
-        self.log.debug('Keywords to delete: [%s]', keywords_to_remove)
+        self.log.debug('Keywords to delete: [%s]', list(keywords_to_remove))
 
         keywords_string = ','.join(str(s) for s in keywords_to_remove)
-        self.log.info('Keywords to remove: [%s]', keywords_string)
 
         return keywords_string
 
@@ -477,10 +471,9 @@ class Asset():
     def get_existing_keywords(self, response: dict):
         keywords = {}
 
-        print(response)
+        #self.log.debug('Existing keywords found: %s', response)
 
         for keyword in json.loads(response['payload']):
-            print(keyword)
             keywords[keyword['keywordName']] = keyword['id']
 
         return keywords
@@ -488,8 +481,9 @@ class Asset():
     def get_current_keywords(self, response: dict):
         keywords = []
 
+        #self.log.debug('Current keywords found: %s', response)
+
         for keyword in json.loads(response['payload']):
-            print(keyword)
             keywords.append(keyword['keywordName'])
 
         return keywords

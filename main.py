@@ -80,9 +80,7 @@ set-keywords-with-csv"""
 
         log.debug('executing %s on %s', action, asset_id)
 
-        _asset = Asset(session, action, asset_id, csv, keywords)
-
-        response = _asset.action()
+        Asset(session, action, asset_id, csv, keywords).action()
 
     else:
         log.debug("no active session found")
@@ -152,11 +150,8 @@ def auth(
     from _connect import Connect
 
     log.debug('executing auth (type: %s)', grant_type)
-    _connect = Connect('auth', username=username, password=password,
-                       client_id=client_id, client_secret=client_secret,
-                       grant_type=grant_type, auth_url=None, api_url=None)
-
-    _connect.action()
+    Connect('auth', username=username, password=password, client_id=client_id, client_secret=client_secret, 
+            grant_type=grant_type, auth_url=None, api_url=None).action()
 
 
 @app.command()
@@ -200,10 +195,8 @@ get"""
         log.debug("active session found")
         from _keyword import Keyword
         action = action.lower()
-        _keyword = Keyword(session, action, keywords)
+        Keyword(session, action, keywords).action()
 
-        log.debug('executing %s', action)
-        _keyword.action()
     else:
         log.debug("no active session found")
 
@@ -244,22 +237,19 @@ get"""
     if verbose:
         logger.set_console_verbose()
         log.debug('Verbose console logging set')
-    
-    log.debug("Keyword option executed")
+
+    log.debug("KeywordGroup option executed")
 
     if se.check_session(session):
         log.debug("active session found")
         from _keyword_group import KeywordGroup
         action = action.lower()
-        _keyword = KeywordGroup(session, action, keyword_group)
+        KeywordGroup(session, action, keyword_group).action()
 
-        log.debug('executing %s', action)
-        _keyword.action()
     else:
         log.debug("no active session found")
 
-        print('Session not valid. Please use "connect auth" to ',
-              'obtain a valid session first.')
+        print('Session not valid. Please use "connect auth" to obtain a valid session first.')
 
 
 if __name__ == "__main__":
