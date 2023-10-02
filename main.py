@@ -62,7 +62,8 @@ set-keywords-with-csv"""
             help='Set the output to increased verbosity',
             show_default=False
             )
-        ] = False:
+        ] = False
+        ):
     """
     The `asset` operator gives you access to the assets and all aspects related to them.
     """
@@ -200,6 +201,57 @@ get"""
         from _keyword import Keyword
         action = action.lower()
         _keyword = Keyword(session, action, keywords)
+
+        log.debug('executing %s', action)
+        _keyword.action()
+    else:
+        log.debug("no active session found")
+
+        print('Session not valid. Please use "connect auth" to ',
+              'obtain a valid session first.')
+        
+@app.command()
+def keyword_group(
+    action: Annotated[
+        str,
+        typer.Argument(
+            help="""The action to be applied to the asset.
+Actions available are currently:
+get"""
+            )
+        ],
+    keyword_group: Annotated[
+        Optional[str],
+        typer.Option(
+            help='The keyword group for the action to be taken upon as a comma separated \
+                string (eg: --keywords field,sky,road,sunset)',
+            rich_help_panel="Single",
+            show_default=False
+            )
+        ] = "",
+    verbose: Annotated[
+        bool,
+        typer.Option(
+            help='Choose the verbosity of the response \
+                (eg: --verbosity [verbose, raw, bulk])',
+            show_default=False
+            )
+        ] = False
+        ):
+    """
+    The keyword operator acts upon keywords in the abstract.
+    """
+    if verbose:
+        logger.set_console_verbose()
+        log.debug('Verbose console logging set')
+    
+    log.debug("Keyword option executed")
+
+    if se.check_session(session):
+        log.debug("active session found")
+        from _keyword_group import KeywordGroup
+        action = action.lower()
+        _keyword = KeywordGroup(session, action, keyword_group)
 
         log.debug('executing %s', action)
         _keyword.action()
