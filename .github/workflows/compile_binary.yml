@@ -20,9 +20,9 @@ jobs:
       - uses: actions/setup-python@v4
         with:
           python-version: 3.11
-      - uses: azure/login@v1
-        with:
-          creds: ${{ secrets.AZURE_CREDENTIALS }}
+      #- uses: azure/login@v1
+      #  with:
+      #    creds: ${{ secrets.AZURE_CREDENTIALS }}
 
       - name: Install pre-requisites
         run: pip install -r requirements.txt pyinstaller
@@ -36,11 +36,11 @@ jobs:
           name: mvdam-${{ matrix.os }}
           path: dist/*
   
-      - name: Upload to blob storage
-        uses: azure/CLI@v1
-        with:
-          inlineScript: |
-              az storage blob upload-batch --account-name yaosalesforcestorage --auth-mode key -d james-testing-mvdam -s .
+      #- name: Upload to blob storage
+      #  uses: azure/CLI@v1
+      #  with:
+      #    inlineScript: |
+      #        az storage blob upload-batch --account-name yaosalesforcestorage --auth-mode key -d james-testing-mvdam -s .
 
       #- name: Purge CDN endpoint
       #  uses: azure/CLI@v1
@@ -49,8 +49,8 @@ jobs:
       #        az cdn endpoint purge --content-paths  "/*" --profile-name "CDN_PROFILE_NAME" --name "CDN_ENDPOINT" --resource-group "RESOURCE_GROUP"
   
     # Azure logout
-      - name: logout
-        run: |
-              az logout
-        if: always()
+    #  - name: logout
+    #    run: |
+    #          az logout
+    #    if: always()
   
