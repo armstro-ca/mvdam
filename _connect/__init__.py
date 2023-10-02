@@ -89,16 +89,17 @@ class Connect():
                 auth=auth
                 )
 
-            if response['status'] == 200:
+            if response.status_code == 200:
                 session_file = open('.session', 'w')
+                response_json = response.json()
 
                 # TODO: Don't need to do if check_session() is checking against JWT
-                session_expiry = time.time() + response['json']['expires_in']
-                response['json']['expires_at'] = session_expiry
-                session_file.write(json.dumps(response))
+                session_expiry = time.time() + response_json['expires_in']
+                response_json['expires_at'] = session_expiry
+                session_file.write(json.dumps(response_json, default=str))
                 self.log.info('Auth successful')
             else:
-                self.log.warning('Auth API response: %s', response["status"])
+                self.log.warning('Auth API response: %s', response.status_code)
 
         elif self.grant_type == 'auth-code':
             self.log.warning("Auth-Code flow not yet implemented. Please use password flow.")
@@ -118,13 +119,15 @@ class Connect():
             data=data
             )
 
-        if response['status'] == 200:
+        if response.status_code == 200:
             session_file = open('.session', 'w')
-            session_expiry = time.time() + response['json']['expires_in']
-            response['json']['expires_at'] = session_expiry
-            session_file.write(json.dumps(response))
+            response_json = response.json()
+
+            session_expiry = time.time() + response_json['expires_in']
+            response_json['expires_at'] = session_expiry
+            session_file.write(json.dumps(response_json, default=str))
         else:
-            self.log.info('Auth API response: %s', {response["status"]})
+            self.log.info('Auth API response: %s', {response.status_code})
 
     def action(self):
         """

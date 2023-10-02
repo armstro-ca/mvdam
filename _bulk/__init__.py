@@ -32,7 +32,7 @@ class Bulk():
         response = self.sdk_handle.bulk.post(
             headers=bulk_requests['headers'],
             data=bulk_requests['payload'],
-            auth=self.session["json"]["access_token"]
+            auth=self.session["access_token"]
             )
 
         return response

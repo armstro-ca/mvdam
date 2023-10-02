@@ -15,8 +15,8 @@ def get_session() -> dict:
         with open('.session', 'r') as session_file:
             log.debug('session file found')
             return json.load(session_file)
-    except FileNotFoundError:
-        log.debug('no session file found')
+    except (FileNotFoundError, json.decoder.JSONDecodeError) as error:
+        log.debug('Failed to load session\n%s', error)
         return {}
 
 
@@ -30,14 +30,14 @@ def check_session(session: dict) -> bool:
     # print(f'Expiry: {token}')
     # https://auth0.com/blog/how-to-handle-jwt-in-python/
 
-    if session['json']['expires_at'] >= time.time():
+    if session['expires_at'] >= time.time():
         log.debug("Log: Session expiry (%s) later than current time (%s)",
-                  session['json']['expires_at'], time.time())
+                  session['expires_at'], time.time())
 
         # TODO: check if session is within n period of expiring and _then_ refresh
         log.debug('executing refresh')
         _connect = Connect('refresh', client_id=None, client_secret=None,
-                           refresh_token=session['json']['refresh_token'])
+                           refresh_token=session['refresh_token'])
 
         _connect.action()
         return True
