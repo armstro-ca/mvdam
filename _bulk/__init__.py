@@ -29,15 +29,10 @@ class Bulk():
     def post(self, bulk_requests: dict):
         """
         """
-        headers = bulk_requests['headers']
-        payload = bulk_requests['payload']
-
-        self.log.debug(headers)
-
         response = self.sdk_handle.bulk.post(
-            headers=headers,
-            data=payload,
-            auth=self.session["json"]["access_token"]
+            headers=bulk_requests['headers'],
+            data=bulk_requests['payload'],
+            auth=self.session["access_token"]
             )
 
         return response

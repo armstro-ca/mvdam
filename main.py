@@ -26,7 +26,8 @@ Actions available are currently:
 add-keywords
 delete-keywords
 get-keywords
-set-keywords"""
+set-keywords
+set-keywords-with-csv"""
         )
     ],
     asset_id: Annotated[
@@ -47,17 +48,18 @@ set-keywords"""
             show_default=False
             )
         ] = "",
+    csv: Annotated[
+        Optional[str],
+        typer.Option(
+            help='The filename of the csv for use with set-keywords-with-csv option.',
+            rich_help_panel="Single",
+            show_default=False
+            )
+        ] = "",
     verbose: Annotated[
         bool,
         typer.Option(
             help='Set the output to increased verbosity',
-            show_default=False
-            )
-        ] = False,
-    bulk: Annotated[
-        bool,
-        typer.Option(
-            help='Set the operation to use the bulk endpoint',
             show_default=False
             )
         ] = False
@@ -78,9 +80,7 @@ set-keywords"""
 
         log.debug('executing %s on %s', action, asset_id)
 
-        _asset = Asset(session, action, asset_id, keywords, bulk)
-
-        response = _asset.action()
+        Asset(session, action, asset_id, csv, keywords).action()
 
     else:
         log.debug("no active session found")
@@ -150,11 +150,8 @@ def auth(
     from _connect import Connect
 
     log.debug('executing auth (type: %s)', grant_type)
-    _connect = Connect('auth', username=username, password=password,
-                       client_id=client_id, client_secret=client_secret,
-                       grant_type=grant_type, auth_url=None, api_url=None)
-
-    _connect.action()
+    Connect('auth', username=username, password=password, client_id=client_id, client_secret=client_secret, 
+            grant_type=grant_type, auth_url=None, api_url=None).action()
 
 
 @app.command()
@@ -198,15 +195,61 @@ get"""
         log.debug("active session found")
         from _keyword import Keyword
         action = action.lower()
-        _keyword = Keyword(session, action, keywords)
+        Keyword(session, action, keywords).action()
 
-        log.debug('executing %s', action)
-        _keyword.action()
     else:
         log.debug("no active session found")
 
         print('Session not valid. Please use "connect auth" to ',
               'obtain a valid session first.')
+        
+@app.command()
+def keyword_group(
+    action: Annotated[
+        str,
+        typer.Argument(
+            help="""The action to be applied to the asset.
+Actions available are currently:
+get"""
+            )
+        ],
+    keyword_group: Annotated[
+        Optional[str],
+        typer.Option(
+            help='The keyword group for the action to be taken upon as a comma separated \
+                string (eg: --keywords field,sky,road,sunset)',
+            rich_help_panel="Single",
+            show_default=False
+            )
+        ] = "",
+    verbose: Annotated[
+        bool,
+        typer.Option(
+            help='Choose the verbosity of the response \
+                (eg: --verbosity [verbose, raw, bulk])',
+            show_default=False
+            )
+        ] = False
+        ):
+    """
+    The keyword operator acts upon keywords in the abstract.
+    """
+    if verbose:
+        logger.set_console_verbose()
+        log.debug('Verbose console logging set')
+
+    log.debug("KeywordGroup option executed")
+
+    if se.check_session(session):
+        log.debug("active session found")
+        from _keyword_group import KeywordGroup
+        action = action.lower()
+        KeywordGroup(session, action, keyword_group).action()
+
+    else:
+        log.debug("no active session found")
+
+        print('Session not valid. Please use "connect auth" to obtain a valid session first.')
 
 
 if __name__ == "__main__":
