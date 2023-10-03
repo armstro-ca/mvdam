@@ -23,6 +23,7 @@ def asset(
         typer.Argument(
             help="""The action to be applied to the asset.
 Actions available are currently:
+get-attributes
 add-keywords
 delete-keywords
 get-keywords
@@ -86,8 +87,58 @@ set-keywords-with-csv"""
         log.debug("no active session found")
 
         log.info('Session expired.\
-              Please use "connect auth" to obtain a valid session.')
+              Please use "mvdam auth" to obtain a valid session.')
 
+@app.command()
+def attribute(
+    action: Annotated[
+        str,
+        typer.Argument(
+            help="""The action to be applied to the asset.
+Actions available are currently:
+get"""
+        )
+    ],
+    asset_id: Annotated[
+        Optional[str],
+        typer.Option(
+            help='The asset ID for the action to be taken upon (eg: --asset-id \
+                151b33b1-4c30-4968-bbd1-525ad812e357)',
+            rich_help_panel="Single",
+            show_default=False
+            )
+        ] = None,
+    verbose: Annotated[
+        bool,
+        typer.Option(
+            help='Set the output to increased verbosity',
+            show_default=False
+            )
+        ] = False
+        ):
+    """
+    The `attribute` operator gives you access to the assets and all aspects related to them.
+    """
+    if verbose:
+        logger.set_console_verbose()
+        log.debug('Verbose console logging set')
+
+    log.debug("Attribute option executed")
+
+    if se.check_session(session):
+        log.debug("active session found")
+        from _attribute import Attribute
+        action = action.lower()
+
+        log.debug('executing %s on %s', action, asset_id)
+
+        Attribute(session, action).action()
+
+    else:
+        log.debug("no active session found")
+
+        log.info('Session expired.\
+              Please use "mvdam auth" to obtain a valid session.')
 
 @app.command()
 def auth(
@@ -200,7 +251,7 @@ get"""
     else:
         log.debug("no active session found")
 
-        print('Session not valid. Please use "connect auth" to ',
+        print('Session not valid. Please use "mvdam auth" to ',
               'obtain a valid session first.')
         
 @app.command()
@@ -249,7 +300,7 @@ get"""
     else:
         log.debug("no active session found")
 
-        print('Session not valid. Please use "connect auth" to obtain a valid session first.')
+        print('Session not valid. Please use "mvdam auth" to obtain a valid session first.')
 
 
 if __name__ == "__main__":

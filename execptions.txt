@@ -1,0 +1,1489 @@
+System.Id                        1bd2ba5b-da7b-4f53-ab04-e8460b3e1968
+Keywords            2001, Doug Gardner, Management, Sabey Corp Lea...
+missing_keywords                                                sabey
+surplus_keywords                                                Sabey
+Name: 799, dtype: objectSystem.Id                        c7245816-b04e-44f5-aa63-c8c21ea934ff
+Keywords            Alan Abramowitz, Dave Sabey, Management, Sabey...
+missing_keywords                                                sabey
+surplus_keywords                                                Sabey
+Name: 0, dtype: objectSystem.Id                        655d8d21-e785-4ab9-8647-7c595752c4be
+Keywords            Alan Abramowitz, Dave Sabey, Management, Sabey...
+missing_keywords                                                sabey
+surplus_keywords                                                Sabey
+Name: 1, dtype: objectSystem.Id                        abc13e0d-a7d9-4e67-bb23-87faa19556ad
+Keywords            2009, IGE, Intergate East, Sabey Corporation, ...
+missing_keywords                         datacenter,data center,sabey
+surplus_keywords                         Sabey,Datacenter,Data Center
+Name: 2, dtype: objectSystem.Id                        a025d08b-82b7-4e0e-9d23-4ed5d3db4a60
+Keywords            2009, IGE, Intergate East, Sabey Corporation, ...
+missing_keywords                         datacenter,data center,sabey
+surplus_keywords                         Sabey,Datacenter,Data Center
+Name: 3, dtype: objectSystem.Id                        ecc1f785-d501-4214-9611-a4e389463753
+Keywords            Activity Keywords, Intergate Columbia, Sabey C...
+missing_keywords                                          data center
+surplus_keywords                                          Data Center
+Name: 4, dtype: objectSystem.Id                        2a98c198-7439-4056-88d8-92a1a96afea7
+Keywords            Activity Keywords, Intergate Columbia, Sabey C...
+missing_keywords                                          data center
+surplus_keywords                                          Data Center
+Name: 5, dtype: objectSystem.Id                        85875baf-d151-4832-b7a4-8dea78791ec5
+Keywords            Activity Keywords, Intergate Columbia, Sabey C...
+missing_keywords                                          data center
+surplus_keywords                                          Data Center
+Name: 6, dtype: objectSystem.Id                        991c7f92-38f2-4642-b57c-87bc6c9994b7
+Keywords            2010, IGE, Intergate East, Sabey Corporation, ...
+missing_keywords                         datacenter,data center,sabey
+surplus_keywords                         Sabey,Datacenter,Data Center
+Name: 7, dtype: objectSystem.Id                        4e2454b1-9e93-4edd-9377-67e43f0f6048
+Keywords            2010, IGE, Intergate East, Sabey Corporation, ...
+missing_keywords                         datacenter,data center,sabey
+surplus_keywords                         Sabey,Datacenter,Data Center
+Name: 8, dtype: objectSystem.Id                        0437558f-c23c-4352-aad8-14960640df82
+Keywords            6th & Wall, 6th and wall, City University, Col...
+missing_keywords                                                sabey
+surplus_keywords                                                Sabey
+Name: 9, dtype: objectSystem.Id                        65abc351-0f9f-4a8f-802b-f0ec30cf4cb4
+Keywords            6th & Wall, 6th and wall, City University, Col...
+missing_keywords                                                sabey
+surplus_keywords                                                Sabey
+Name: 10, dtype: objectSystem.Id                        51711fcd-cf6c-4d1e-9733-a62c196f9a4a
+Keywords            John Neitzel, commercial photographer, interio...
+missing_keywords                         interior design photographer
+surplus_keywords                         Interior Design Photographer
+Name: 19, dtype: objectSystem.Id                        e3e02aaa-7725-45a8-b4f6-87ea34c19a60
+Keywords            John Neitzel, commercial photographer, interio...
+missing_keywords                         interior design photographer
+surplus_keywords                         Interior Design Photographer
+Name: 20, dtype: objectSystem.Id                        f2f0668a-008e-4414-b401-1ebd1bdaa3b0
+Keywords            John Neitzel, commercial photographer, interio...
+missing_keywords                         interior design photographer
+surplus_keywords                         Interior Design Photographer
+Name: 21, dtype: objectSystem.Id                        d1960c22-94fb-4be0-9418-e2833ba7c529
+Keywords            John Neitzel, commercial photographer, interio...
+missing_keywords                         interior design photographer
+surplus_keywords                         Interior Design Photographer
+Name: 22, dtype: objectSystem.Id                        9a32c27b-7ca8-43e1-8b5f-15a94aa488c8
+Keywords            John Neitzel, commercial photographer, interio...
+missing_keywords                         interior design photographer
+surplus_keywords                         Interior Design Photographer
+Name: 23, dtype: objectSystem.Id                        84dcdd81-0b4a-4da8-95cc-1a15580086b1
+Keywords            John Neitzel, commercial photographer, interio...
+missing_keywords                         interior design photographer
+surplus_keywords                         Interior Design Photographer
+Name: 24, dtype: objectSystem.Id                        31742b96-ecdc-45f5-ac25-4d5f9d7044fb
+Keywords            John Neitzel, commercial photographer, interio...
+missing_keywords                         interior design photographer
+surplus_keywords                         Interior Design Photographer
+Name: 25, dtype: objectSystem.Id                        2c07d3e5-9213-47ca-9656-2849a9d04099
+Keywords            John Neitzel, commercial photographer, interio...
+missing_keywords                         interior design photographer
+surplus_keywords                         Interior Design Photographer
+Name: 26, dtype: objectSystem.Id                        96dfc814-e79d-4298-9037-e38ba57ba6bd
+Keywords            John Neitzel, commercial photographer, interio...
+missing_keywords                         interior design photographer
+surplus_keywords                         Interior Design Photographer
+Name: 27, dtype: objectSystem.Id                        4fe11530-ce4f-4a61-8398-ecd6d06c0d57
+Keywords            Datacenter, Johnmarc, Quincy, data center, gen...
+missing_keywords                                          data center
+surplus_keywords                                          Data Center
+Name: 30, dtype: objectSystem.Id                        25e69728-bf99-4c24-a11e-036b7d53ecf1
+Keywords            Datacenter, Johnmarc, Quincy, data center, gen...
+missing_keywords                                          data center
+surplus_keywords                                          Data Center
+Name: 31, dtype: objectSystem.Id                        7d7e5ca0-a7b5-47de-9cde-6fd754053d6f
+Keywords            Datacenter, Johnmarc, Quincy, data center, gen...
+missing_keywords                                          data center
+surplus_keywords                                          Data Center
+Name: 32, dtype: objectSystem.Id                        1a9882fa-4009-405e-9bd4-6deb2ea40f9d
+Keywords            Datacenter, Johnmarc, Quincy, data center, gen...
+missing_keywords                                          data center
+surplus_keywords                                          Data Center
+Name: 33, dtype: objectSystem.Id           747b1b5a-418d-4a6b-a9f2-a127b65f0b5f
+Keywords                            UG, buildings, sabey
+missing_keywords                                   sabey
+surplus_keywords                                   Sabey
+Name: 37, dtype: objectSystem.Id           39ab5954-e2a6-4c8a-8acd-dfba63ee44d6
+Keywords                            UG, buildings, sabey
+missing_keywords                                   sabey
+surplus_keywords                                   Sabey
+Name: 38, dtype: objectSystem.Id                        3860fbbe-01f2-4005-8fe1-db636d10eb37
+Keywords            2010, Kara Anderson, Management, Molly Moon, S...
+missing_keywords                                                sabey
+surplus_keywords                                                Sabey
+Name: 47, dtype: objectSystem.Id                        8154d988-3481-4b1e-8845-a5dc98f38a6c
+Keywords            2010, Kara Anderson, Management, Molly Moon, S...
+missing_keywords                                                sabey
+surplus_keywords                                                Sabey
+Name: 48, dtype: objectSystem.Id                        ecfb2c3b-64e1-4136-8dd3-2d5ad722c35b
+Keywords            2010, Caterpillar, IGE, Intergate East, Sabey ...
+missing_keywords                         datacenter,data center,sabey
+surplus_keywords                         Sabey,Datacenter,Data Center
+Name: 52, dtype: objectSystem.Id                        e0dd4835-390a-4783-8e19-b99b0e16bba3
+Keywords            2010, Caterpillar, IGE, Intergate East, Sabey ...
+missing_keywords                         datacenter,data center,sabey
+surplus_keywords                         Sabey,Datacenter,Data Center
+Name: 53, dtype: objectSystem.Id                        ec9212c2-8bfe-46c5-b1fb-e2ca3e8199c0
+Keywords            6th & Wall, 6th and wall, City University, Col...
+missing_keywords                                                sabey
+surplus_keywords                                                Sabey
+Name: 56, dtype: objectSystem.Id                        63dd0e46-4fe4-4cc9-a531-966adf7dcb5e
+Keywords            6th & Wall, 6th and wall, City University, Col...
+missing_keywords                                                sabey
+surplus_keywords                                                Sabey
+Name: 57, dtype: objectSystem.Id                        143700f7-7b69-489a-87bb-8fed8fe6987e
+Keywords            6th & Wall, 6th and wall, City University, Col...
+missing_keywords                                                sabey
+surplus_keywords                                                Sabey
+Name: 58, dtype: objectSystem.Id                        dcf39e9a-c5ab-4584-b224-20b06a55f733
+Keywords            2010, Construction worker, Floor, Gate, IGE, I...
+missing_keywords                   datacenter,Floor,data center,sabey
+surplus_keywords                   Sabey,Datacenter,floor,Data Center
+Name: 59, dtype: objectSystem.Id                        3fd235c6-dfb2-4989-a00c-a85f1a599a67
+Keywords            2010, Construction worker, Floor, Gate, IGE, I...
+missing_keywords                   datacenter,Floor,data center,sabey
+surplus_keywords                   Sabey,Datacenter,floor,Data Center
+Name: 60, dtype: objectSystem.Id                        625cf537-1233-4d64-95a6-8f5f017f53da
+Keywords            Aerial view, ETP, Everett, Everett Technical P...
+missing_keywords                                                sabey
+surplus_keywords                                                Sabey
+Name: 61, dtype: objectSystem.Id                        6b5fd6c9-3cdd-4b77-8cf1-2ec94545194c
+Keywords            Aerial view, ETP, Everett, Everett Technical P...
+missing_keywords                                                sabey
+surplus_keywords                                                Sabey
+Name: 62, dtype: objectSystem.Id                        869d72e6-6dfa-4cc1-b473-7bafe9371963
+Keywords            Data Center, Ed Kimm, IGW, Intergate.West, Int...
+missing_keywords                                        seattle,sabey
+surplus_keywords                                        Sabey,Seattle
+Name: 63, dtype: objectSystem.Id                        8412fa27-86b8-4858-82a6-59cca22aa71d
+Keywords            Data Center, Ed Kimm, IGW, Intergate.West, Int...
+missing_keywords                                        seattle,sabey
+surplus_keywords                                        Sabey,Seattle
+Name: 64, dtype: objectSystem.Id                        f3bb7885-4a65-4f7e-b18f-1c5572a6934a
+Keywords            John Neitzel, commercial photographer, interio...
+missing_keywords                         interior design photographer
+surplus_keywords                         Interior Design Photographer
+Name: 80, dtype: objectSystem.Id                        9a91008e-0081-41b6-8aae-b4a6e9397076
+Keywords            John Neitzel, commercial photographer, interio...
+missing_keywords                         interior design photographer
+surplus_keywords                         Interior Design Photographer
+Name: 81, dtype: objectSystem.Id                        4b7e5d9d-c772-41eb-aba1-8237e856d575
+Keywords            2010, IGE, Intergate East, Sabey Corporation, ...
+missing_keywords                         datacenter,data center,sabey
+surplus_keywords                         Sabey,Datacenter,Data Center
+Name: 82, dtype: objectSystem.Id                        0306cd52-95da-4b9a-89f0-3890df8411a6
+Keywords            2010, IGE, Intergate East, Sabey Corporation, ...
+missing_keywords                         datacenter,data center,sabey
+surplus_keywords                         Sabey,Datacenter,Data Center
+Name: 83, dtype: objectSystem.Id           0025679d-0806-4b86-a703-648c47e436cd
+Keywords                                Seattle, WowRack
+missing_keywords                                 WowRack
+surplus_keywords                                 Wowrack
+Name: 84, dtype: objectSystem.Id           e6542cf4-d2a2-4a08-ad49-45e19a85391c
+Keywords                                Seattle, WowRack
+missing_keywords                                 WowRack
+surplus_keywords                                 Wowrack
+Name: 85, dtype: objectSystem.Id                        17a92095-e060-4147-a6f1-a9ba7a9a6fc0
+Keywords            2007, 25, 25 years, 25th Anniversary, Dave Sab...
+missing_keywords                                                sabey
+surplus_keywords                                                Sabey
+Name: 86, dtype: objectSystem.Id                        ed22627d-51d7-403d-aa95-e71b3d106334
+Keywords            2007, 25, 25 years, 25th Anniversary, Dave Sab...
+missing_keywords                                                sabey
+surplus_keywords                                                Sabey
+Name: 87, dtype: objectSystem.Id                        eaac3576-0009-4573-b515-38a9630b4ff2
+Keywords            2007, 25, 25 years, 25th Anniversary, Dave Sab...
+missing_keywords                                                sabey
+surplus_keywords                                                Sabey
+Name: 88, dtype: objectSystem.Id                        31c626e3-2c24-47db-ad11-1ab311106d36
+Keywords            2012, IGE, Intergate East, SDC 42, Sabey Corpo...
+missing_keywords                         datacenter,data center,sabey
+surplus_keywords                         Sabey,Datacenter,Data Center
+Name: 89, dtype: objectSystem.Id                        33709b6b-a0d6-4717-8f43-bd2ba551c8fa
+Keywords            2012, IGE, Intergate East, SDC 42, Sabey Corpo...
+missing_keywords                         datacenter,data center,sabey
+surplus_keywords                         Sabey,Datacenter,Data Center
+Name: 90, dtype: objectSystem.Id                        4f5674b1-5c15-4ef9-9705-3f66ac3ce9ef
+Keywords            2012, IGE, Intergate East, SDC 42, Sabey Corpo...
+missing_keywords                         datacenter,data center,sabey
+surplus_keywords                         Sabey,Datacenter,Data Center
+Name: 91, dtype: objectSystem.Id                        96562405-e467-40b2-855b-ac585eb30d4a
+Keywords            2012, IGE, Intergate East, SDC 42, Sabey Corpo...
+missing_keywords                         datacenter,data center,sabey
+surplus_keywords                         Sabey,Datacenter,Data Center
+Name: 92, dtype: objectSystem.Id                        7cf2e5b2-5115-4265-bc04-f43081cdb6ff
+Keywords            Datacenter, Quincy, data center, data centers,...
+missing_keywords                                    data center,sabey
+surplus_keywords                                    Sabey,Data Center
+Name: 95, dtype: objectSystem.Id                        a5a540e2-1728-4c12-bd96-d533430d4d09
+Keywords            Datacenter, Quincy, data center, data centers,...
+missing_keywords                                    data center,sabey
+surplus_keywords                                    Sabey,Data Center
+Name: 96, dtype: objectSystem.Id                        772a1980-e1d1-45d5-b75f-400cd3ef419d
+Keywords            Datacenter, Quincy, data center, data centers,...
+missing_keywords                                    data center,sabey
+surplus_keywords                                    Sabey,Data Center
+Name: 97, dtype: objectSystem.Id                        6078a15a-6f2f-49c0-9221-2785dd8e8acd
+Keywords            ETP, Everett, Everett Technical Park, Everett ...
+missing_keywords                                                sabey
+surplus_keywords                                                Sabey
+Name: 98, dtype: objectSystem.Id                        6b61f0f5-16cf-4f38-9a5a-04dce3f6fe4f
+Keywords            ETP, Everett, Everett Technical Park, Everett ...
+missing_keywords                                                sabey
+surplus_keywords                                                Sabey
+Name: 99, dtype: objectSystem.Id                        6624a973-fb86-4cd2-a975-6ae31f3af2bf
+Keywords            Activity Keywords, Intergate Columbia, Sabey C...
+missing_keywords                                          data center
+surplus_keywords                                          Data Center
+Name: 102, dtype: objectSystem.Id                        3832df45-f99c-4ddf-858f-403d7f5aa792
+Keywords            Activity Keywords, Intergate Columbia, Sabey C...
+missing_keywords                                          data center
+surplus_keywords                                          Data Center
+Name: 103, dtype: objectSystem.Id                        c8712920-1888-4a30-b645-9d59c83a6033
+Keywords            Aerial view, ETP, Everett, Everett Technical P...
+missing_keywords                                                sabey
+surplus_keywords                                                Sabey
+Name: 113, dtype: objectSystem.Id                        2ccac4cf-9b99-42f6-9c34-6c12f9ddd4d1
+Keywords            Aerial view, ETP, Everett, Everett Technical P...
+missing_keywords                                                sabey
+surplus_keywords                                                Sabey
+Name: 114, dtype: objectSystem.Id                        651122a4-cc4d-4e0a-8c46-776ea7a3d10d
+Keywords            John Neitzel, commercial photographer, interio...
+missing_keywords                         interior design photographer
+surplus_keywords                         Interior Design Photographer
+Name: 132, dtype: objectSystem.Id                        073801ba-e932-4c73-b6ab-df19d8e4ebed
+Keywords            John Neitzel, commercial photographer, interio...
+missing_keywords                         interior design photographer
+surplus_keywords                         Interior Design Photographer
+Name: 133, dtype: objectSystem.Id                        3eb387fc-2cef-4fa2-b45d-b5da0c84c0ee
+Keywords            John Neitzel, commercial photographer, interio...
+missing_keywords                         interior design photographer
+surplus_keywords                         Interior Design Photographer
+Name: 134, dtype: objectSystem.Id                        5f115552-ca8a-4108-a8f7-a492c622d84e
+Keywords            John Neitzel, commercial photographer, interio...
+missing_keywords                         interior design photographer
+surplus_keywords                         Interior Design Photographer
+Name: 135, dtype: objectSystem.Id                        b5677aaa-3724-4c7e-8429-fb4838176736
+Keywords            John Neitzel, commercial photographer, interio...
+missing_keywords                         interior design photographer
+surplus_keywords                         Interior Design Photographer
+Name: 136, dtype: objectSystem.Id                        ba7fcdbb-69e1-4375-a420-9ca334a6b4c7
+Keywords            2010, Dave Spencer, Management, Molly Moon, Sa...
+missing_keywords                                                sabey
+surplus_keywords                                                Sabey
+Name: 137, dtype: objectSystem.Id                        a2fd4e8d-6712-4464-8d41-452f8c8221a1
+Keywords            2010, Dave Spencer, Management, Molly Moon, Sa...
+missing_keywords                                                sabey
+surplus_keywords                                                Sabey
+Name: 138, dtype: objectSystem.Id                        f3f944a4-6ef9-4ddf-be20-c08772679a9e
+Keywords            6th & Wall, 6th and wall, Sabey Corporation, S...
+missing_keywords                                                sabey
+surplus_keywords                                                Sabey
+Name: 139, dtype: objectSystem.Id                        1b637b45-3456-4f73-bb09-949bc0d8211e
+Keywords            6th & Wall, 6th and wall, Sabey Corporation, S...
+missing_keywords                                                sabey
+surplus_keywords                                                Sabey
+Name: 140, dtype: objectSystem.Id                        a38c5507-9182-47c6-83aa-7295fe4ddbc4
+Keywords            6th & Wall, 6th and wall, City University, Col...
+missing_keywords                                                sabey
+surplus_keywords                                                Sabey
+Name: 145, dtype: objectSystem.Id                        50adbcbd-9f2e-439e-8dfc-665d7b2a2572
+Keywords            6th & Wall, 6th and wall, City University, Col...
+missing_keywords                                                sabey
+surplus_keywords                                                Sabey
+Name: 146, dtype: objectSystem.Id           5222d219-c910-460c-a552-8b3f7bd5cb86
+Keywords                            UG, buildings, sabey
+missing_keywords                                   sabey
+surplus_keywords                                   Sabey
+Name: 147, dtype: objectSystem.Id           5070e3f5-7a55-4207-8226-f11ac178178e
+Keywords                            UG, buildings, sabey
+missing_keywords                                   sabey
+surplus_keywords                                   Sabey
+Name: 148, dtype: objectSystem.Id                        095a03c8-6a20-48ca-a974-993d332861bc
+Keywords            2010, IGE, Intergate East, Sabey Corporation, ...
+missing_keywords                         datacenter,data center,sabey
+surplus_keywords                         Sabey,Datacenter,Data Center
+Name: 171, dtype: objectSystem.Id                        f6d5b68e-21a7-4848-8b0c-ca9a937b6cea
+Keywords            2010, IGE, Intergate East, Sabey Corporation, ...
+missing_keywords                         datacenter,data center,sabey
+surplus_keywords                         Sabey,Datacenter,Data Center
+Name: 172, dtype: objectSystem.Id                        ea2424aa-e1c4-4a4e-b672-9aecf3ff5ecc
+Keywords            Interior design photographer, professional int...
+missing_keywords    Interior design photographer,professional inte...
+surplus_keywords    Interior Design Photographer,Professional Inte...
+Name: 173, dtype: objectSystem.Id                        cfb86973-b526-4e29-bbe9-5f4403c1f8b1
+Keywords            Interior design photographer, professional int...
+missing_keywords    Interior design photographer,professional inte...
+surplus_keywords    Interior Design Photographer,Professional Inte...
+Name: 174, dtype: objectSystem.Id                        cbc5acb2-a075-4c6b-b2c0-ce2b6882529e
+Keywords            Interior design photographer, professional int...
+missing_keywords    Interior design photographer,professional inte...
+surplus_keywords    Interior Design Photographer,Professional Inte...
+Name: 175, dtype: objectSystem.Id                        0b588115-b1f1-40ad-b712-e7fe8b1bdf85
+Keywords            Interior design photographer, professional int...
+missing_keywords    Interior design photographer,professional inte...
+surplus_keywords    Interior Design Photographer,Professional Inte...
+Name: 176, dtype: objectSystem.Id                        b8a8b9a4-3b34-4d5b-9d98-a13179fa0639
+Keywords            Interior design photographer, professional int...
+missing_keywords    Interior design photographer,professional inte...
+surplus_keywords    Interior Design Photographer,Professional Inte...
+Name: 177, dtype: objectSystem.Id                        098928b2-b3e5-4d3d-a314-c5994985d764
+Keywords            Interior design photographer, professional int...
+missing_keywords    Interior design photographer,professional inte...
+surplus_keywords    Interior Design Photographer,Professional Inte...
+Name: 178, dtype: objectSystem.Id                        d71d15ad-c07c-4933-9f61-f2297ba44ae8
+Keywords            Interior design photographer, professional int...
+missing_keywords    Interior design photographer,professional inte...
+surplus_keywords    Interior Design Photographer,Professional Inte...
+Name: 179, dtype: objectSystem.Id                        17b98341-2a62-452d-9a09-be10da8f4101
+Keywords            Alan Abramowitz, Dave Sabey, Management, Sabey...
+missing_keywords                                                sabey
+surplus_keywords                                                Sabey
+Name: 182, dtype: objectSystem.Id                        f9106d3c-b4ec-48c1-9484-cc409d9147db
+Keywords            Alan Abramowitz, Dave Sabey, Management, Sabey...
+missing_keywords                                                sabey
+surplus_keywords                                                Sabey
+Name: 183, dtype: objectSystem.Id                        16338a7a-59a2-4e1a-a37e-5a31db3e60c2
+Keywords            2009, Building 5, IGE, Intergate East, Sabey C...
+missing_keywords                         datacenter,data center,sabey
+surplus_keywords                         Sabey,Datacenter,Data Center
+Name: 184, dtype: objectSystem.Id                        65c855e4-3f5e-4a37-b541-21579e5bf3ea
+Keywords            2009, Building 5, IGE, Intergate East, Sabey C...
+missing_keywords                         datacenter,data center,sabey
+surplus_keywords                         Sabey,Datacenter,Data Center
+Name: 185, dtype: objectSystem.Id                        1d08b75d-0772-44f9-8ea4-75c4f34c67ca
+Keywords            2010, IGE, Intergate East, Sabey Corporation, ...
+missing_keywords                         datacenter,data center,sabey
+surplus_keywords                         Sabey,Datacenter,Data Center
+Name: 198, dtype: objectSystem.Id                        e2b04c37-ac24-4a61-99fb-812f772bba7d
+Keywords            2010, IGE, Intergate East, Sabey Corporation, ...
+missing_keywords                         datacenter,data center,sabey
+surplus_keywords                         Sabey,Datacenter,Data Center
+Name: 199, dtype: objectSystem.Id                        bac08cec-8005-479b-a67c-8eb7838110cf
+Keywords            2007, Sabey Corporation, Seattle, all company ...
+missing_keywords                                                sabey
+surplus_keywords                                                Sabey
+Name: 200, dtype: objectSystem.Id                        3b13fee8-79c4-4765-b71f-a1a06206c7dc
+Keywords            2007, Sabey Corporation, Seattle, all company ...
+missing_keywords                                                sabey
+surplus_keywords                                                Sabey
+Name: 201, dtype: objectSystem.Id                        31e99d98-cfc0-4c6f-b5ec-c8a3ebf5d82c
+Keywords            6th & Wall, 6th and wall, City University, Col...
+missing_keywords                                                sabey
+surplus_keywords                                                Sabey
+Name: 204, dtype: objectSystem.Id                        957a03b3-5272-475d-a74e-14b1db024ec5
+Keywords            6th & Wall, 6th and wall, City University, Col...
+missing_keywords                                                sabey
+surplus_keywords                                                Sabey
+Name: 205, dtype: objectSystem.Id                        7fee1e66-4e35-4bce-b181-fd8760bbc093
+Keywords            Alan Abramowitz, Dave Sabey, Management, Sabey...
+missing_keywords                                                sabey
+surplus_keywords                                                Sabey
+Name: 214, dtype: objectSystem.Id                        00c2703e-82cf-4fe1-8271-c48534aff93f
+Keywords            Alan Abramowitz, Dave Sabey, Management, Sabey...
+missing_keywords                                                sabey
+surplus_keywords                                                Sabey
+Name: 215, dtype: objectSystem.Id                        ea6827d2-0f2a-4347-94f2-f3b236f59ff0
+Keywords            Interior design photographer, professional int...
+missing_keywords    Interior design photographer,professional inte...
+surplus_keywords    Interior Design Photographer,Professional Inte...
+Name: 230, dtype: objectSystem.Id                        355d1577-227d-4c34-bb52-f96df0c69bc8
+Keywords            Interior design photographer, professional int...
+missing_keywords    Interior design photographer,professional inte...
+surplus_keywords    Interior Design Photographer,Professional Inte...
+Name: 231, dtype: objectSystem.Id                        492250b5-a735-4ef6-b479-873c2c93130e
+Keywords            Interior design photographer, professional int...
+missing_keywords    Interior design photographer,professional inte...
+surplus_keywords    Interior Design Photographer,Professional Inte...
+Name: 232, dtype: objectSystem.Id                        a918049b-9265-4de6-86c5-076fe70966cc
+Keywords            Interior design photographer, professional int...
+missing_keywords    Interior design photographer,professional inte...
+surplus_keywords    Interior Design Photographer,Professional Inte...
+Name: 233, dtype: objectSystem.Id                        914c69f2-331f-419e-b1f5-226eacf6c7da
+Keywords            2010, Clete Casper, Management, Molly Moon, Sa...
+missing_keywords                                                sabey
+surplus_keywords                                                Sabey
+Name: 234, dtype: objectSystem.Id                        4583ff29-6d92-46d8-9556-9864de1f76ea
+Keywords            2010, Clete Casper, Management, Molly Moon, Sa...
+missing_keywords                                                sabey
+surplus_keywords                                                Sabey
+Name: 235, dtype: objectSystem.Id                        7aa42073-2904-48ca-9959-fcb59e6aa6f5
+Keywords            6th & Wall, 6th and wall, City University, Col...
+missing_keywords                                                sabey
+surplus_keywords                                                Sabey
+Name: 238, dtype: objectSystem.Id                        a093f1f6-7b80-4728-9b51-3590d5573e80
+Keywords            6th & Wall, 6th and wall, City University, Col...
+missing_keywords                                                sabey
+surplus_keywords                                                Sabey
+Name: 239, dtype: objectSystem.Id                        6fd029e4-a0ef-48b6-af53-ec894df6420a
+Keywords            Data Center, Real Estate, Commercial, Industri...
+missing_keywords                          Industrial,Tech,Real Estate
+surplus_keywords                          tech,industrial,real estate
+Name: 245, dtype: objectSystem.Id                        18fb93b3-3a51-47eb-895a-834d58bde7c2
+Keywords            Data Center, Real Estate, Commercial, Industri...
+missing_keywords                          Industrial,Tech,Real Estate
+surplus_keywords                          tech,industrial,real estate
+Name: 246, dtype: objectSystem.Id                        aaee0acb-702c-478b-89ab-9c86d2024234
+Keywords            Alan Abramowitz, Dave Sabey, Management, Sabey...
+missing_keywords                                                sabey
+surplus_keywords                                                Sabey
+Name: 247, dtype: objectSystem.Id                        ee84e0e6-a466-4c6d-9f14-31fb997aefad
+Keywords            Alan Abramowitz, Dave Sabey, Management, Sabey...
+missing_keywords                                                sabey
+surplus_keywords                                                Sabey
+Name: 248, dtype: objectSystem.Id                        d1b801f3-f904-47bf-b92a-3e6bc43f1875
+Keywords            2009, Building 5, IGE, Intergate East, Sabey C...
+missing_keywords                         datacenter,data center,sabey
+surplus_keywords                         Sabey,Datacenter,Data Center
+Name: 249, dtype: objectSystem.Id                        8826c3a9-ca84-4493-8efb-3899bcf6b6bf
+Keywords            2009, Building 5, IGE, Intergate East, Sabey C...
+missing_keywords                         datacenter,data center,sabey
+surplus_keywords                         Sabey,Datacenter,Data Center
+Name: 250, dtype: objectSystem.Id                        4e7f4198-b69b-4fa8-b690-9f36e6486001
+Keywords            2010, Door, IGE, Intergate East, Sabey Corpora...
+missing_keywords                    datacenter,data center,Door,sabey
+surplus_keywords                    Sabey,door,Datacenter,Data Center
+Name: 255, dtype: objectSystem.Id                        4e4bac56-1c08-4277-984c-07e805bd8c74
+Keywords            2010, Door, IGE, Intergate East, Sabey Corpora...
+missing_keywords                    datacenter,data center,Door,sabey
+surplus_keywords                    Sabey,door,Datacenter,Data Center
+Name: 256, dtype: objectSystem.Id                        34fcb676-7531-4334-84cc-d9be248d182b
+Keywords            John Neitzel, commercial photographer, interio...
+missing_keywords                         interior design photographer
+surplus_keywords                         Interior Design Photographer
+Name: 259, dtype: objectSystem.Id                        c32ae2a9-6e4c-402c-887a-3a4e2a0e051c
+Keywords            John Neitzel, commercial photographer, interio...
+missing_keywords                         interior design photographer
+surplus_keywords                         Interior Design Photographer
+Name: 260, dtype: objectSystem.Id                        a8f9d390-2c8c-4818-89c6-31c89a60e264
+Keywords            6th & Wall, 6th and wall, City University, Col...
+missing_keywords                                                sabey
+surplus_keywords                                                Sabey
+Name: 261, dtype: objectSystem.Id                        e8478050-6695-4e73-b4d5-43c2d3418fa4
+Keywords            6th & Wall, 6th and wall, City University, Col...
+missing_keywords                                                sabey
+surplus_keywords                                                Sabey
+Name: 262, dtype: objectSystem.Id                        08a34480-84d5-4a1a-bf2f-0b6f6573317e
+Keywords            Door, IGE, Intergate East, Sabey Corporation, ...
+missing_keywords                    datacenter,data center,Door,sabey
+surplus_keywords                    Sabey,door,Datacenter,Data Center
+Name: 267, dtype: objectSystem.Id                        eb846d09-1eb6-43fa-9b0a-476c18cdc3da
+Keywords            Door, IGE, Intergate East, Sabey Corporation, ...
+missing_keywords                    datacenter,data center,Door,sabey
+surplus_keywords                    Sabey,door,Datacenter,Data Center
+Name: 268, dtype: objectSystem.Id                        86738f1c-06ca-4f80-bc9b-bcc65997bdc8
+Keywords            2011, Connie Taylor, Sabey Corporation, Sabey ...
+missing_keywords                                                sabey
+surplus_keywords                                                Sabey
+Name: 271, dtype: objectSystem.Id                        0e89407d-8e97-4d8f-9a8a-142f5c23086d
+Keywords            2011, Connie Taylor, Sabey Corporation, Sabey ...
+missing_keywords                                                sabey
+surplus_keywords                                                Sabey
+Name: 272, dtype: objectSystem.Id                        a40e4952-57d9-46dd-abf6-c9161ac801d2
+Keywords            2010, Construction worker, Floor, IGE, Interga...
+missing_keywords                   datacenter,Floor,data center,sabey
+surplus_keywords                   Sabey,Datacenter,floor,Data Center
+Name: 273, dtype: objectSystem.Id                        f3864da8-8243-4692-8506-217264f06c75
+Keywords            2010, Construction worker, Floor, IGE, Interga...
+missing_keywords                   datacenter,Floor,data center,sabey
+surplus_keywords                   Sabey,Datacenter,floor,Data Center
+Name: 274, dtype: objectSystem.Id                        64499182-1efe-45c3-a5f4-1e6c504fd74b
+Keywords            2002, Aerial view, IGE, Intergate East, Sabey ...
+missing_keywords                         datacenter,data center,sabey
+surplus_keywords                         Sabey,Datacenter,Data Center
+Name: 275, dtype: objectSystem.Id                        62ed9f82-79d1-43cf-baee-27385e9b8789
+Keywords            2002, Aerial view, IGE, Intergate East, Sabey ...
+missing_keywords                         datacenter,data center,sabey
+surplus_keywords                         Sabey,Datacenter,Data Center
+Name: 276, dtype: objectSystem.Id                        3384c397-c0eb-4077-9abb-ea2c617f154c
+Keywords            John Neitzel, commercial photographer, interio...
+missing_keywords                         interior design photographer
+surplus_keywords                         Interior Design Photographer
+Name: 277, dtype: objectSystem.Id                        7c1c025e-8f96-4f4f-94cc-8386ea588743
+Keywords            John Neitzel, commercial photographer, interio...
+missing_keywords                         interior design photographer
+surplus_keywords                         Interior Design Photographer
+Name: 278, dtype: objectSystem.Id                        e41dc13d-962c-4d8d-a56a-78c0219ffd40
+Keywords            John Neitzel, commercial photographer, interio...
+missing_keywords                         interior design photographer
+surplus_keywords                         Interior Design Photographer
+Name: 279, dtype: objectSystem.Id                        f23f92fe-c0d6-4059-a903-14197049184a
+Keywords            John Neitzel, commercial photographer, interio...
+missing_keywords                         interior design photographer
+surplus_keywords                         Interior Design Photographer
+Name: 280, dtype: objectSystem.Id                        bb7f24f6-340e-444f-8869-fe737b0afbc7
+Keywords            Activity Keywords, Intergate Columbia, Sabey C...
+missing_keywords                                          data center
+surplus_keywords                                          Data Center
+Name: 285, dtype: objectSystem.Id                        a13586fc-8a07-483e-9dc7-35beca604f3d
+Keywords            Activity Keywords, Intergate Columbia, Sabey C...
+missing_keywords                                          data center
+surplus_keywords                                          Data Center
+Name: 286, dtype: objectSystem.Id                        ea8de803-01ed-433a-9949-5e8b89574741
+Keywords            2009, IGE, Intergate East, Sabey Corporation, ...
+missing_keywords                         datacenter,data center,sabey
+surplus_keywords                         Sabey,Datacenter,Data Center
+Name: 293, dtype: objectSystem.Id                        3de70efd-778e-466d-8c12-15d64a8b0804
+Keywords            2009, IGE, Intergate East, Sabey Corporation, ...
+missing_keywords                         datacenter,data center,sabey
+surplus_keywords                         Sabey,Datacenter,Data Center
+Name: 294, dtype: objectSystem.Id                        d30c3343-47f0-49af-b3c1-c2a6807ab182
+Keywords            Data Center, Real Estate, Commercial, Industri...
+missing_keywords                          Industrial,Tech,Real Estate
+surplus_keywords                          tech,industrial,real estate
+Name: 303, dtype: objectSystem.Id                        87f5759f-02a3-42df-8711-07b79d72943d
+Keywords            Data Center, Real Estate, Commercial, Industri...
+missing_keywords                          Industrial,Tech,Real Estate
+surplus_keywords                          tech,industrial,real estate
+Name: 304, dtype: objectSystem.Id                        423f22ef-9dc5-40d2-b512-5245f8c2b400
+Keywords            Data Center, Real Estate, Commercial, Industri...
+missing_keywords                          Industrial,Tech,Real Estate
+surplus_keywords                          tech,industrial,real estate
+Name: 305, dtype: objectSystem.Id                        c87ccf4d-2a65-4838-add7-4602088672f5
+Keywords            Data Center, Real Estate, Commercial, Industri...
+missing_keywords                          Industrial,Tech,Real Estate
+surplus_keywords                          tech,industrial,real estate
+Name: 306, dtype: objectSystem.Id                        8dcf6ec2-0805-45c4-bc68-0ea12e593b0d
+Keywords            Data Center, Real Estate, Commercial, Industri...
+missing_keywords                          Industrial,Tech,Real Estate
+surplus_keywords                          tech,industrial,real estate
+Name: 307, dtype: objectSystem.Id                        19fdc54e-013d-472a-b5cd-ff760ed2e8f8
+Keywords            Data Center, Real Estate, Commercial, Industri...
+missing_keywords                          Industrial,Tech,Real Estate
+surplus_keywords                          tech,industrial,real estate
+Name: 308, dtype: objectSystem.Id                        8a4a149e-6dee-415e-adfd-b8859dd08680
+Keywords            2009, IGC, Intergate Columbia, Sabey Corporati...
+missing_keywords                                                sabey
+surplus_keywords                                                Sabey
+Name: 309, dtype: objectSystem.Id                        50854f2a-cb61-46ae-85ec-b05ba7faf954
+Keywords            2009, IGC, Intergate Columbia, Sabey Corporati...
+missing_keywords                                                sabey
+surplus_keywords                                                Sabey
+Name: 310, dtype: objectSystem.Id                  19220580-6989-4cea-9eaa-ef15ce569ce4
+Keywords            2011, Construction, Intergate Quincy, sabey
+missing_keywords                             Construction,sabey
+surplus_keywords                             Sabey,construction
+Name: 313, dtype: objectSystem.Id                  71e71a4c-1183-4b62-a266-5fc1cc2bc6bf
+Keywords            2011, Construction, Intergate Quincy, sabey
+missing_keywords                             Construction,sabey
+surplus_keywords                             Sabey,construction
+Name: 314, dtype: objectSystem.Id                        f6b6b16f-8d9a-4b40-9604-05711d354dff
+Keywords            ETP, Everett, Everett Technical Park, Everett ...
+missing_keywords                                                sabey
+surplus_keywords                                                Sabey
+Name: 315, dtype: objectSystem.Id                        ed259c39-a3e8-4a38-8e49-cbe23b81e184
+Keywords            ETP, Everett, Everett Technical Park, Everett ...
+missing_keywords                                                sabey
+surplus_keywords                                                Sabey
+Name: 316, dtype: objectSystem.Id                        6b3228d6-3f48-431c-8219-f38a8252a146
+Keywords            Alan Abramowitz, Dave Sabey, Management, Sabey...
+missing_keywords                                                sabey
+surplus_keywords                                                Sabey
+Name: 329, dtype: objectSystem.Id                        abde1e5a-3619-4d64-8832-cb0991a1e038
+Keywords            Alan Abramowitz, Dave Sabey, Management, Sabey...
+missing_keywords                                                sabey
+surplus_keywords                                                Sabey
+Name: 330, dtype: objectSystem.Id                        65cff0f5-e28e-4b37-9d20-1f3cbdfec0b5
+Keywords            Door, ETP, Everett, Everett Technical Park, Ev...
+missing_keywords                                           Door,sabey
+surplus_keywords                                           Sabey,door
+Name: 339, dtype: objectSystem.Id                        6e40d7f3-5686-4045-a856-14bc560412fc
+Keywords            Door, ETP, Everett, Everett Technical Park, Ev...
+missing_keywords                                           Door,sabey
+surplus_keywords                                           Sabey,door
+Name: 340, dtype: objectSystem.Id                        b5c9d96d-2832-443d-ad35-b99f2aa3b1e8
+Keywords            ETP, Everett, Everett Technical Park, Everett ...
+missing_keywords                                                sabey
+surplus_keywords                                                Sabey
+Name: 341, dtype: objectSystem.Id                        d25c9418-2516-4996-8749-734b73067da4
+Keywords            ETP, Everett, Everett Technical Park, Everett ...
+missing_keywords                                                sabey
+surplus_keywords                                                Sabey
+Name: 342, dtype: objectSystem.Id                        8c94f863-d5b1-4b9e-bdf9-cd077f0316ff
+Keywords            John Neitzel, commercial photographer, interio...
+missing_keywords                         interior design photographer
+surplus_keywords                         Interior Design Photographer
+Name: 343, dtype: objectSystem.Id                        a950c7ff-8d78-4957-bfb5-9a5cf8886704
+Keywords            John Neitzel, commercial photographer, interio...
+missing_keywords                         interior design photographer
+surplus_keywords                         Interior Design Photographer
+Name: 344, dtype: objectSystem.Id                        e94151fb-1d94-4d99-9f51-7c2cabd15ba3
+Keywords            6th & Wall, 6th and wall, City University, Col...
+missing_keywords                                                sabey
+surplus_keywords                                                Sabey
+Name: 345, dtype: objectSystem.Id                        87e38d5d-212c-48df-9938-a1ae38e2d32f
+Keywords            6th & Wall, 6th and wall, City University, Col...
+missing_keywords                                                sabey
+surplus_keywords                                                Sabey
+Name: 346, dtype: objectSystem.Id                  b54f565b-ba6b-4be0-aeab-0eedcffa3e75
+Keywords            2011, Construction, Intergate Quincy, sabey
+missing_keywords                             Construction,sabey
+surplus_keywords                             Sabey,construction
+Name: 351, dtype: objectSystem.Id                  5366b981-d079-4b18-8862-53ea9e92b4f2
+Keywords            2011, Construction, Intergate Quincy, sabey
+missing_keywords                             Construction,sabey
+surplus_keywords                             Sabey,construction
+Name: 352, dtype: objectSystem.Id                        4505a478-3a57-430e-b5e8-bf66f835de82
+Keywords            2009, Howard Hanson Dam, IGE, Intergate East, ...
+missing_keywords                         datacenter,data center,sabey
+surplus_keywords                         Sabey,Datacenter,Data Center
+Name: 353, dtype: objectSystem.Id                        53576b56-9728-45ce-8222-cca09d0591ed
+Keywords            2009, Howard Hanson Dam, IGE, Intergate East, ...
+missing_keywords                         datacenter,data center,sabey
+surplus_keywords                         Sabey,Datacenter,Data Center
+Name: 354, dtype: objectSystem.Id                        1afbf7ab-bdd6-4bd2-a19c-e3a033776d9e
+Keywords            ETP, Everett, Everett Technical Park, Everett ...
+missing_keywords                                                sabey
+surplus_keywords                                                Sabey
+Name: 355, dtype: objectSystem.Id                        0943035c-e381-4529-9c28-e3071ce8ef32
+Keywords            ETP, Everett, Everett Technical Park, Everett ...
+missing_keywords                                                sabey
+surplus_keywords                                                Sabey
+Name: 356, dtype: objectSystem.Id               971bff6e-cb53-4ed9-8427-c134b5ed8bae
+Keywords            employee, interior, man, portrait, sabey
+missing_keywords                                       sabey
+surplus_keywords                                       Sabey
+Name: 359, dtype: objectSystem.Id               5e37b5d5-f1e7-4259-89de-088eedcab145
+Keywords            employee, interior, man, portrait, sabey
+missing_keywords                                       sabey
+surplus_keywords                                       Sabey
+Name: 360, dtype: objectSystem.Id               0f70203b-7a2c-4868-a818-e7fe2615d88e
+Keywords            employee, interior, man, portrait, sabey
+missing_keywords                                       sabey
+surplus_keywords                                       Sabey
+Name: 361, dtype: objectSystem.Id                        293ef440-7490-4d62-b0d4-0d2b02aff685
+Keywords            Interior design photographer, professional int...
+missing_keywords    Interior design photographer,professional inte...
+surplus_keywords    Interior Design Photographer,Professional Inte...
+Name: 364, dtype: objectSystem.Id                        6820e91a-627a-4d80-bb17-6b0f491b9c41
+Keywords            Interior design photographer, professional int...
+missing_keywords    Interior design photographer,professional inte...
+surplus_keywords    Interior Design Photographer,Professional Inte...
+Name: 365, dtype: objectSystem.Id                        512c8885-ba9f-4fb0-94a5-ca304d0b9866
+Keywords            Interior design photographer, professional int...
+missing_keywords    Interior design photographer,professional inte...
+surplus_keywords    Interior Design Photographer,Professional Inte...
+Name: 366, dtype: objectSystem.Id                        00c8b903-ec1e-4fa1-ad89-f5434d0f2446
+Keywords            Interior design photographer, professional int...
+missing_keywords    Interior design photographer,professional inte...
+surplus_keywords    Interior Design Photographer,Professional Inte...
+Name: 367, dtype: objectSystem.Id                        c216ca7f-cf94-4fa0-a439-600c6dde5720
+Keywords            Interior design photographer, professional int...
+missing_keywords    Interior design photographer,professional inte...
+surplus_keywords    Interior Design Photographer,Professional Inte...
+Name: 368, dtype: objectSystem.Id                        ff7f90b7-b43a-4d24-93ec-4a71a2468c99
+Keywords            Interior design photographer, professional int...
+missing_keywords    Interior design photographer,professional inte...
+surplus_keywords    Interior Design Photographer,Professional Inte...
+Name: 369, dtype: objectSystem.Id                        fcdbd54d-93cc-4a19-9e34-1715cd130b79
+Keywords            Interior design photographer, professional int...
+missing_keywords    Interior design photographer,professional inte...
+surplus_keywords    Interior Design Photographer,Professional Inte...
+Name: 370, dtype: objectSystem.Id                        7357aafb-d059-4ca6-9412-41019cb1b170
+Keywords            2001, John Sabey, Management, Sabey Corp Leade...
+missing_keywords                                                sabey
+surplus_keywords                                                Sabey
+Name: 373, dtype: objectSystem.Id                        edb466eb-2952-46fc-b800-8c5e9fc465b0
+Keywords            2001, John Sabey, Management, Sabey Corp Leade...
+missing_keywords                                                sabey
+surplus_keywords                                                Sabey
+Name: 374, dtype: objectSystem.Id                        db946afb-706b-44ed-98a8-a7c944fa4914
+Keywords            2007, April, Sabey Corporation, Seattle, all c...
+missing_keywords                                                sabey
+surplus_keywords                                                Sabey
+Name: 379, dtype: objectSystem.Id                        724f009e-bcd1-4f40-a6c1-271679dd8d1d
+Keywords            2007, April, Sabey Corporation, Seattle, all c...
+missing_keywords                                                sabey
+surplus_keywords                                                Sabey
+Name: 380, dtype: objectSystem.Id           9a366a60-a500-4739-9c29-58d7e356e021
+Keywords               Travis, bar exam, employee, sabey
+missing_keywords                                   sabey
+surplus_keywords                                   Sabey
+Name: 385, dtype: objectSystem.Id           df218bff-3735-4d5f-9883-a4d42b9e0465
+Keywords               Travis, bar exam, employee, sabey
+missing_keywords                                   sabey
+surplus_keywords                                   Sabey
+Name: 386, dtype: objectSystem.Id                        c954e588-a2f9-46cb-b45a-9a7ed5195a90
+Keywords            2010, IGE, Intergate East, Sabey Corporation, ...
+missing_keywords                         datacenter,data center,sabey
+surplus_keywords                         Sabey,Datacenter,Data Center
+Name: 408, dtype: objectSystem.Id                        15c91fcb-0999-4563-89f2-5fe2b58b8f9f
+Keywords            2010, IGE, Intergate East, Sabey Corporation, ...
+missing_keywords                         datacenter,data center,sabey
+surplus_keywords                         Sabey,Datacenter,Data Center
+Name: 409, dtype: objectSystem.Id                        7289c81a-54f9-4a1a-bfd9-a688574f274c
+Keywords            2009, IGE, Intergate East, Sabey Corporation, ...
+missing_keywords                         datacenter,data center,sabey
+surplus_keywords                         Sabey,Datacenter,Data Center
+Name: 410, dtype: objectSystem.Id                        6781c07f-0e32-4427-8c8e-19536ffa17cc
+Keywords            2009, IGE, Intergate East, Sabey Corporation, ...
+missing_keywords                         datacenter,data center,sabey
+surplus_keywords                         Sabey,Datacenter,Data Center
+Name: 411, dtype: objectSystem.Id                        55d693db-36f0-4eb7-8675-1218f1958717
+Keywords            6th & Wall, 6th and wall, City University, Col...
+missing_keywords                                                sabey
+surplus_keywords                                                Sabey
+Name: 425, dtype: objectSystem.Id                        8fd812fa-3e7f-40aa-ac43-6ef482d18728
+Keywords            6th & Wall, 6th and wall, City University, Col...
+missing_keywords                                                sabey
+surplus_keywords                                                Sabey
+Name: 426, dtype: objectSystem.Id                        0340f99a-2c8a-4c39-88a3-276f56ff172d
+Keywords            6th & Wall, 6th and wall, City University, Col...
+missing_keywords                                                sabey
+surplus_keywords                                                Sabey
+Name: 427, dtype: objectSystem.Id                        2029dc82-a96b-474d-8431-62cc83e2a81f
+Keywords            6th & Wall, 6th and wall, City University, Col...
+missing_keywords                                                sabey
+surplus_keywords                                                Sabey
+Name: 428, dtype: objectSystem.Id                        91ea51e5-446d-490f-ba6f-91a0e2e64663
+Keywords            6th & Wall, 6th and wall, City University, Col...
+missing_keywords                                                sabey
+surplus_keywords                                                Sabey
+Name: 429, dtype: objectSystem.Id                        542a1a5d-c4c2-425d-8599-a0116022493a
+Keywords            Sabey Corporation, Seattle, Steve Keating, Swe...
+missing_keywords                                    cherry hill,sabey
+surplus_keywords                                    Sabey,Cherry Hill
+Name: 443, dtype: objectSystem.Id                        c982b096-aac6-47e1-b111-05ed999987f5
+Keywords            Sabey Corporation, Seattle, Steve Keating, Swe...
+missing_keywords                                    cherry hill,sabey
+surplus_keywords                                    Sabey,Cherry Hill
+Name: 444, dtype: objectSystem.Id                        1a3c5e26-3c92-47cc-bbba-7895d85d93cd
+Keywords            Sabey Corporation, Seattle, Steve Keating, Swe...
+missing_keywords                                    cherry hill,sabey
+surplus_keywords                                    Sabey,Cherry Hill
+Name: 445, dtype: objectSystem.Id                        46c8245c-5dff-4e36-8f44-ca5cd3ed2f76
+Keywords            Data Center, Ed Kimm, IGW, Intergate.West, Int...
+missing_keywords                                        seattle,sabey
+surplus_keywords                                        Sabey,Seattle
+Name: 448, dtype: objectSystem.Id                        e7e7769e-0fad-48f4-8458-2b37abb3a54a
+Keywords            Data Center, Ed Kimm, IGW, Intergate.West, Int...
+missing_keywords                                        seattle,sabey
+surplus_keywords                                        Sabey,Seattle
+Name: 449, dtype: objectSystem.Id                        59b9c13c-0796-48cd-8ae5-988735eb842b
+Keywords            2010, IGE, Intergate East, Sabey Corporation, ...
+missing_keywords                         datacenter,data center,sabey
+surplus_keywords                         Sabey,Datacenter,Data Center
+Name: 450, dtype: objectSystem.Id                        23ea2f5b-1c21-4542-a15a-e963421784be
+Keywords            2010, IGE, Intergate East, Sabey Corporation, ...
+missing_keywords                         datacenter,data center,sabey
+surplus_keywords                         Sabey,Datacenter,Data Center
+Name: 451, dtype: objectSystem.Id                        747a34ed-9dc1-4d88-bc54-10dde4daed46
+Keywords            2010, Construction worker, Floor, IGE, Interga...
+missing_keywords                   datacenter,Floor,data center,sabey
+surplus_keywords                   Sabey,Datacenter,floor,Data Center
+Name: 452, dtype: objectSystem.Id                        f3e6c017-01e2-4352-9cb6-4e69fc4d1179
+Keywords            2010, Construction worker, Floor, IGE, Interga...
+missing_keywords                   datacenter,Floor,data center,sabey
+surplus_keywords                   Sabey,Datacenter,floor,Data Center
+Name: 453, dtype: objectSystem.Id                        5bfbf757-a43c-4291-aae1-aeb405745867
+Keywords            John Neitzel, commercial photographer, interio...
+missing_keywords                         interior design photographer
+surplus_keywords                         Interior Design Photographer
+Name: 454, dtype: objectSystem.Id                        2db510ac-4e9d-44e3-b47a-277701812616
+Keywords            John Neitzel, commercial photographer, interio...
+missing_keywords                         interior design photographer
+surplus_keywords                         Interior Design Photographer
+Name: 455, dtype: objectSystem.Id                        05582933-c4a1-4bea-a792-18442fa67423
+Keywords            John Neitzel, commercial photographer, interio...
+missing_keywords                         interior design photographer
+surplus_keywords                         Interior Design Photographer
+Name: 456, dtype: objectSystem.Id                        d48a4eae-bb04-410d-bb9d-958f9ff2a188
+Keywords            John Neitzel, commercial photographer, interio...
+missing_keywords                         interior design photographer
+surplus_keywords                         Interior Design Photographer
+Name: 457, dtype: objectSystem.Id                        d2da99dd-6cbd-43dd-8532-f114d8b898e1
+Keywords            Datacenter, Quincy, data center, data centers,...
+missing_keywords                                    data center,sabey
+surplus_keywords                                    Sabey,Data Center
+Name: 460, dtype: objectSystem.Id                        db9fdd7a-5607-4f33-8714-2573ff311b8f
+Keywords            Datacenter, Quincy, data center, data centers,...
+missing_keywords                                    data center,sabey
+surplus_keywords                                    Sabey,Data Center
+Name: 461, dtype: objectSystem.Id                        9cb8b7e7-e286-4e24-836c-ca6576fe5e06
+Keywords            Interior design photographer, professional int...
+missing_keywords    Interior design photographer,professional inte...
+surplus_keywords    Interior Design Photographer,Professional Inte...
+Name: 462, dtype: objectSystem.Id                        44cec58f-2d4c-40f9-8f4f-7829ed714d24
+Keywords            Interior design photographer, professional int...
+missing_keywords    Interior design photographer,professional inte...
+surplus_keywords    Interior Design Photographer,Professional Inte...
+Name: 463, dtype: objectSystem.Id                        bc20793f-6868-4c20-b735-ced5c2f31af7
+Keywords            Interior design photographer, professional int...
+missing_keywords    Interior design photographer,professional inte...
+surplus_keywords    Interior Design Photographer,Professional Inte...
+Name: 464, dtype: objectSystem.Id                 07be0e22-8b0c-42b1-837c-d80ba41a331f
+Keywords            employee, interior, portrait, sabey, woman
+missing_keywords                                         sabey
+surplus_keywords                                         Sabey
+Name: 465, dtype: objectSystem.Id                 ded2c5d5-6ea1-4688-ab5a-d87a7b488c0b
+Keywords            employee, interior, portrait, sabey, woman
+missing_keywords                                         sabey
+surplus_keywords                                         Sabey
+Name: 466, dtype: objectSystem.Id                        6a037dd7-fbc4-453d-9826-676f44873dd5
+Keywords            2011, IGE, Intergate East, SDC 52, Sabey Corpo...
+missing_keywords                         datacenter,data center,sabey
+surplus_keywords                         Sabey,Datacenter,Data Center
+Name: 467, dtype: objectSystem.Id                        ee918690-8764-4ad2-8816-67e8a7cd96d9
+Keywords            2011, IGE, Intergate East, SDC 52, Sabey Corpo...
+missing_keywords                         datacenter,data center,sabey
+surplus_keywords                         Sabey,Datacenter,Data Center
+Name: 468, dtype: objectSystem.Id                        3b1a3c85-f634-424d-8212-c6f4aa5d96dd
+Keywords            2011, IGE, Intergate East, SDC 52, Sabey Corpo...
+missing_keywords                         datacenter,data center,sabey
+surplus_keywords                         Sabey,Datacenter,Data Center
+Name: 469, dtype: objectSystem.Id                        254e2fce-9ab0-49ee-857b-1c7d7d10c8db
+Keywords            2009, IGE, Intergate East, Sabey Corporation, ...
+missing_keywords                         datacenter,data center,sabey
+surplus_keywords                         Sabey,Datacenter,Data Center
+Name: 470, dtype: objectSystem.Id                        2f3e4c3c-09e1-4a9d-9367-184b1cbc56f8
+Keywords            2009, IGE, Intergate East, Sabey Corporation, ...
+missing_keywords                         datacenter,data center,sabey
+surplus_keywords                         Sabey,Datacenter,Data Center
+Name: 471, dtype: objectSystem.Id                        7d73a3cd-8fb4-4019-a81f-03ec8bfe359f
+Keywords            2009, IGE, Intergate East, Sabey Corporation, ...
+missing_keywords                         datacenter,data center,sabey
+surplus_keywords                         Sabey,Datacenter,Data Center
+Name: 472, dtype: objectSystem.Id                        4524ed42-3237-4b56-a9dc-686162919404
+Keywords            2009, IGE, Intergate East, Sabey Corporation, ...
+missing_keywords                         datacenter,data center,sabey
+surplus_keywords                         Sabey,Datacenter,Data Center
+Name: 473, dtype: objectSystem.Id                        4b45c868-606f-4f6a-a5f1-af2cc35fe29f
+Keywords            Data Center, Ed Kimm, IGW, Intergate.West, Int...
+missing_keywords                                        seattle,sabey
+surplus_keywords                                        Sabey,Seattle
+Name: 474, dtype: objectSystem.Id                        d27929f1-43d8-4901-85a9-2b448ed3243a
+Keywords            Data Center, Ed Kimm, IGW, Intergate.West, Int...
+missing_keywords                                        seattle,sabey
+surplus_keywords                                        Sabey,Seattle
+Name: 475, dtype: objectSystem.Id                        b909b88a-ba23-4dd3-9fe4-cba2a860afff
+Keywords            2010, IGE, Intergate East, Sabey Corporation, ...
+missing_keywords                         datacenter,data center,sabey
+surplus_keywords                         Sabey,Datacenter,Data Center
+Name: 480, dtype: objectSystem.Id                        6358673c-dead-4adb-899f-a1d630dc8fd8
+Keywords            2010, IGE, Intergate East, Sabey Corporation, ...
+missing_keywords                         datacenter,data center,sabey
+surplus_keywords                         Sabey,Datacenter,Data Center
+Name: 481, dtype: objectSystem.Id                        55201b45-0086-491f-bc42-27774d378bc1
+Keywords            Interior design photographer, professional int...
+missing_keywords    Interior design photographer,professional inte...
+surplus_keywords    Interior Design Photographer,Professional Inte...
+Name: 482, dtype: objectSystem.Id                        dc4aa433-3e4e-4ae9-853b-0b0aae41aac9
+Keywords            Interior design photographer, professional int...
+missing_keywords    Interior design photographer,professional inte...
+surplus_keywords    Interior Design Photographer,Professional Inte...
+Name: 483, dtype: objectSystem.Id                        be6c740e-c90d-4005-909d-361afae91484
+Keywords            Interior design photographer, professional int...
+missing_keywords    Interior design photographer,professional inte...
+surplus_keywords    Interior Design Photographer,Professional Inte...
+Name: 484, dtype: objectSystem.Id                        771a4b5b-991b-4e93-8d8e-aa3e1250e8c8
+Keywords            Interior design photographer, professional int...
+missing_keywords    Interior design photographer,professional inte...
+surplus_keywords    Interior Design Photographer,Professional Inte...
+Name: 485, dtype: objectSystem.Id                        d3e67182-b687-4cbd-87b5-8b3c95d3c91f
+Keywords            2009, IGE, Intergate East, Sabey Corporation, ...
+missing_keywords                         datacenter,data center,sabey
+surplus_keywords                         Sabey,Datacenter,Data Center
+Name: 486, dtype: objectSystem.Id                        12d82db7-7664-4ce6-8c92-6cd25770e06d
+Keywords            2009, IGE, Intergate East, Sabey Corporation, ...
+missing_keywords                         datacenter,data center,sabey
+surplus_keywords                         Sabey,Datacenter,Data Center
+Name: 487, dtype: objectSystem.Id                        5df099be-af65-417b-a774-0563390e671c
+Keywords            Alan Abramowitz, Dave Sabey, Management, Sabey...
+missing_keywords                                                sabey
+surplus_keywords                                                Sabey
+Name: 488, dtype: objectSystem.Id                        f07b6793-ec97-4f73-bb64-38a9a2904de2
+Keywords            Alan Abramowitz, Dave Sabey, Management, Sabey...
+missing_keywords                                                sabey
+surplus_keywords                                                Sabey
+Name: 489, dtype: objectSystem.Id                        8719d43e-d975-4e90-ab1a-756dcab39a38
+Keywords            John Neitzel, commercial photographer, interio...
+missing_keywords                         interior design photographer
+surplus_keywords                         Interior Design Photographer
+Name: 492, dtype: objectSystem.Id                        b1a9864d-9b6d-4761-8b67-9a7f33ced4a7
+Keywords            John Neitzel, commercial photographer, interio...
+missing_keywords                         interior design photographer
+surplus_keywords                         Interior Design Photographer
+Name: 493, dtype: objectSystem.Id                        b1d9155f-9c85-4661-934e-5e4f4e559f67
+Keywords            2010, Construction worker, IGE, Intergate East...
+missing_keywords                         datacenter,data center,sabey
+surplus_keywords                         Sabey,Datacenter,Data Center
+Name: 499, dtype: objectSystem.Id                        95c9aa55-50cc-4e41-81e5-2db11a23ddb3
+Keywords            2010, Construction worker, IGE, Intergate East...
+missing_keywords                         datacenter,data center,sabey
+surplus_keywords                         Sabey,Datacenter,Data Center
+Name: 500, dtype: objectSystem.Id                        84438525-44da-4646-bbea-f85a3c43a548
+Keywords            2009, Howard Hanson Dam, IGE, Intergate East, ...
+missing_keywords                         datacenter,data center,sabey
+surplus_keywords                         Sabey,Datacenter,Data Center
+Name: 512, dtype: objectSystem.Id                        4e3a2bfe-e857-44e8-b75f-e8c583ad2c46
+Keywords            2009, Howard Hanson Dam, IGE, Intergate East, ...
+missing_keywords                         datacenter,data center,sabey
+surplus_keywords                         Sabey,Datacenter,Data Center
+Name: 513, dtype: objectSystem.Id                        6500a915-2c62-4a50-a409-c451497381ad
+Keywords            2011, Aerial view, IGE, Intergate East, Sabey ...
+missing_keywords                         datacenter,data center,sabey
+surplus_keywords                         Sabey,Datacenter,Data Center
+Name: 514, dtype: objectSystem.Id                        bc090c03-1dae-4b2e-aedd-bb2ccb589181
+Keywords            2011, Aerial view, IGE, Intergate East, Sabey ...
+missing_keywords                         datacenter,data center,sabey
+surplus_keywords                         Sabey,Datacenter,Data Center
+Name: 515, dtype: objectSystem.Id                        24e2ef39-9d95-4ecb-a625-0631c28346d7
+Keywords            2010, Door, IGE, Intergate East, Sabey Corpora...
+missing_keywords                    datacenter,data center,Door,sabey
+surplus_keywords                    Sabey,door,Datacenter,Data Center
+Name: 516, dtype: objectSystem.Id                        b35c735f-abef-4f1d-af96-f0fd9c86766e
+Keywords            2010, Door, IGE, Intergate East, Sabey Corpora...
+missing_keywords                    datacenter,data center,Door,sabey
+surplus_keywords                    Sabey,door,Datacenter,Data Center
+Name: 517, dtype: objectSystem.Id                        697ce34d-0051-4e99-99f0-48d4f84e776c
+Keywords            Alan Abramowitz, Dave Sabey, Management, Sabey...
+missing_keywords                                                sabey
+surplus_keywords                                                Sabey
+Name: 521, dtype: objectSystem.Id                        d5aa91fc-61ae-46f4-85e3-a09363b5d734
+Keywords            Alan Abramowitz, Dave Sabey, Management, Sabey...
+missing_keywords                                                sabey
+surplus_keywords                                                Sabey
+Name: 522, dtype: objectSystem.Id                        6a2ca26c-2de7-4050-b753-0f0ddd9d95f3
+Keywords            ETP, Everett, Everett Technical Park, Everett ...
+missing_keywords                                                sabey
+surplus_keywords                                                Sabey
+Name: 525, dtype: objectSystem.Id                        eb3906d0-fa15-4e8b-873f-2576ded76417
+Keywords            ETP, Everett, Everett Technical Park, Everett ...
+missing_keywords                                                sabey
+surplus_keywords                                                Sabey
+Name: 526, dtype: objectSystem.Id                        391a89a9-8540-4ffb-83c1-c22b3a702811
+Keywords            2009, Building 5, IGE, Intergate East, Sabey C...
+missing_keywords                         datacenter,data center,sabey
+surplus_keywords                         Sabey,Datacenter,Data Center
+Name: 529, dtype: objectSystem.Id                        fee80287-8615-4260-aee4-3e71b407d183
+Keywords            2009, Building 5, IGE, Intergate East, Sabey C...
+missing_keywords                         datacenter,data center,sabey
+surplus_keywords                         Sabey,Datacenter,Data Center
+Name: 530, dtype: objectSystem.Id                        1d2ad4f2-3b35-4af7-9419-cb34d4827d8e
+Keywords            2010, Floor, IGE, Intergate East, Sabey Corpor...
+missing_keywords                   datacenter,Floor,data center,sabey
+surplus_keywords                   Sabey,Datacenter,floor,Data Center
+Name: 531, dtype: objectSystem.Id                        0fc84cce-568d-4e3d-9465-a4f938d342cd
+Keywords            2010, Floor, IGE, Intergate East, Sabey Corpor...
+missing_keywords                   datacenter,Floor,data center,sabey
+surplus_keywords                   Sabey,Datacenter,floor,Data Center
+Name: 532, dtype: objectSystem.Id                        85592e96-7460-45b5-87da-f357297722bd
+Keywords            2009, Howard Hanson Dam, IGE, Intergate East, ...
+missing_keywords                         datacenter,data center,sabey
+surplus_keywords                         Sabey,Datacenter,Data Center
+Name: 544, dtype: objectSystem.Id                        8d24d318-bcd7-4c13-9ca3-f6d80e29567e
+Keywords            2009, Howard Hanson Dam, IGE, Intergate East, ...
+missing_keywords                         datacenter,data center,sabey
+surplus_keywords                         Sabey,Datacenter,Data Center
+Name: 545, dtype: objectSystem.Id                        77ad37cd-34a3-4e72-914c-d692f3e80958
+Keywords            2009, Building 5, IGE, Intergate East, Sabey C...
+missing_keywords                         datacenter,data center,sabey
+surplus_keywords                         Sabey,Datacenter,Data Center
+Name: 546, dtype: objectSystem.Id                        1c6c6b20-79a4-44c8-ab79-47a150e1ac08
+Keywords            2009, Building 5, IGE, Intergate East, Sabey C...
+missing_keywords                         datacenter,data center,sabey
+surplus_keywords                         Sabey,Datacenter,Data Center
+Name: 547, dtype: objectSystem.Id                        b1a3c007-f3f8-4861-8357-65a41bd84201
+Keywords            Datacenter, Quincy, data center, data centers,...
+missing_keywords                                    data center,sabey
+surplus_keywords                                    Sabey,Data Center
+Name: 551, dtype: objectSystem.Id                        6bd0e946-97cf-4fe1-a63c-3ad4d17d33ed
+Keywords            Datacenter, Quincy, data center, data centers,...
+missing_keywords                                    data center,sabey
+surplus_keywords                                    Sabey,Data Center
+Name: 552, dtype: objectSystem.Id                        d470c7d0-daa3-4ae6-a741-7ea4a604edf0
+Keywords            Datacenter, Quincy, data center, data centers,...
+missing_keywords                                    data center,sabey
+surplus_keywords                                    Sabey,Data Center
+Name: 553, dtype: objectSystem.Id                        1b4a7064-87ab-457c-9bf4-7c197bfb391c
+Keywords            Datacenter, Quincy, data center, data centers,...
+missing_keywords                                    data center,sabey
+surplus_keywords                                    Sabey,Data Center
+Name: 554, dtype: objectSystem.Id                        719b81f7-76ff-4421-8849-6e5c8f47444f
+Keywords            Datacenter, Quincy, data center, data centers,...
+missing_keywords                                    data center,sabey
+surplus_keywords                                    Sabey,Data Center
+Name: 555, dtype: objectSystem.Id                        70c3bb2e-5d6a-45a1-9a16-bb9ebc6ab4f9
+Keywords            2010, Door, IGE, Intergate East, Sabey Corpora...
+missing_keywords                    datacenter,data center,Door,sabey
+surplus_keywords                    Sabey,door,Datacenter,Data Center
+Name: 558, dtype: objectSystem.Id                        b29b0fe6-a56b-4d0a-bacc-52e29c0e8a5e
+Keywords            2010, Door, IGE, Intergate East, Sabey Corpora...
+missing_keywords                    datacenter,data center,Door,sabey
+surplus_keywords                    Sabey,door,Datacenter,Data Center
+Name: 559, dtype: objectSystem.Id                        30c14bfa-d71b-4d04-89c0-cb424ad82e45
+Keywords            Data Center, Ed Kimm, IGW, Intergate.West, Int...
+missing_keywords                                        seattle,sabey
+surplus_keywords                                        Sabey,Seattle
+Name: 560, dtype: objectSystem.Id                        5fa40d17-51a5-4d2b-9c42-9e11682a0ef3
+Keywords            Data Center, Ed Kimm, IGW, Intergate.West, Int...
+missing_keywords                                        seattle,sabey
+surplus_keywords                                        Sabey,Seattle
+Name: 561, dtype: objectSystem.Id                        025515aa-2a98-4d0f-adc9-5eeaa54424b4
+Keywords            Datacenter, Quincy, data center, data centers,...
+missing_keywords                                    data center,sabey
+surplus_keywords                                    Sabey,Data Center
+Name: 562, dtype: objectSystem.Id                        8113693d-d7b0-4609-b79a-f3ffa67f3908
+Keywords            Datacenter, Quincy, data center, data centers,...
+missing_keywords                                    data center,sabey
+surplus_keywords                                    Sabey,Data Center
+Name: 563, dtype: objectSystem.Id                        38dd0aa3-c183-4cc0-9b29-ec5e27f56b5d
+Keywords            Datacenter, Quincy, data center, data centers,...
+missing_keywords                                    data center,sabey
+surplus_keywords                                    Sabey,Data Center
+Name: 564, dtype: objectSystem.Id                        ed4e3296-4e1d-4f1b-aa49-6c5b9363cbb4
+Keywords            Datacenter, Quincy, data center, data centers,...
+missing_keywords                                    data center,sabey
+surplus_keywords                                    Sabey,Data Center
+Name: 565, dtype: objectSystem.Id                        ca19818a-012d-436e-98eb-e2cedcdac544
+Keywords            Interior design photographer, professional int...
+missing_keywords    Interior design photographer,professional inte...
+surplus_keywords    Interior Design Photographer,Professional Inte...
+Name: 585, dtype: objectSystem.Id                        ed91e838-08ac-48e7-a01e-ac7e7f7aafa5
+Keywords            Interior design photographer, professional int...
+missing_keywords    Interior design photographer,professional inte...
+surplus_keywords    Interior Design Photographer,Professional Inte...
+Name: 586, dtype: objectSystem.Id                        198fb0f3-fdcc-4981-bbfd-b9f29d871d91
+Keywords            2009, Building 5, IGE, Intergate East, Sabey C...
+missing_keywords                         datacenter,data center,sabey
+surplus_keywords                         Sabey,Datacenter,Data Center
+Name: 593, dtype: objectSystem.Id                        db77a96b-0e4a-4baa-8cbd-659c19cbd2ba
+Keywords            2009, Building 5, IGE, Intergate East, Sabey C...
+missing_keywords                         datacenter,data center,sabey
+surplus_keywords                         Sabey,Datacenter,Data Center
+Name: 594, dtype: objectSystem.Id                        86f7e690-a25c-4ce4-845a-a4d3ebef040c
+Keywords            Sabey Corporation, Seattle, Steve Keating, Swe...
+missing_keywords                                    cherry hill,sabey
+surplus_keywords                                    Sabey,Cherry Hill
+Name: 597, dtype: objectSystem.Id                        850ee397-8682-4467-8d2a-1829f2483710
+Keywords            Sabey Corporation, Seattle, Steve Keating, Swe...
+missing_keywords                                    cherry hill,sabey
+surplus_keywords                                    Sabey,Cherry Hill
+Name: 598, dtype: objectSystem.Id                        448c19c5-ebb7-43ab-9e0a-1bddc6ec0a18
+Keywords            2002, Aerial view, IGE, Intergate East, Sabey ...
+missing_keywords                         datacenter,data center,sabey
+surplus_keywords                         Sabey,Datacenter,Data Center
+Name: 599, dtype: objectSystem.Id                        3d2ce586-0189-4d13-9afb-adc1832f2e96
+Keywords            2002, Aerial view, IGE, Intergate East, Sabey ...
+missing_keywords                         datacenter,data center,sabey
+surplus_keywords                         Sabey,Datacenter,Data Center
+Name: 600, dtype: objectSystem.Id                        b0ebaaa7-c324-4f71-9762-f65906172f5e
+Keywords            2009, IGE, Intergate East, Sabey Corporation, ...
+missing_keywords                         datacenter,data center,sabey
+surplus_keywords                         Sabey,Datacenter,Data Center
+Name: 626, dtype: objectSystem.Id                        dd75d7d3-6865-430b-9971-134237b9b993
+Keywords            2009, IGE, Intergate East, Sabey Corporation, ...
+missing_keywords                         datacenter,data center,sabey
+surplus_keywords                         Sabey,Datacenter,Data Center
+Name: 627, dtype: objectSystem.Id           79cfbf7f-5b4e-4962-80d9-4df3f47a927e
+Keywords                            UG, buildings, sabey
+missing_keywords                                   sabey
+surplus_keywords                                   Sabey
+Name: 628, dtype: objectSystem.Id           820f54fa-e908-468a-94fb-be714157864c
+Keywords                            UG, buildings, sabey
+missing_keywords                                   sabey
+surplus_keywords                                   Sabey
+Name: 629, dtype: objectSystem.Id           bc9d3c1b-ae39-406f-ad19-ca663f0bdb36
+Keywords                            UG, buildings, sabey
+missing_keywords                                   sabey
+surplus_keywords                                   Sabey
+Name: 636, dtype: objectSystem.Id           70e096dd-9f89-4bf3-a1be-76e1382cef48
+Keywords                            UG, buildings, sabey
+missing_keywords                                   sabey
+surplus_keywords                                   Sabey
+Name: 637, dtype: objectSystem.Id                        1a665f71-8f5e-44b7-8c50-c8c791cc9ad8
+Keywords            Data Center, Real Estate, Commercial, Industri...
+missing_keywords                          Industrial,Tech,Real Estate
+surplus_keywords                          tech,industrial,real estate
+Name: 638, dtype: objectSystem.Id                        edec1d09-178a-452d-b4b2-43d3ce276557
+Keywords            Data Center, Real Estate, Commercial, Industri...
+missing_keywords                          Industrial,Tech,Real Estate
+surplus_keywords                          tech,industrial,real estate
+Name: 639, dtype: objectSystem.Id                        f00533d1-e405-4db9-bc03-3a2df328ab32
+Keywords            Data Center, Real Estate, Commercial, Industri...
+missing_keywords                          Industrial,Tech,Real Estate
+surplus_keywords                          tech,industrial,real estate
+Name: 640, dtype: objectSystem.Id                  9c88fb75-4e25-4214-af33-f291fb2c9cc6
+Keywords            2011, Construction, Intergate Quincy, sabey
+missing_keywords                             Construction,sabey
+surplus_keywords                             Sabey,construction
+Name: 641, dtype: objectSystem.Id                  63407ca4-5879-4d11-9539-68feea02aba8
+Keywords            2011, Construction, Intergate Quincy, sabey
+missing_keywords                             Construction,sabey
+surplus_keywords                             Sabey,construction
+Name: 642, dtype: objectSystem.Id                        4eefdfdf-973b-46d1-84a8-6c94039734be
+Keywords            Activity Keywords, Intergate Columbia, Sabey C...
+missing_keywords                                          data center
+surplus_keywords                                          Data Center
+Name: 647, dtype: objectSystem.Id                        69a7cea0-061a-4c3a-ac6b-8b341702a35f
+Keywords            Activity Keywords, Intergate Columbia, Sabey C...
+missing_keywords                                          data center
+surplus_keywords                                          Data Center
+Name: 648, dtype: objectSystem.Id                        b7824155-edee-432d-98b5-50a889b123e6
+Keywords            Alan Abramowitz, Dave Sabey, Management, Sabey...
+missing_keywords                                                sabey
+surplus_keywords                                                Sabey
+Name: 649, dtype: objectSystem.Id                        f2b27817-9502-4884-beed-a461bc4329de
+Keywords            Alan Abramowitz, Dave Sabey, Management, Sabey...
+missing_keywords                                                sabey
+surplus_keywords                                                Sabey
+Name: 650, dtype: objectSystem.Id                        0cb38860-a5dd-42e2-b71a-197b28c4c70f
+Keywords            6th & Wall, 6th and wall, City University, Col...
+missing_keywords                                                sabey
+surplus_keywords                                                Sabey
+Name: 658, dtype: objectSystem.Id                        56c833d1-3099-4e64-9b51-7032072dafb7
+Keywords            6th & Wall, 6th and wall, City University, Col...
+missing_keywords                                                sabey
+surplus_keywords                                                Sabey
+Name: 659, dtype: objectSystem.Id                        25ac4c07-b1e7-4568-8bf9-9a8ab5273446
+Keywords            2010, IGE, Intergate East, Sabey Corporation, ...
+missing_keywords                         datacenter,data center,sabey
+surplus_keywords                         Sabey,Datacenter,Data Center
+Name: 662, dtype: objectSystem.Id                        6f3ff3d0-fc74-4053-95a9-543ccbd8f13d
+Keywords            2010, IGE, Intergate East, Sabey Corporation, ...
+missing_keywords                         datacenter,data center,sabey
+surplus_keywords                         Sabey,Datacenter,Data Center
+Name: 663, dtype: objectSystem.Id                        40e09235-c87c-4c9e-ae94-6000fcab6a72
+Keywords            Alan Abramowitz, Dave Sabey, Management, Sabey...
+missing_keywords                                                sabey
+surplus_keywords                                                Sabey
+Name: 664, dtype: objectSystem.Id                        a0936bc6-cc95-4125-98c2-5ddda1f425c7
+Keywords            Alan Abramowitz, Dave Sabey, Management, Sabey...
+missing_keywords                                                sabey
+surplus_keywords                                                Sabey
+Name: 665, dtype: objectSystem.Id                        4c4e5004-bb11-42dd-89cd-22400d91910b
+Keywords            Interior design photographer, professional int...
+missing_keywords    Interior design photographer,professional inte...
+surplus_keywords    Interior Design Photographer,Professional Inte...
+Name: 668, dtype: objectSystem.Id                        06b92121-f6c1-4bf7-931a-6c14f6c41641
+Keywords            Interior design photographer, professional int...
+missing_keywords    Interior design photographer,professional inte...
+surplus_keywords    Interior Design Photographer,Professional Inte...
+Name: 669, dtype: objectSystem.Id                        0ba8c987-d68f-429b-9e15-a6d45741c49b
+Keywords            Interior design photographer, professional int...
+missing_keywords    Interior design photographer,professional inte...
+surplus_keywords    Interior Design Photographer,Professional Inte...
+Name: 670, dtype: objectSystem.Id                        29129436-d33b-4e8a-8fdf-65ce7fe8b94f
+Keywords            Interior design photographer, professional int...
+missing_keywords    Interior design photographer,professional inte...
+surplus_keywords    Interior Design Photographer,Professional Inte...
+Name: 671, dtype: objectSystem.Id                        cdee9150-68ea-443f-b8bd-0aa495e9bc74
+Keywords            Interior design photographer, professional int...
+missing_keywords    Interior design photographer,professional inte...
+surplus_keywords    Interior Design Photographer,Professional Inte...
+Name: 672, dtype: objectSystem.Id                        b0eaa573-79f6-4d2e-90f7-328a7cdef5e0
+Keywords            Interior design photographer, professional int...
+missing_keywords    Interior design photographer,professional inte...
+surplus_keywords    Interior Design Photographer,Professional Inte...
+Name: 673, dtype: objectSystem.Id                        1a1e1ce7-3e99-4026-89f7-66c9462a52dd
+Keywords            Interior design photographer, professional int...
+missing_keywords    Interior design photographer,professional inte...
+surplus_keywords    Interior Design Photographer,Professional Inte...
+Name: 674, dtype: objectSystem.Id                        2613012d-f0f1-4573-9fb1-0d826b3fe772
+Keywords            Activity Keywords, Intergate Columbia, Sabey C...
+missing_keywords                                          data center
+surplus_keywords                                          Data Center
+Name: 675, dtype: objectSystem.Id                        6f6a7952-196a-4013-ba44-b4000e82991d
+Keywords            Activity Keywords, Intergate Columbia, Sabey C...
+missing_keywords                                          data center
+surplus_keywords                                          Data Center
+Name: 676, dtype: objectSystem.Id                        96abdad5-334e-4b7d-af5c-a3a66026b2b5
+Keywords            Interior design photographer, professional int...
+missing_keywords    Interior design photographer,professional inte...
+surplus_keywords    Interior Design Photographer,Professional Inte...
+Name: 679, dtype: objectSystem.Id                        bd91b25a-e21a-46f4-8bcf-bdde29d25524
+Keywords            Interior design photographer, professional int...
+missing_keywords    Interior design photographer,professional inte...
+surplus_keywords    Interior Design Photographer,Professional Inte...
+Name: 680, dtype: objectSystem.Id                        22c94b83-6973-44ce-a2f0-c8440d11af12
+Keywords            Interior design photographer, professional int...
+missing_keywords    Interior design photographer,professional inte...
+surplus_keywords    Interior Design Photographer,Professional Inte...
+Name: 681, dtype: objectSystem.Id                        fc94dec3-406a-4bc7-af2f-904d45b846a7
+Keywords            2010, IGE, Intergate East, Sabey Corporation, ...
+missing_keywords                         datacenter,data center,sabey
+surplus_keywords                         Sabey,Datacenter,Data Center
+Name: 684, dtype: objectSystem.Id                        13ffcb28-be0d-40be-a480-c93a0f92187f
+Keywords            2010, IGE, Intergate East, Sabey Corporation, ...
+missing_keywords                         datacenter,data center,sabey
+surplus_keywords                         Sabey,Datacenter,Data Center
+Name: 685, dtype: objectSystem.Id                        53211bc1-68e0-469c-b7df-51cee4be4064
+Keywords            2001, John Sabey, Management, Sabey Corp Leade...
+missing_keywords                                                sabey
+surplus_keywords                                                Sabey
+Name: 686, dtype: objectSystem.Id                        2e7e822c-37a6-4f0e-84b4-ef5a73252143
+Keywords            2001, John Sabey, Management, Sabey Corp Leade...
+missing_keywords                                                sabey
+surplus_keywords                                                Sabey
+Name: 687, dtype: objectSystem.Id                        c2dbde36-cb8e-4a69-af1c-545a0d9e9259
+Keywords            2010, Construction worker, Floor, IGE, Interga...
+missing_keywords                   datacenter,Floor,data center,sabey
+surplus_keywords                   Sabey,Datacenter,floor,Data Center
+Name: 688, dtype: objectSystem.Id                        8ee70eba-4ec6-40da-a5c1-6da2988722fa
+Keywords            2010, Construction worker, Floor, IGE, Interga...
+missing_keywords                   datacenter,Floor,data center,sabey
+surplus_keywords                   Sabey,Datacenter,floor,Data Center
+Name: 689, dtype: objectSystem.Id                        8af6e104-cc1a-40d2-bf35-5f6010fb13dc
+Keywords            Activity Keywords, Intergate Columbia, Sabey C...
+missing_keywords                                          data center
+surplus_keywords                                          Data Center
+Name: 690, dtype: objectSystem.Id                        b1e35c79-9aa5-465c-8d11-8c5cb47903d2
+Keywords            Activity Keywords, Intergate Columbia, Sabey C...
+missing_keywords                                          data center
+surplus_keywords                                          Data Center
+Name: 691, dtype: objectSystem.Id                        6e571477-e027-4f3a-8f3a-a27df27e4d5a
+Keywords            2010, IGE, Intergate East, Sabey Corporation, ...
+missing_keywords                         datacenter,data center,sabey
+surplus_keywords                         Sabey,Datacenter,Data Center
+Name: 698, dtype: objectSystem.Id                        f37cddc0-354d-4760-bab9-b9bf8b6b7940
+Keywords            2010, IGE, Intergate East, Sabey Corporation, ...
+missing_keywords                         datacenter,data center,sabey
+surplus_keywords                         Sabey,Datacenter,Data Center
+Name: 699, dtype: objectSystem.Id                        5da0cc4b-48e3-40f1-818a-485ac1ba1548
+Keywords            2010, Construction worker, Floor, IGE, Interga...
+missing_keywords                   datacenter,Floor,data center,sabey
+surplus_keywords                   Sabey,Datacenter,floor,Data Center
+Name: 708, dtype: objectSystem.Id                        59f193dd-3264-4442-8ee9-b8c4acc90d04
+Keywords            2010, Construction worker, Floor, IGE, Interga...
+missing_keywords                   datacenter,Floor,data center,sabey
+surplus_keywords                   Sabey,Datacenter,floor,Data Center
+Name: 709, dtype: objectSystem.Id                        58a6934d-daca-4da8-95e8-a05c16797f66
+Keywords            Sabey Corporation, Seattle, Steve Keating, Swe...
+missing_keywords                                    cherry hill,sabey
+surplus_keywords                                    Sabey,Cherry Hill
+Name: 710, dtype: objectSystem.Id                        bbb8a3d7-c26c-45af-b431-816e89243dce
+Keywords            Sabey Corporation, Seattle, Steve Keating, Swe...
+missing_keywords                                    cherry hill,sabey
+surplus_keywords                                    Sabey,Cherry Hill
+Name: 711, dtype: objectSystem.Id                        63457e13-e7bc-4145-8552-996bd6c62837
+Keywords            Sabey Corporation, Seattle, Steve Keating, Swe...
+missing_keywords                                    cherry hill,sabey
+surplus_keywords                                    Sabey,Cherry Hill
+Name: 712, dtype: objectSystem.Id                        2d153690-254b-4dcc-a6a2-b6e17b2e5515
+Keywords            Sabey Corporation, Seattle, Steve Keating, Swe...
+missing_keywords                                    cherry hill,sabey
+surplus_keywords                                    Sabey,Cherry Hill
+Name: 713, dtype: objectSystem.Id                        85d88691-971d-4f0d-9c6d-c9d559292f96
+Keywords            Sabey Corporation, Seattle, Steve Keating, Swe...
+missing_keywords                                    cherry hill,sabey
+surplus_keywords                                    Sabey,Cherry Hill
+Name: 714, dtype: objectSystem.Id                        e4070fc4-430f-473e-add1-ba8ac3582b79
+Keywords            Sabey Corporation, Seattle, Steve Keating, Swe...
+missing_keywords                                    cherry hill,sabey
+surplus_keywords                                    Sabey,Cherry Hill
+Name: 715, dtype: objectSystem.Id                        8397d496-9511-473e-a09b-6d50c7a7b8ce
+Keywords            Sabey Corporation, Seattle, Steve Keating, Swe...
+missing_keywords                                    cherry hill,sabey
+surplus_keywords                                    Sabey,Cherry Hill
+Name: 716, dtype: objectSystem.Id                        870537a0-2562-485c-a27e-621acb0e916a
+Keywords            Sabey Corporation, Seattle, Steve Keating, Swe...
+missing_keywords                                    cherry hill,sabey
+surplus_keywords                                    Sabey,Cherry Hill
+Name: 717, dtype: objectSystem.Id                        169f1159-9945-4931-9de4-56b67f251e74
+Keywords            2010, Aerial view, IGE, IGE flyers, Intergate ...
+missing_keywords                         datacenter,data center,sabey
+surplus_keywords                         Sabey,Datacenter,Data Center
+Name: 725, dtype: objectSystem.Id                        f12d7f57-88d4-48be-8c22-9785f6fa16f2
+Keywords            2010, Aerial view, IGE, IGE flyers, Intergate ...
+missing_keywords                         datacenter,data center,sabey
+surplus_keywords                         Sabey,Datacenter,Data Center
+Name: 726, dtype: objectSystem.Id                        2fa38f1a-3112-4f0b-bc42-56a21a15eb91
+Keywords            Interior design photographer, professional int...
+missing_keywords    Interior design photographer,professional inte...
+surplus_keywords    Interior Design Photographer,Professional Inte...
+Name: 731, dtype: objectSystem.Id                        0348b6c3-e3fe-4879-9cb2-632155597683
+Keywords            Interior design photographer, professional int...
+missing_keywords    Interior design photographer,professional inte...
+surplus_keywords    Interior Design Photographer,Professional Inte...
+Name: 732, dtype: objectSystem.Id                        901d3f44-0ee9-453b-bcc7-85079d8ada7c
+Keywords            Interior design photographer, professional int...
+missing_keywords    Interior design photographer,professional inte...
+surplus_keywords    Interior Design Photographer,Professional Inte...
+Name: 733, dtype: objectSystem.Id                        b4c79ee0-3fac-4f5f-a72e-b9b7fa7613b7
+Keywords            ETP, Everett, Everett Technical Park, Everett ...
+missing_keywords                                                sabey
+surplus_keywords                                                Sabey
+Name: 734, dtype: objectSystem.Id                        74b58df2-0d87-4eb0-a23a-3569c7bdfb7f
+Keywords            ETP, Everett, Everett Technical Park, Everett ...
+missing_keywords                                                sabey
+surplus_keywords                                                Sabey
+Name: 735, dtype: objectSystem.Id                        45d6709e-9271-4cab-af1b-a84fd4d40233
+Keywords            2010, Door, IGE, Intergate East, Sabey Corpora...
+missing_keywords                    datacenter,data center,Door,sabey
+surplus_keywords                    Sabey,door,Datacenter,Data Center
+Name: 736, dtype: objectSystem.Id                        364b8673-5dc0-4c4c-ae0f-5ffd4000dffd
+Keywords            2010, Door, IGE, Intergate East, Sabey Corpora...
+missing_keywords                    datacenter,data center,Door,sabey
+surplus_keywords                    Sabey,door,Datacenter,Data Center
+Name: 737, dtype: objectSystem.Id                        8089e06a-f104-44ea-b4a2-e9c25ab94ecf
+Keywords            Datacenter, Johnmarc, Quincy, data center, gen...
+missing_keywords                                          data center
+surplus_keywords                                          Data Center
+Name: 738, dtype: objectSystem.Id                        5109d95d-88af-43e6-abde-145c21a5c827
+Keywords            Datacenter, Johnmarc, Quincy, data center, gen...
+missing_keywords                                          data center
+surplus_keywords                                          Data Center
+Name: 739, dtype: objectSystem.Id                        1645b6ee-5a0d-40b0-b7a6-22add14fbea6
+Keywords            Alan Abramowitz, Dave Sabey, Management, Sabey...
+missing_keywords                                                sabey
+surplus_keywords                                                Sabey
+Name: 740, dtype: objectSystem.Id                        5e2935d0-69b8-4c6c-95d6-a2a297b53cfe
+Keywords            Alan Abramowitz, Dave Sabey, Management, Sabey...
+missing_keywords                                                sabey
+surplus_keywords                                                Sabey
+Name: 741, dtype: objectSystem.Id                        3271fe2e-9d9e-4211-b339-8078de1560a9
+Keywords            2010, IGE, Intergate East, Sabey Corporation, ...
+missing_keywords                         datacenter,data center,sabey
+surplus_keywords                         Sabey,Datacenter,Data Center
+Name: 748, dtype: objectSystem.Id                        d45aab40-1e74-4823-a445-7fecb2ebb475
+Keywords            2010, IGE, Intergate East, Sabey Corporation, ...
+missing_keywords                         datacenter,data center,sabey
+surplus_keywords                         Sabey,Datacenter,Data Center
+Name: 749, dtype: objectSystem.Id                        431a6f06-9575-4b39-8f2f-40008dea9da4
+Keywords            2009, IGE, Intergate East, Sabey Corporation, ...
+missing_keywords                         datacenter,data center,sabey
+surplus_keywords                         Sabey,Datacenter,Data Center
+Name: 750, dtype: objectSystem.Id                        18407e96-0b59-4bc1-b05f-4a391cb402ae
+Keywords            2009, IGE, Intergate East, Sabey Corporation, ...
+missing_keywords                         datacenter,data center,sabey
+surplus_keywords                         Sabey,Datacenter,Data Center
+Name: 751, dtype: objectSystem.Id                        9d775f0e-48fe-4bad-8af1-cb5faec285c1
+Keywords            Data Center, Ed Kimm, IGW, Intergate.West, Int...
+missing_keywords                                        seattle,sabey
+surplus_keywords                                        Sabey,Seattle
+Name: 752, dtype: objectSystem.Id                        6f2353e0-a370-45f9-baed-ff1ccca0efac
+Keywords            Data Center, Ed Kimm, IGW, Intergate.West, Int...
+missing_keywords                                        seattle,sabey
+surplus_keywords                                        Sabey,Seattle
+Name: 753, dtype: objectSystem.Id                        9fa80629-f861-4f50-9cb6-a6033d5a9ae5
+Keywords            Aerial view, ETP, Everett, Everett Technical P...
+missing_keywords                                                sabey
+surplus_keywords                                                Sabey
+Name: 756, dtype: objectSystem.Id                        0d63c7f9-2d2b-4c06-a601-15e82c3033f0
+Keywords            Aerial view, ETP, Everett, Everett Technical P...
+missing_keywords                                                sabey
+surplus_keywords                                                Sabey
+Name: 757, dtype: objectSystem.Id                        75913072-ff86-46a8-af8c-028dab56ee34
+Keywords            2007, Christmas, Christmas party, Sabey Corpor...
+missing_keywords                                                sabey
+surplus_keywords                                                Sabey
+Name: 758, dtype: objectSystem.Id                        9e2a6a46-8500-4d4f-9e74-48cec8973187
+Keywords            2007, Christmas, Christmas party, Sabey Corpor...
+missing_keywords                                                sabey
+surplus_keywords                                                Sabey
+Name: 759, dtype: objectSystem.Id                        65decb41-4cbb-4926-89a4-b1980f8fcb71
+Keywords            John Neitzel, commercial photographer, interio...
+missing_keywords                         interior design photographer
+surplus_keywords                         Interior Design Photographer
+Name: 760, dtype: objectSystem.Id                        a83777b8-d3c0-4a32-b1f5-1dae1e71ecfa
+Keywords            John Neitzel, commercial photographer, interio...
+missing_keywords                         interior design photographer
+surplus_keywords                         Interior Design Photographer
+Name: 761, dtype: objectSystem.Id                        afe36917-955a-4223-8669-3a75123e0fb1
+Keywords            Activity Keywords, Intergate Columbia, Sabey C...
+missing_keywords                                          data center
+surplus_keywords                                          Data Center
+Name: 768, dtype: objectSystem.Id                        17de17fb-94aa-4843-bf47-06582c55ff53
+Keywords            Activity Keywords, Intergate Columbia, Sabey C...
+missing_keywords                                          data center
+surplus_keywords                                          Data Center
+Name: 769, dtype: objectSystem.Id                        0605642d-939d-4a74-997a-3bc317e465ea
+Keywords            2010, Management, Molly Moon, Sabey Corp Leade...
+missing_keywords                                                sabey
+surplus_keywords                                                Sabey
+Name: 774, dtype: objectSystem.Id                        57fc6c4c-a2fc-4bc9-ac78-b34950bc0e3b
+Keywords            2010, Management, Molly Moon, Sabey Corp Leade...
+missing_keywords                                                sabey
+surplus_keywords                                                Sabey
+Name: 775, dtype: objectSystem.Id                        2701c398-6fa8-40a2-a579-ef3979e606a2
+Keywords            2010, IGE, Intergate East, Sabey Corporation, ...
+missing_keywords                         datacenter,data center,sabey
+surplus_keywords                         Sabey,Datacenter,Data Center
+Name: 778, dtype: objectSystem.Id                        13b0b6b2-5d5a-4b9c-85bf-02364e057a58
+Keywords            2010, IGE, Intergate East, Sabey Corporation, ...
+missing_keywords                         datacenter,data center,sabey
+surplus_keywords                         Sabey,Datacenter,Data Center
+Name: 779, dtype: objectSystem.Id                        fb1ff97d-4e5d-4f9e-8c27-719dbf5d57d1
+Keywords            2009, IGE, Intergate East, Sabey Corporation, ...
+missing_keywords                         datacenter,data center,sabey
+surplus_keywords                         Sabey,Datacenter,Data Center
+Name: 789, dtype: objectSystem.Id                        5e09b3e1-d4b1-40fd-a480-5935ceeee8c3
+Keywords            2009, IGE, Intergate East, Sabey Corporation, ...
+missing_keywords                         datacenter,data center,sabey
+surplus_keywords                         Sabey,Datacenter,Data Center
+Name: 790, dtype: objectSystem.Id                        58e9275a-18d8-4f02-ac4b-12e0941a2004
+Keywords            2011, Connie Taylor, Sabey Corporation, Sabey ...
+missing_keywords                                                sabey
+surplus_keywords                                                Sabey
+Name: 791, dtype: objectSystem.Id                        4ea62f02-c3c6-42ea-925d-a3a3859cf576
+Keywords            2011, Connie Taylor, Sabey Corporation, Sabey ...
+missing_keywords                                                sabey
+surplus_keywords                                                Sabey
+Name: 792, dtype: objectSystem.Id                        32c2a068-71dd-49b8-b1c6-2ce80c8c2bc4
+Keywords            2010, Door, IGE, Intergate East, Sabey Corpora...
+missing_keywords                    datacenter,data center,Door,sabey
+surplus_keywords                    Sabey,door,Datacenter,Data Center
+Name: 793, dtype: objectSystem.Id                        a1e0fa83-a1c9-45a8-9046-e628aedca5ef
+Keywords            2010, Door, IGE, Intergate East, Sabey Corpora...
+missing_keywords                    datacenter,data center,Door,sabey
+surplus_keywords                    Sabey,door,Datacenter,Data Center
+Name: 794, dtype: objectSystem.Id                        1fdc663c-7a53-4211-af39-67967a53b5e8
+Keywords            2001, Doug Gardner, Management, Sabey Corp Lea...
+missing_keywords                                                sabey
+surplus_keywords                                                Sabey
+Name: 798, dtype: objectSystem.Id                        1bd2ba5b-da7b-4f53-ab04-e8460b3e1968
+Keywords            2001, Doug Gardner, Management, Sabey Corp Lea...
+missing_keywords                                                sabey
+surplus_keywords                                                Sabey
+Name: 799, dtype: objectSystem.Id                        95a69532-88b9-4c95-b08c-7965ab2b82e6
+Keywords            2001, Jim Harmon, Management, Sabey Corp Leade...
+missing_keywords                                                sabey
+surplus_keywords                                                Sabey
+Name: 800, dtype: objectSystem.Id                        27db6d2f-a830-4510-bebb-dfc62ad8b6bb
+Keywords            2001, Jim Harmon, Management, Sabey Corp Leade...
+missing_keywords                                                sabey
+surplus_keywords                                                Sabey
+Name: 801, dtype: objectSystem.Id                        2628fe64-57fe-4bd9-8e10-dda959dc0528
+Keywords            2010, IGE, Intergate East, Sabey Corporation, ...
+missing_keywords                         datacenter,data center,sabey
+surplus_keywords                         Sabey,Datacenter,Data Center
+Name: 805, dtype: objectSystem.Id                        98e08672-9cc9-4453-b7e3-baadfba130cc
+Keywords            2010, IGE, Intergate East, Sabey Corporation, ...
+missing_keywords                         datacenter,data center,sabey
+surplus_keywords                         Sabey,Datacenter,Data Center
+Name: 806, dtype: objectSystem.Id                        ece8cfef-a681-4dee-8700-1ff1675b4baf
+Keywords            2010, Door, IGE, Intergate East, Sabey Corpora...
+missing_keywords                    datacenter,data center,Door,sabey
+surplus_keywords                    Sabey,door,Datacenter,Data Center
+Name: 809, dtype: objectSystem.Id                        c8199af0-a010-4597-88fd-d1c1f9b15fad
+Keywords            2010, Door, IGE, Intergate East, Sabey Corpora...
+missing_keywords                    datacenter,data center,Door,sabey
+surplus_keywords                    Sabey,door,Datacenter,Data Center
+Name: 810, dtype: objectSystem.Id                        16cd03ac-10bd-493b-b531-9a88f3bea447
+Keywords            2001, Doug Gardner, Management, Sabey Corp Lea...
+missing_keywords                                                sabey
+surplus_keywords                                                Sabey
+Name: 811, dtype: objectSystem.Id                        e1ede908-0a26-4dc3-8705-093fe8bd92f0
+Keywords            2001, Doug Gardner, Management, Sabey Corp Lea...
+missing_keywords                                                sabey
+surplus_keywords                                                Sabey
+Name: 812, dtype: objectSystem.Id                        1d82136c-cbf2-4d0f-a1fa-1c8a50441d64
+Keywords            2010, Door, IGE, Intergate East, Sabey Corpora...
+missing_keywords                    datacenter,data center,Door,sabey
+surplus_keywords                    Sabey,door,Datacenter,Data Center
+Name: 813, dtype: objectSystem.Id                        c3ca4cea-ea0f-4298-8268-ce068c2c66cf
+Keywords            2010, Door, IGE, Intergate East, Sabey Corpora...
+missing_keywords                    datacenter,data center,Door,sabey
+surplus_keywords     Door, exterior, Sabey Data Center, sabey, IGE...
+Name: 814, dtype: objectSystem.Id           c398a373-bde7-41bd-a1de-9dcf0d5e2b05
+Keywords                     spring, rna, fy19, p18-0068
+missing_keywords                                        
+surplus_keywords                     p18-0068, fy19, rna
+Name: 815, dtype: objectSystem.Id           fa6f534e-00c6-4fea-ae7e-c79955a372d4
+Keywords                     spring, rna, fy19, p18-0068
+missing_keywords                                        
+surplus_keywords                     p18-0068, fy19, rna
+Name: 816, dtype: objectSystem.Id                        1729610e-e1ea-4ea2-ba1e-2188ae88772b
+Keywords            2009, Building 5, IGE, Intergate East, Sabey C...
+missing_keywords                         datacenter,data center,sabey
+surplus_keywords     Sabey Data Center, locker, interior, sabey, I...
+Name: 817, dtype: object

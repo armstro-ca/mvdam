@@ -53,15 +53,15 @@ class KeywordGroup():
         Execute the asset GET call with the Asset object.
         """
         response = self.sdk_handle.keyword_group.get(
-            auth=self.session["json"]["access_token"]
+            auth=self.session["access_token"]
             )
 
-        if 200 <= response['status'] < 300:
-            self.log.info(json.dumps(response, indent=4))
+        if 200 <= response.status_code < 300:
+            self.log.info(json.dumps(response.json(), indent=4))
 
             return response
 
-        elif response['status'] == 404:
+        elif response.status_code == 404:
             self.log.warning('404 returned')
         else:
             self.log.error('Error: %s', response)

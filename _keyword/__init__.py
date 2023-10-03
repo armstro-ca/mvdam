@@ -53,17 +53,18 @@ class Keyword():
         Execute the asset GET call with the Asset object.
         """
         response = self.sdk_handle.keyword.get(
-            auth=self.session["json"]["access_token"]
+            auth=self.session["access_token"]
             )
 
-        if 200 <= response['status'] < 300:
-            self.log.debug(json.dumps(response, indent=4))
+        if 200 <= response.status_code < 300:
+            response_json = response.json()
+            self.log.debug(json.dumps(response_json, indent=4))
 
             keywords = {}
-            for keyword in response['json']['payload']:
+            for keyword in response_json['payload']:
                 keywords[keyword['id']] = keyword['keywordName']
 
-            print(f'Keywords available: {keywords}')
+            print(f'Keywords available:\n{json.dumps(keywords, indent=4)}')
 
             return keywords
 
