@@ -7,6 +7,7 @@ import logger
 import pandas as pd
 
 from _bulk import Bulk
+from _attribute import Attribute
 from mvsdk.rest import Client
 from mvsdk.rest.bulk import BulkRequest, BulkResponse
 
@@ -423,6 +424,45 @@ class Asset():
                         self.dump_current_row(response)
 
     # --------------
+    # ASSET ATTRIBUTES
+    # --------------
+
+    def get_attributes(self):
+        """
+        Execute the GET asset keywords call with the Asset object.
+        """
+        if self.asset_id is None:
+            self.log.info('AssetID required to get asset keywords. '
+                          'Please retry with --asset-id assetID as a parameter.')
+            return
+
+        response = self.get_asset_attributes(asset_id=self.asset_id)
+
+        existing_attributes = Attribute(self.session).get()
+
+        attributes = {}
+
+        if self.bulk:
+            self.bulk_request.add_request(response)
+            return self.bulk_request
+
+        if response.status_code == 200:
+            self.log.debug(json.dumps(response.json(), indent=4))
+
+            for attribute_id in response.json()['payload']['attributes']:
+                attributes[existing_attributes[attribute_id]] = response.json()['payload']['attributes'][attribute_id]
+
+            self.log.info('Attributes for asset %s:\n%s', self.asset_id, json.dumps(attributes, indent=4))
+
+        elif response.status_code == 404:
+            self.log.warning('Asset with ID %s was not found.', self.asset_id)
+
+        else:
+            self.log.error('Error %s: %s', response.status_code, response.text)
+
+        return attributes
+
+    # --------------
     # GENERIC ACTION
     # --------------
 
@@ -505,3 +545,12 @@ class Asset():
                 f.write(str(response))
         except OSError as error:
             self.log.error("Writing to file %s failed due to: %s", file, error)
+
+    def get_asset_attributes(self, asset_id: str, bulk: bool = False):
+        response = self.sdk_handle.asset.get_attributes(
+            object_id=asset_id,
+            auth=self.session["access_token"],
+            bulk=bulk
+            )
+
+        return response
