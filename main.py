@@ -10,7 +10,7 @@ from _connect import session as se
 
 
 log = logger.get_logger(__name__)
-log.info("Logging initiated")
+log.info("MVDAM initiated...")
 
 app = typer.Typer()
 session = {}

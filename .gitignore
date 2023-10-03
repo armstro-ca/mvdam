@@ -121,6 +121,7 @@ celerybeat.pid
 
 # Environments
 .env
+.env.*
 .venv
 env/
 venv/
@@ -161,3 +162,7 @@ cython_debug/
 
 # Session files
 .session
+
+# Logging files
+*.log
+*.log.*
