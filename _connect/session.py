@@ -1,6 +1,7 @@
 import time
 import json
 import logger
+import jwt
 
 from _connect import Connect
 
@@ -22,24 +23,37 @@ def get_session() -> dict:
 
 def check_session(session: dict) -> bool:
     """
-    Checks if session is still valid
+    Check if session is still valid
     """
-    # TODO: move to checking against contents of JWT, not of my own assessed value
-
-    # token = jwt.decode(session['json']['id_token'])
-    # print(f'Expiry: {token}')
-    # https://auth0.com/blog/how-to-handle-jwt-in-python/
-
     try:
-        if session['expires_at'] >= time.time():
-            log.debug("Log: Session expiry (%s) later than current time (%s)",
-                    session['expires_at'], time.time())
-
-            # TODO: check if session is within n period of expiring and _then_ refresh
-            log.debug('executing refresh')
-            Connect('refresh', client_id=None, client_secret=None, refresh_token=session['refresh_token']).action()
+        session_expiry = float(get_expiry(session['access_token']))
+        if session_expiry >= time.time():
+            log.debug('Session expiry (%s) earlier than current time (%s)',
+                      session_expiry, time.time())
+            #log.debug('executing reauth')
+            #Connect('auth', client_id=None, client_secret=None)
+            session = Connect('refresh', client_id=None, client_secret=None, refresh_token=session['refresh_token'])
+            session.action()
             return True
+        else:
+            log.debug('Session expiry (%s) later than current time (%s)',
+                      session_expiry, time.time())
+            return False
     except KeyError:
-        log.info('No valid session found. Please reauthenticate.')
-        
+        log.info('No valid session found.')
+        session = Connect('auth', client_id=None, client_secret=None, grant_type='password')
+        session.action()
+
+        if session:
+            return True
+
     return False
+
+
+def get_expiry(token: str) -> int:
+    """
+    Takes JWT from auth token and returns the unix timestamp for the expiry
+    """
+    decoded_data = jwt.decode(jwt=token, algorithms='RS256', options={"verify_signature": False})
+
+    return (decoded_data['exp'])

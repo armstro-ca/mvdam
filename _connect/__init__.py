@@ -58,12 +58,6 @@ class Connect():
 
         self.sdk_handle = Client()
 
-        self.verbs = [
-            'get',
-            'post',
-            'delete'
-            ]
-
     def auth(self):
         """
         Authorize the user by call with the Connect object.
@@ -93,9 +87,6 @@ class Connect():
                 session_file = open('.session', 'w')
                 response_json = response.json()
 
-                # TODO: Don't need to do if check_session() is checking against JWT
-                session_expiry = time.time() + response_json['expires_in']
-                response_json['expires_at'] = session_expiry
                 session_file.write(json.dumps(response_json, default=str))
                 self.log.info('Auth successful')
             else:
