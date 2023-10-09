@@ -7,6 +7,7 @@ import logger
 import pandas as pd
 
 from _bulk import Bulk
+from _attribute import Attribute
 from mvsdk.rest import Client
 from mvsdk.rest.bulk import BulkRequest, BulkResponse
 
@@ -286,9 +287,12 @@ class Asset():
                 # Build a BulkRequest object to get the existing keywords for each asset_id
                 for index, row in df_batch.iterrows():
                     asset_id = row["System.Id"]
-                    new_keywords = ''.join(row["Keywords"]).replace(', ', ',')
+                    if not row["Keywords"]:
+                        new_keywords = ''.join(row["Keywords"]).replace(', ', ',')
+                    else:
+                        new_keywords = None
                     self.log.info('Processing #%s [%s] with keywords [%s]',
-                                  index, asset_id, new_keywords)
+                                index, asset_id, new_keywords)
                     bulk_request.add_request(self.get_asset_keywords(asset_id=asset_id, bulk=True))
 
                 # Send the BulkRequest object to the bulk handle
@@ -319,7 +323,10 @@ class Asset():
                         else:
                             self.existing_keywords.update(self.get_existing_keywords(response))
                             current_keywords = self.get_current_keywords(response)
-                            new_keywords = row["Keywords"].split(', ')
+                            if not row["Keywords"]:
+                                new_keywords = row["Keywords"].split(', ')
+                            else:
+                                new_keywords = set()
                             missing_keywords.append(
                                 self.get_keywords_missing(set(current_keywords), set(new_keywords))
                                 )
@@ -423,6 +430,45 @@ class Asset():
                         self.dump_current_row(response)
 
     # --------------
+    # ASSET ATTRIBUTES
+    # --------------
+
+    def get_attributes(self):
+        """
+        Execute the GET asset keywords call with the Asset object.
+        """
+        if self.asset_id is None:
+            self.log.info('AssetID required to get asset keywords. '
+                          'Please retry with --asset-id assetID as a parameter.')
+            return
+
+        response = self.get_asset_attributes(asset_id=self.asset_id)
+
+        existing_attributes = Attribute(self.session).get()
+
+        attributes = {}
+
+        if self.bulk:
+            self.bulk_request.add_request(response)
+            return self.bulk_request
+
+        if response.status_code == 200:
+            self.log.debug(json.dumps(response.json(), indent=4))
+
+            for attribute_id in response.json()['payload']['attributes']:
+                attributes[existing_attributes[attribute_id]] = response.json()['payload']['attributes'][attribute_id]
+
+            self.log.info('Attributes for asset %s:\n%s', self.asset_id, json.dumps(attributes, indent=4))
+
+        elif response.status_code == 404:
+            self.log.warning('Asset with ID %s was not found.', self.asset_id)
+
+        else:
+            self.log.error('Error %s: %s', response.status_code, response.text)
+
+        return attributes
+
+    # --------------
     # GENERIC ACTION
     # --------------
 
@@ -498,10 +544,19 @@ class Asset():
         return keywords
 
     def dump_current_row(self, response):
-        file = pathlib.Path("exceptions.txt")
+        file = pathlib.Path("exceptions.log")
 
         try:
             with file.open(mode='a') as f:
                 f.write(str(response))
         except OSError as error:
             self.log.error("Writing to file %s failed due to: %s", file, error)
+
+    def get_asset_attributes(self, asset_id: str, bulk: bool = False):
+        response = self.sdk_handle.asset.get_attributes(
+            object_id=asset_id,
+            auth=self.session["access_token"],
+            bulk=bulk
+            )
+
+        return response

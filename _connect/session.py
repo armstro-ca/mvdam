@@ -1,6 +1,7 @@
 import time
 import json
 import logger
+import jwt
 
 from _connect import Connect
 
@@ -22,24 +23,50 @@ def get_session() -> dict:
 
 def check_session(session: dict) -> bool:
     """
-    Checks if session is still valid
+    Check if session is still valid
     """
-    # TODO: move to checking against contents of JWT, not of my own assessed value
-
-    # token = jwt.decode(session['json']['id_token'])
-    # print(f'Expiry: {token}')
-    # https://auth0.com/blog/how-to-handle-jwt-in-python/
-
     try:
-        if session['expires_at'] >= time.time():
-            log.debug("Log: Session expiry (%s) later than current time (%s)",
-                    session['expires_at'], time.time())
+        session_expiry = float(get_expiry(session['access_token']))
+        if check_session_validity(session_expiry):
+            log.debug('Session expiry (%s) earlier than current time (%s)',
+                      session_expiry, time.time())
+            #log.debug('executing reauth')
+            #Connect('auth', client_id=None, client_secret=None)
+            session_handle = Connect('refresh', client_id=None, client_secret=None, refresh_token=session['refresh_token'])
+            session_handle.action()
 
-            # TODO: check if session is within n period of expiring and _then_ refresh
-            log.debug('executing refresh')
-            Connect('refresh', client_id=None, client_secret=None, refresh_token=session['refresh_token']).action()
             return True
-    except KeyError:
-        log.info('No valid session found. Please reauthenticate.')
         
+        else:
+            log.debug('Session expiry (%s) later than current time (%s)',
+                      session_expiry, time.time())
+            session_handle = Connect('auth', username=None, password=None, client_id=None, client_secret=None, grant_type='password')
+            session_handle.action()
+
+            return True
+        
+    except KeyError:
+        log.info('No valid session found.')
+        session_handle = Connect('auth', client_id=None, client_secret=None, grant_type='password')
+        session_handle.action()
+
+        if session_handle:
+            return True
+
     return False
+
+
+def get_expiry(token: str) -> int:
+    """
+    Takes JWT from auth token and returns the unix timestamp for the expiry
+    """
+    decoded_data = jwt.decode(jwt=token, algorithms='RS256', options={"verify_signature": False})
+
+    return (decoded_data['exp'])
+
+
+def check_session_validity(expiry: str) -> bool:
+    """
+    Takes expiry timestamp and returns validity assessment
+    """
+    return True if expiry >= time.time() else False

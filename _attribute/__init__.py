@@ -1,5 +1,5 @@
 """
-KEYWORD module containing Keyword class
+ATTRIBUTE module containing Attribute class
 """
 import json
 import logger
@@ -7,11 +7,11 @@ import logger
 from mvsdk.rest import Client
 
 
-class Keyword():
+class Attribute():
 
-    def __init__(self, session: dict, verb: str, keywords: str):
+    def __init__(self, session: dict, verb: str = None):
         """
-        Initialise the Keyword class
+        Initialise the Attribute class
 
         Parameters
         ----------
@@ -25,7 +25,6 @@ class Keyword():
 
         self.session = session
         self.verb = verb
-        self.keywords = keywords
 
         self.sdk_handle = Client()
 
@@ -36,23 +35,14 @@ class Keyword():
             ]
 
     # --------------
-    # KEYWORD
+    # ATTRIBUTE
     # --------------
-
-    def create(self):
-        """
-        Execute the asset GET call with the Asset object.
-        """
-        for keyword in self.keywords.split(','):
-            self.sdk_handle.keyword.create(
-                auth=self.session["json"]["access_token"],
-                data=keyword)
 
     def get(self):
         """
         Execute the asset GET call with the Asset object.
         """
-        response = self.sdk_handle.keyword.get(
+        response = self.sdk_handle.attribute.get(
             auth=self.session["access_token"]
             )
 
@@ -60,15 +50,15 @@ class Keyword():
             response_json = response.json()
             self.log.debug(json.dumps(response_json, indent=4))
 
-            keywords = {}
-            for keyword in response_json['payload']:
-                keywords[keyword['id']] = keyword['keywordName']
+            attributes = {}
+            for attribute in response_json['payload']:
+                attributes[attribute['id']] = attribute['name']
 
-            print(f'Keywords available:\n{json.dumps(keywords, indent=4)}')
+            self.log.info('Attributes available:\n%s', json.dumps(attributes, indent=4))
 
-            return keywords
+            return attributes
 
-        elif response['status'] == 404:
+        elif response.status_code == 404:
             self.log.warning('404 returned')
         else:
             self.log.error('Error: %s', response)

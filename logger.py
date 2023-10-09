@@ -6,12 +6,25 @@ from logging.handlers import TimedRotatingFileHandler
 log_console_level = os.getenv('CONSOLELOGLEVEL') or logging.INFO
 log_file_level = os.getenv('LOGLEVEL') or logging.DEBUG
 
+log_path = os.getenv('LOGPATH') or 'logs'
 log_filename = os.getenv('LOGFILE') or 'api.log'
 log_file_format = logging.Formatter('%(asctime)s — %(name)s — %(levelname)s — %(funcName)s:%(lineno)d — %(message)s')
-log_console_format = logging.Formatter('%(asctime)s -  %(message)s')
+log_console_format = logging.Formatter('%(message)s')
 
 console_handler = logging.StreamHandler(sys.stdout)
-file_handler = TimedRotatingFileHandler(log_filename, when='midnight')
+
+try:
+    file_handler = TimedRotatingFileHandler(log_filename, when='midnight')
+except FileNotFoundError:
+    try:
+        if not os.path.exists(log_path):
+            os.makedirs(log_path)
+        else:
+            print(f'Could not initiate logging with log file at {log_path}/{log_filename}.\
+                  Please check configuration and permissions.')
+    except Exception as error:
+        print(f'Could not initiate logging with log file at {log_path}/{log_filename}.\
+              Please check configuration and permissions.\n{error}')
 
 
 def get_console_handler():
