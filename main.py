@@ -1,8 +1,8 @@
 """
 MAIN top level module containing MVDAM CLI
 """
-import logger
 from typing import Optional
+import logger
 from typing_extensions import Annotated
 import typer
 
