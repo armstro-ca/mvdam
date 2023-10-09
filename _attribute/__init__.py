@@ -54,7 +54,7 @@ class Attribute():
             for attribute in response_json['payload']:
                 attributes[attribute['id']] = attribute['name']
 
-            self.log.debug('Attributes available:\n%s', {json.dumps(attributes, indent=4)})
+            self.log.info('Attributes available:\n%s', json.dumps(attributes, indent=4))
 
             return attributes
 
