@@ -287,9 +287,12 @@ class Asset():
                 # Build a BulkRequest object to get the existing keywords for each asset_id
                 for index, row in df_batch.iterrows():
                     asset_id = row["System.Id"]
-                    new_keywords = ''.join(row["Keywords"]).replace(', ', ',')
+                    if not row["Keywords"]:
+                        new_keywords = ''.join(row["Keywords"]).replace(', ', ',')
+                    else:
+                        new_keywords = None
                     self.log.info('Processing #%s [%s] with keywords [%s]',
-                                  index, asset_id, new_keywords)
+                                index, asset_id, new_keywords)
                     bulk_request.add_request(self.get_asset_keywords(asset_id=asset_id, bulk=True))
 
                 # Send the BulkRequest object to the bulk handle
@@ -320,7 +323,10 @@ class Asset():
                         else:
                             self.existing_keywords.update(self.get_existing_keywords(response))
                             current_keywords = self.get_current_keywords(response)
-                            new_keywords = row["Keywords"].split(', ')
+                            if not row["Keywords"]:
+                                new_keywords = row["Keywords"].split(', ')
+                            else:
+                                new_keywords = set()
                             missing_keywords.append(
                                 self.get_keywords_missing(set(current_keywords), set(new_keywords))
                                 )
@@ -538,7 +544,7 @@ class Asset():
         return keywords
 
     def dump_current_row(self, response):
-        file = pathlib.Path("exceptions.txt")
+        file = pathlib.Path("exceptions.log")
 
         try:
             with file.open(mode='a') as f:

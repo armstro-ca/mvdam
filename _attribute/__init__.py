@@ -58,7 +58,7 @@ class Attribute():
 
             return attributes
 
-        elif response['status'] == 404:
+        elif response.status_code == 404:
             self.log.warning('404 returned')
         else:
             self.log.error('Error: %s', response)
