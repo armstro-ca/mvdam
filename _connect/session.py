@@ -27,24 +27,30 @@ def check_session(session: dict) -> bool:
     """
     try:
         session_expiry = float(get_expiry(session['access_token']))
-        if session_expiry >= time.time():
+        if check_session_validity(session_expiry):
             log.debug('Session expiry (%s) earlier than current time (%s)',
                       session_expiry, time.time())
             #log.debug('executing reauth')
             #Connect('auth', client_id=None, client_secret=None)
-            session = Connect('refresh', client_id=None, client_secret=None, refresh_token=session['refresh_token'])
-            session.action()
+            session_handle = Connect('refresh', client_id=None, client_secret=None, refresh_token=session['refresh_token'])
+            session_handle.action()
+
             return True
+        
         else:
             log.debug('Session expiry (%s) later than current time (%s)',
                       session_expiry, time.time())
-            return False
+            session_handle = Connect('auth', username=None, password=None, client_id=None, client_secret=None, grant_type='password')
+            session_handle.action()
+
+            return True
+        
     except KeyError:
         log.info('No valid session found.')
-        session = Connect('auth', client_id=None, client_secret=None, grant_type='password')
-        session.action()
+        session_handle = Connect('auth', client_id=None, client_secret=None, grant_type='password')
+        session_handle.action()
 
-        if session:
+        if session_handle:
             return True
 
     return False
@@ -57,3 +63,10 @@ def get_expiry(token: str) -> int:
     decoded_data = jwt.decode(jwt=token, algorithms='RS256', options={"verify_signature": False})
 
     return (decoded_data['exp'])
+
+
+def check_session_validity(expiry: str) -> bool:
+    """
+    Takes expiry timestamp and returns validity assessment
+    """
+    return True if expiry >= time.time() else False
