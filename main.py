@@ -8,13 +8,12 @@ import typer
 
 from mvdam import session as se
 
-
 log = logger.get_logger(__name__)
 log.info("MVDAM initiated...")
 
 app = typer.Typer()
-session = {}
 
+session = {}
 
 @app.command()
 def asset(
@@ -81,7 +80,7 @@ set-keywords-with-csv"""
 
         log.debug('executing %s on %s', action, asset_id)
 
-        Asset(session, action, asset_id, csv, keywords).action()
+        Asset(session=session, verb=action, asset_id=asset_id, csv=csv, keywords=keywords).action()
 
     else:
         log.debug("no active session found")
@@ -204,7 +203,7 @@ def auth(
 
     log.debug('executing auth (type: %s)', grant_type)
     Connect('auth', username=username, password=password, client_id=client_id, client_secret=client_secret,
-            grant_type=grant_type, auth_url=None, api_url=None).action()
+            grant_type=grant_type).action()
 
 
 @app.command()
@@ -298,7 +297,7 @@ get"""
         log.debug("active session found")
         from mvdam.keyword_group import KeywordGroup
         action = action.lower()
-        KeywordGroup(session, action, keyword_group).action()
+        KeywordGroup(session, action, group).action()
 
     else:
         log.debug("no active session found")

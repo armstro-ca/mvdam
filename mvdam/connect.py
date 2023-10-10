@@ -38,25 +38,16 @@ class Connect():
 
         load_dotenv()
 
-        try:
-            self.grant_type = kwargs['grant_type']
-        except KeyError:
-            self.grant_type = None
-        if self.grant_type == 'password':
-            self.username = kwargs['username'] or os.getenv('MVUSERNAME')
-            self.password = kwargs['password'] or os.getenv('MVPASSWORD')
+        self.grant_type = kwargs.get('grant_type')
+        self.username = kwargs.get('username') or os.getenv('MVUSERNAME')
+        self.password = kwargs.get('password') or os.getenv('MVPASSWORD')
+        self.client_id = kwargs.get('client_id') or os.getenv('MVCLIENTID')
+        self.client_secret = kwargs.get('client_secret') or os.getenv('MVCLIENTSECRET')
+        self.auth_url = kwargs.get('auth_url') or os.getenv('MVAPIAUTHURL')
+        self.base_url = kwargs.get('base_url') or os.getenv('MVAPIBASEURL')
+        self.refresh_token = kwargs.get('refresh_token')
 
-        self.kwargs = kwargs
-
-        self.client_id = kwargs['client_id'] or os.getenv('MVCLIENTID')
-        self.client_secret = kwargs['client_secret'] or os.getenv('MVCLIENTSECRET')
-
-        try:
-            self.refresh_token = kwargs['refresh_token']
-        except KeyError:
-            self.refresh_token = None
-
-        self.sdk_handle = Client()
+        self.sdk_handle = Client(auth_url=self.auth_url, base_url=self.base_url)
 
     def auth(self):
         """
