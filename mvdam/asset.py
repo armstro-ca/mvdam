@@ -86,7 +86,7 @@ class Asset():
         """
         Execute the GET asset call with the Asset object.
         """
-        response = ic(self.sdk_handle.asset.get(
+        ic(self.sdk_handle.asset.get(
             object_id=self.asset_id
             ))
 
