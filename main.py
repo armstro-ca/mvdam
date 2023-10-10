@@ -6,7 +6,7 @@ import logger
 from typing_extensions import Annotated
 import typer
 
-from _connect import session as se
+from mvdam import session as se
 
 
 log = logger.get_logger(__name__)
@@ -76,7 +76,7 @@ set-keywords-with-csv"""
 
     if se.check_session(session):
         log.debug("active session found")
-        from _asset import Asset
+        from mvdam.asset import Asset
         action = action.lower()
 
         log.debug('executing %s on %s', action, asset_id)
@@ -88,6 +88,7 @@ set-keywords-with-csv"""
 
         log.info('Session expired.\
               Please use "mvdam auth" to obtain a valid session.')
+
 
 @app.command()
 def attribute(
@@ -127,7 +128,7 @@ get"""
 
     if se.check_session(session):
         log.debug("active session found")
-        from _attribute import Attribute
+        from mvdam.attribute import Attribute
         action = action.lower()
 
         log.debug('executing %s on %s', action, asset_id)
@@ -139,6 +140,7 @@ get"""
 
         log.info('Session expired.\
               Please use "mvdam auth" to obtain a valid session.')
+
 
 @app.command()
 def auth(
@@ -198,10 +200,10 @@ def auth(
 
     log.debug("Connect option executed")
 
-    from _connect import Connect
+    from mvdam.connect import Connect
 
     log.debug('executing auth (type: %s)', grant_type)
-    Connect('auth', username=username, password=password, client_id=client_id, client_secret=client_secret, 
+    Connect('auth', username=username, password=password, client_id=client_id, client_secret=client_secret,
             grant_type=grant_type, auth_url=None, api_url=None).action()
 
 
@@ -239,12 +241,12 @@ get"""
     if verbose:
         logger.set_console_verbose()
         log.debug('Verbose console logging set')
-    
+
     log.debug("Keyword option executed")
 
     if se.check_session(session):
         log.debug("active session found")
-        from _keyword import Keyword
+        from mvdam.keyword import Keyword
         action = action.lower()
         Keyword(session, action, keywords).action()
 
@@ -253,7 +255,8 @@ get"""
 
         print('Session not valid. Please use "mvdam auth" to ',
               'obtain a valid session first.')
-        
+
+
 @app.command()
 def keyword_group(
     action: Annotated[
@@ -264,7 +267,7 @@ Actions available are currently:
 get"""
             )
         ],
-    keyword_group: Annotated[
+    group: Annotated[
         Optional[str],
         typer.Option(
             help='The keyword group for the action to be taken upon as a comma separated \
@@ -293,7 +296,7 @@ get"""
 
     if se.check_session(session):
         log.debug("active session found")
-        from _keyword_group import KeywordGroup
+        from mvdam.keyword_group import KeywordGroup
         action = action.lower()
         KeywordGroup(session, action, keyword_group).action()
 
