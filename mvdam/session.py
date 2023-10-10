@@ -3,7 +3,7 @@ import json
 import logger
 import jwt
 
-from _connect import Connect
+from mvdam.connect import Connect
 
 log = logger.get_logger(__name__)
 
@@ -36,7 +36,7 @@ def check_session(session: dict) -> bool:
             session_handle.action()
 
             return True
-        
+
         else:
             log.debug('Session expiry (%s) later than current time (%s)',
                       session_expiry, time.time())
@@ -44,7 +44,7 @@ def check_session(session: dict) -> bool:
             session_handle.action()
 
             return True
-        
+
     except KeyError:
         log.info('No valid session found.')
         session_handle = Connect('auth', client_id=None, client_secret=None, grant_type='password')

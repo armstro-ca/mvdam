@@ -6,8 +6,11 @@ import pathlib
 import logger
 import pandas as pd
 
-from _bulk import Bulk
-from _attribute import Attribute
+from icecream import ic
+from tqdm import tqdm
+
+from mvdam.bulk import Bulk
+from mvdam.attribute import Attribute
 from mvsdk.rest import Client
 from mvsdk.rest.bulk import BulkRequest, BulkResponse
 
@@ -83,9 +86,9 @@ class Asset():
         """
         Execute the GET asset call with the Asset object.
         """
-        self.sdk_handle.asset.get(
+        response = ic(self.sdk_handle.asset.get(
             object_id=self.asset_id
-            )
+            ))
 
     def delete(self):
         """
@@ -285,19 +288,18 @@ class Asset():
                 self.existing_keywords = {}
 
                 # Build a BulkRequest object to get the existing keywords for each asset_id
-                for index, row in df_batch.iterrows():
+                for index, row in tqdm(df_batch.iterrows(), desc='Gathering existing keywords...'):
                     asset_id = row["System.Id"]
-                    if not row["Keywords"]:
+                    if not pd.isna(row["Keywords"]):
                         new_keywords = ''.join(row["Keywords"]).replace(', ', ',')
                     else:
                         new_keywords = None
-                    self.log.info('Processing #%s [%s] with keywords [%s]',
-                                index, asset_id, new_keywords)
+                    self.log.debug('Processing #%s [%s] with keywords [%s]',
+                                   index, asset_id, new_keywords)
                     bulk_request.add_request(self.get_asset_keywords(asset_id=asset_id, bulk=True))
 
                 # Send the BulkRequest object to the bulk handle
                 request = bulk_request.get_payload()
-                self.log.debug(request)
 
                 response = bulk.post(request)
 
@@ -311,7 +313,7 @@ class Asset():
                 surplus_keywords = []
 
                 # Process the response and add the deltas to the dataframe
-                for index, row in df_batch.iterrows():
+                for index, row in tqdm(df_batch.iterrows(), desc='Processing deltas...'):
                     try:
                         response = bulk_response.get_response[index % batch_size]
 
@@ -323,7 +325,7 @@ class Asset():
                         else:
                             self.existing_keywords.update(self.get_existing_keywords(response))
                             current_keywords = self.get_current_keywords(response)
-                            if not row["Keywords"]:
+                            if not pd.isna(row["Keywords"]):
                                 new_keywords = row["Keywords"].split(', ')
                             else:
                                 new_keywords = set()
@@ -337,8 +339,8 @@ class Asset():
                         missing_keywords.append('')
                         surplus_keywords.append('')
 
-                self.log.info('missing_keywords: %s', missing_keywords)
-                self.log.info('surplus_keywords: %s', surplus_keywords)
+                self.log.debug('missing_keywords: %s', missing_keywords)
+                self.log.debug('surplus_keywords: %s', surplus_keywords)
 
                 df_batch = df_batch.assign(missing_keywords=missing_keywords)
                 df_batch = df_batch.assign(surplus_keywords=surplus_keywords)
@@ -347,20 +349,20 @@ class Asset():
                 #   Additions first
                 bulk_request = BulkRequest()
 
-                for index, row in df_batch.iterrows():
+                for index, row in tqdm(df_batch.iterrows(), desc='Building bulk addition request...'):
                     asset_id = row["System.Id"]
                     missing_keywords = row["missing_keywords"]
 
-                    if missing_keywords != '':
-                        self.log.info('Processing addition for #%s [%s] with keywords [%s]',
-                                      index, asset_id, missing_keywords)
+                    if missing_keywords:
+                        self.log.debug('Processing addition for #%s [%s] with keywords [%s]',
+                                       index, asset_id, missing_keywords)
                         self.add_keywords(
                             asset_id=asset_id,
                             keywords=missing_keywords,
                             bulk=bulk_request
                             )
                     else:
-                        self.log.info('Skipping addition for #%s [%s]', index, asset_id)
+                        self.log.debug('Skipping addition for #%s [%s]', index, asset_id)
 
                 # Send the BulkRequest object to the bulk handle
                 #    First check there's anything to actually send
@@ -370,6 +372,7 @@ class Asset():
                 else:
                     self.log.debug('No requests to post. Skipping.')
 
+                self.log.info('Making bulk addition request...')
                 response = bulk.post(request)
 
                 bulk_response = BulkResponse(response)
@@ -387,13 +390,13 @@ class Asset():
                 #   Deletions second
                 bulk_request = BulkRequest()
 
-                for index, row in df_batch.iterrows():
+                for index, row in tqdm(df_batch.iterrows(), desc='Building bulk deletion request...'):
                     asset_id: str = row["System.Id"]
                     surplus_keywords = row["surplus_keywords"]
 
                     if surplus_keywords != '':
-                        self.log.info('Processing deletion for #%s [%s] with keywords [%s]',
-                                      index, asset_id, surplus_keywords)
+                        self.log.debug('Processing deletion for #%s [%s] with keywords [%s]',
+                                       index, asset_id, surplus_keywords)
                         try:
                             self.delete_keywords(
                                 asset_id=asset_id,
@@ -405,7 +408,7 @@ class Asset():
                             self.log.error('Existing Keywords; %s', self.existing_keywords)
                             self.dump_current_row(row)
                     else:
-                        self.log.info('Skipping deletion for #%s [%s]', index, asset_id)
+                        self.log.debug('Skipping deletion for #%s [%s]', index, asset_id)
 
                 # Send the BulkRequest object to the bulk handle
                 #    First check there's anything to actually send
@@ -415,6 +418,7 @@ class Asset():
                 else:
                     self.log.debug('No requests to post. Skipping.')
 
+                self.log.info('Making bulk deletion request...')
                 response = bulk.post(request)
 
                 bulk_response = BulkResponse(response)
@@ -502,6 +506,11 @@ class Asset():
             auth=self.session["access_token"],
             bulk=bulk
             )
+
+        if not bulk and response.status_code != 200:
+            logger.warning('API response to get existing asset keyword request not optimal: [%s]', response.status_code)
+            logger.info('Exiting...')
+            exit()
 
         return response
 
