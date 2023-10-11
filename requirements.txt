@@ -20,6 +20,7 @@ idna==3.4
 macholib==1.16.2
 markdown-it-py==3.0.0
 mdurl==0.1.2
+mvsdk==0.0.6.post2310111200
 numpy==1.26.0
 pandas==2.1.1
 parse==1.19.1
