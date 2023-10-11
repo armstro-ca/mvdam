@@ -16,7 +16,7 @@ load_dotenv()
 from mvdam.sdk_handler import initialise_sdk
 
 auth_url = os.getenv('MVAPIAUTHURL')
-base_url = ic(os.getenv('MVAPIBASEURL'))
+base_url = os.getenv('MVAPIBASEURL')
 
 initialise_sdk(auth_url=auth_url, base_url=base_url)
 
