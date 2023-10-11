@@ -7,6 +7,7 @@ from mvdam.connect import Connect
 
 log = logger.get_logger(__name__)
 
+
 class Session:
     def __init__(self):
         """
@@ -64,7 +65,7 @@ class Session:
         decoded_data = jwt.decode(jwt=token, algorithms='RS256', options={"verify_signature": False})
 
         return float(decoded_data['exp'])
-    
+
     @property
     def access_token(self) -> str:
         """

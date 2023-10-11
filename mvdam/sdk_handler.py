@@ -2,6 +2,7 @@ from mvsdk.rest import Client
 
 sdk_handle = None
 
+
 def initialise_sdk(auth_url: str = None, base_url: str = None):
     """
     Initialiser for the MV SDK
