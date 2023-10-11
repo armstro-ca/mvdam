@@ -3,13 +3,11 @@ MAIN top level module containing MVDAM CLI
 """
 from typing import Optional
 import logger
-from logger import get_logger, set_console_level, set_file_level
 from typing_extensions import Annotated
 import typer
 
 import os
 from dotenv import load_dotenv
-from icecream import ic
 
 load_dotenv()
 
@@ -30,6 +28,7 @@ log = logger.get_logger(__name__)
 log.info("MVDAM initiated...")
 
 app = typer.Typer()
+
 
 @app.command()
 def asset(

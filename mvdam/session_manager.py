@@ -3,8 +3,6 @@ import json
 import logger
 import jwt
 
-from icecream import ic
-
 from mvdam.connect import Connect
 
 log = logger.get_logger(__name__)

@@ -1,5 +1,4 @@
 from mvsdk.rest import Client
-from icecream import ic
 
 sdk_handle = None
 
