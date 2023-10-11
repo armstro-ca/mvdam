@@ -47,7 +47,7 @@ class Connect():
 
         self.sdk_handle = sdk_handle
 
-    def auth(self):
+    def auth(self) -> bool:
         """
         Authorize the user by call with the Connect object.
         """
@@ -78,13 +78,15 @@ class Connect():
 
                 session_file.write(json.dumps(response_json, default=str))
                 self.log.info('Auth successful')
+                return True
             else:
                 self.log.warning('Auth API response: %s', response.status_code)
+                return False
 
         elif self.grant_type == 'auth-code':
             self.log.warning("Auth-Code flow not yet implemented. Please use password flow.")
 
-    def refresh(self):
+    def refresh(self) -> bool:
         """
         Execute the auth GET call with the Connect object.
         """
@@ -106,15 +108,19 @@ class Connect():
             session_expiry = time.time() + response_json['expires_in']
             response_json['expires_at'] = session_expiry
             session_file.write(json.dumps(response_json, default=str))
+            self.log.info('Auth API response: %s', {response.status_code})
+            return True
         else:
             self.log.info('Auth API response: %s', {response.status_code})
+            self.log.debug(response.text)
+            return False
 
-    def action(self):
+    def action(self) -> bool:
         """
         Passthrough function calling the verb required
         """
         self.verb = self.verb.replace("-", "_")
         if hasattr(self, self.verb) and callable(func := getattr(self, self.verb)):
-            func()
+            return func()
         else:
             self.log.warning('Action %s did not match any of the valid options.', self.verb)

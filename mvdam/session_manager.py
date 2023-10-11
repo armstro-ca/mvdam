@@ -13,13 +13,7 @@ class Session:
         """
         Loads local session file
         """
-        try:
-            with open('.session', 'r') as session_file:
-                log.debug('session file found')
-                self.session = json.load(session_file)
-        except (FileNotFoundError, json.decoder.JSONDecodeError) as error:
-            log.debug('Failed to load session\n%s', error)
-            self.session = {}
+        self.session = self.read_session()
 
     def check_session(self) -> bool:
         """
@@ -29,32 +23,46 @@ class Session:
             if self.expiry >= time.time():
                 log.debug('Session expiry (%s) later than current time (%s)',
                           self.expiry, time.time())
+                
+                session_update = Connect('refresh', client_id=None, client_secret=None,
+                                         refresh_token=self.session['refresh_token']).action()
 
-                session_handle = Connect('auth', username=None, password=None, client_id=None,
-                                         client_secret=None, grant_type='password')
-                session_handle.action()
+                self.session = self.read_session()
 
-                return True
+                return session_update
 
             else:
                 log.debug('Session expiry (%s) earlier than current time (%s)',
                           self.expiry, time.time())
 
-                session_handle = Connect('refresh', client_id=None, client_secret=None,
-                                         refresh_token=self.session['refresh_token'])
-                session_handle.action()
+                session_update = Connect('auth', username=None, password=None, client_id=None,
+                                         client_secret=None, grant_type='password').action()
 
-                return True
+                self.session = self.read_session()
+
+                return session_update
 
         except KeyError:
             log.info('No valid session found.')
-            session_handle = Connect('auth', client_id=None, client_secret=None, grant_type='password')
-            session_handle.action()
+            session_update = Connect('auth', client_id=None, client_secret=None, grant_type='password').action()
 
-            if session_handle:
-                return True
+            self.session = self.read_session()
+
+            return session_update
+
 
         return False
+
+    def read_session(self) -> dict:
+        try:
+            with open('.session', 'r') as session_file:
+                log.debug('session file found')
+                session = json.load(session_file)
+        except (FileNotFoundError, json.decoder.JSONDecodeError) as error:
+            log.debug('Failed to load session\n%s', error)
+            session = {}
+
+        return session
 
     @property
     def expiry(self) -> float:

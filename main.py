@@ -98,8 +98,6 @@ set-keywords-with-csv"""
         Asset(verb=action, asset_id=asset_id, csv=csv, keywords=keywords).action()
 
     else:
-        log.debug("no active session found")
-
         log.info('Session expired.\
               Please use "mvdam auth" to obtain a valid session.')
 
@@ -114,15 +112,6 @@ Actions available are currently:
 get"""
         )
     ],
-    asset_id: Annotated[
-        Optional[str],
-        typer.Option(
-            help='The asset ID for the action to be taken upon (eg: --asset-id \
-                151b33b1-4c30-4968-bbd1-525ad812e357)',
-            rich_help_panel="Single",
-            show_default=False
-            )
-        ] = None,
     verbose: Annotated[
         bool,
         typer.Option(
@@ -145,13 +134,11 @@ get"""
         from mvdam.attribute import Attribute
         action = action.lower()
 
-        log.debug('executing %s on %s', action, asset_id)
+        log.debug('executing %s', action)
 
         Attribute(action).action()
 
     else:
-        log.debug("no active session found")
-
         log.info('Session expired.\
               Please use "mvdam auth" to obtain a valid session.')
 

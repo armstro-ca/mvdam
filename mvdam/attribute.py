@@ -63,6 +63,7 @@ class Attribute():
             self.log.warning('404 returned')
         else:
             self.log.error('Error: %s', response)
+            self.log.debug(response.text)
 
     # --------------
     # GENERIC ACTION
