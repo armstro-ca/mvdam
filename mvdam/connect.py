@@ -7,7 +7,7 @@ import json
 import logger
 
 from dotenv import load_dotenv
-from mvsdk.rest import Client
+from mvdam.sdk_handler import sdk_handle
 
 
 class Connect():
@@ -43,11 +43,9 @@ class Connect():
         self.password = kwargs.get('password') or os.getenv('MVPASSWORD')
         self.client_id = kwargs.get('client_id') or os.getenv('MVCLIENTID')
         self.client_secret = kwargs.get('client_secret') or os.getenv('MVCLIENTSECRET')
-        self.auth_url = kwargs.get('auth_url') or os.getenv('MVAPIAUTHURL')
-        self.base_url = kwargs.get('base_url') or os.getenv('MVAPIBASEURL')
         self.refresh_token = kwargs.get('refresh_token')
 
-        self.sdk_handle = Client(auth_url=self.auth_url, base_url=self.base_url)
+        self.sdk_handle = sdk_handle
 
     def auth(self):
         """
@@ -120,4 +118,3 @@ class Connect():
             func()
         else:
             self.log.warning('Action %s did not match any of the valid options.', self.verb)
-            self.log.warning('Did you mean %s?', " or".join(", ".join(self.verbs).rsplit(",", 1)))

@@ -6,7 +6,7 @@ Chunk up bulk requests by rate. n/y mins.
 """
 import logger
 
-from mvsdk.rest import Client
+from mvdam.sdk_handler import sdk_handle
 
 
 class Bulk():
@@ -15,13 +15,13 @@ class Bulk():
 
     """
 
-    def __init__(self, session: dict):
+    def __init__(self, access_token: str):
 
         self.log = logger.get_logger(__name__)
 
-        self.session = session
+        self.access_token = access_token
 
-        self.sdk_handle = Client()
+        self.sdk_handle = sdk_handle
 
     # --------------
     # BULK
@@ -32,7 +32,7 @@ class Bulk():
         response = self.sdk_handle.bulk.post(
             headers=bulk_requests['headers'],
             data=bulk_requests['payload'],
-            auth=self.session["access_token"]
+            auth=self.access_token
             )
 
         return response

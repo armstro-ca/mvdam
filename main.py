@@ -3,17 +3,33 @@ MAIN top level module containing MVDAM CLI
 """
 from typing import Optional
 import logger
+from logger import get_logger, set_console_level, set_file_level
 from typing_extensions import Annotated
 import typer
 
-from mvdam import session as se
+import os
+from dotenv import load_dotenv
+from icecream import ic
+
+load_dotenv()
+
+from mvdam.sdk_handler import initialise_sdk
+
+auth_url = os.getenv('MVAPIAUTHURL')
+base_url = ic(os.getenv('MVAPIBASEURL'))
+
+initialise_sdk(auth_url=auth_url, base_url=base_url)
+
+from mvdam.session_manager import initalise_session
+
+initalise_session()
+
+from mvdam.session_manager import current_session
 
 log = logger.get_logger(__name__)
 log.info("MVDAM initiated...")
 
 app = typer.Typer()
-
-session = {}
 
 @app.command()
 def asset(
@@ -68,19 +84,19 @@ set-keywords-with-csv"""
     The `asset` operator gives you access to the assets and all aspects related to them.
     """
     if verbose:
-        logger.set_console_verbose()
+        logger.set_console_level('debug')
         log.debug('Verbose console logging set')
 
     log.debug("Asset option executed")
 
-    if se.check_session(session):
+    if current_session.check_session():
         log.debug("active session found")
         from mvdam.asset import Asset
         action = action.lower()
 
         log.debug('executing %s on %s', action, asset_id)
 
-        Asset(session=session, verb=action, asset_id=asset_id, csv=csv, keywords=keywords).action()
+        Asset(verb=action, asset_id=asset_id, csv=csv, keywords=keywords).action()
 
     else:
         log.debug("no active session found")
@@ -120,19 +136,19 @@ get"""
     The `attribute` operator gives you access to the assets and all aspects related to them.
     """
     if verbose:
-        logger.set_console_verbose()
+        logger.set_console_level('debug')
         log.debug('Verbose console logging set')
 
     log.debug("Attribute option executed")
 
-    if se.check_session(session):
+    if current_session.check_session():
         log.debug("active session found")
         from mvdam.attribute import Attribute
         action = action.lower()
 
         log.debug('executing %s on %s', action, asset_id)
 
-        Attribute(session, action).action()
+        Attribute(action).action()
 
     else:
         log.debug("no active session found")
@@ -194,7 +210,7 @@ def auth(
     can be set as environment variables or can be set in a .env file
     """
     if verbose:
-        logger.set_console_verbose()
+        logger.set_console_level('debug')
         log.debug('Verbose console logging set')
 
     log.debug("Connect option executed")
@@ -238,16 +254,16 @@ get"""
     The keyword operator acts upon keywords in the abstract.
     """
     if verbose:
-        logger.set_console_verbose()
+        logger.set_console_level('debug')
         log.debug('Verbose console logging set')
 
     log.debug("Keyword option executed")
 
-    if se.check_session(session):
+    if current_session.check_session():
         log.debug("active session found")
         from mvdam.keyword import Keyword
         action = action.lower()
-        Keyword(session, action, keywords).action()
+        Keyword(action, keywords).action()
 
     else:
         log.debug("no active session found")
@@ -288,16 +304,16 @@ get"""
     The keyword operator acts upon keywords in the abstract.
     """
     if verbose:
-        logger.set_console_verbose()
+        logger.set_console_level('debug')
         log.debug('Verbose console logging set')
 
     log.debug("KeywordGroup option executed")
 
-    if se.check_session(session):
+    if current_session.check_session():
         log.debug("active session found")
         from mvdam.keyword_group import KeywordGroup
         action = action.lower()
-        KeywordGroup(session, action, group).action()
+        KeywordGroup(action, group).action()
 
     else:
         log.debug("no active session found")
@@ -306,5 +322,4 @@ get"""
 
 
 if __name__ == "__main__":
-    session = se.get_session()
     app()

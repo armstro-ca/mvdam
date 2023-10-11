@@ -4,12 +4,13 @@ KEYWORD module containing Keyword class
 import json
 import logger
 
-from mvsdk.rest import Client
+from mvdam.session_manager import current_session
+from mvdam.sdk_handler import sdk_handle
 
 
 class Keyword():
 
-    def __init__(self, session: dict, verb: str, keywords: str):
+    def __init__(self, verb: str, keywords: str):
         """
         Initialise the Keyword class
 
@@ -23,11 +24,11 @@ class Keyword():
         """
         self.log = logger.get_logger(__name__)
 
-        self.session = session
+        self.session = current_session
         self.verb = verb
         self.keywords = keywords
 
-        self.sdk_handle = Client()
+        self.sdk_handle = sdk_handle
 
         self.verbs = [
             'get',
@@ -45,7 +46,7 @@ class Keyword():
         """
         for keyword in self.keywords.split(','):
             self.sdk_handle.keyword.create(
-                auth=self.session["json"]["access_token"],
+                auth=self.session.access_token,
                 data=keyword)
 
     def get(self):
@@ -53,7 +54,7 @@ class Keyword():
         Execute the asset GET call with the Asset object.
         """
         response = self.sdk_handle.keyword.get(
-            auth=self.session["access_token"]
+            auth=self.session.access_token
             )
 
         if 200 <= response.status_code < 300:

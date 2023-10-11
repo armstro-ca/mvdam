@@ -3,6 +3,9 @@ import logging
 import sys
 from logging.handlers import TimedRotatingFileHandler
 
+global log_console_level
+global log_file_level
+
 log_console_level = os.getenv('CONSOLELOGLEVEL') or logging.INFO
 log_file_level = os.getenv('LOGLEVEL') or logging.DEBUG
 
@@ -44,7 +47,7 @@ def get_file_handler():
     except ValueError as val_err:
         print(f'Logging level {val_err} is not a valid option. Please use one of the following:\
                 DEBUG\
-                INFO')    
+                INFO')
     file_handler.setFormatter(log_file_format)
     return file_handler
 
@@ -59,5 +62,13 @@ def get_logger(logger_name):
     return logger
 
 
-def set_console_verbose():
-    console_handler.setLevel(logging.DEBUG)
+def set_console_level(level: str = log_console_level):
+    level = logging.getLevelName(level.upper())
+    log_console_level = level
+    console_handler.setLevel(log_console_level)
+
+
+def set_file_level(level: str = log_file_level):
+    level = logging.getLevelName(level.upper())
+    log_file_level = level
+    console_handler.setLevel(log_file_level)

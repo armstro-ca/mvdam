@@ -4,12 +4,13 @@ ATTRIBUTE module containing Attribute class
 import json
 import logger
 
-from mvsdk.rest import Client
+from mvdam.session_manager import current_session
+from mvdam.sdk_handler import sdk_handle
 
 
 class Attribute():
 
-    def __init__(self, session: dict, verb: str = None):
+    def __init__(self, verb: str = None):
         """
         Initialise the Attribute class
 
@@ -23,10 +24,10 @@ class Attribute():
         """
         self.log = logger.get_logger(__name__)
 
-        self.session = session
+        self.session = current_session
         self.verb = verb
 
-        self.sdk_handle = Client()
+        self.sdk_handle = sdk_handle
 
         self.verbs = [
             'get',
@@ -43,7 +44,7 @@ class Attribute():
         Execute the asset GET call with the Asset object.
         """
         response = self.sdk_handle.attribute.get(
-            auth=self.session["access_token"]
+            auth=self.session.access_token
             )
 
         if 200 <= response.status_code < 300:

@@ -6,16 +6,14 @@ import pathlib
 import logger
 import pandas as pd
 
-import os
-from dotenv import load_dotenv
-
 from icecream import ic
 from tqdm import tqdm
 
 from mvdam.bulk import Bulk
 from mvdam.attribute import Attribute
+from mvdam.session_manager import current_session
+from mvdam.sdk_handler import sdk_handle
 
-from mvsdk.rest import Client
 from mvsdk.rest.bulk import BulkRequest, BulkResponse
 
 
@@ -44,8 +42,7 @@ class Asset():
 
     """
 
-    def __init__(self, session: dict, verb: str, asset_id: str,
-                 csv: str, keywords: str, bulk: bool = None, **kwargs):
+    def __init__(self, verb: str, asset_id: str, csv: str, keywords: str, bulk: bool = None, **kwargs):
         """
         Initialise the Asset class
 
@@ -59,7 +56,7 @@ class Asset():
         """
         self.log = logger.get_logger(__name__)
 
-        self.session = session
+        self.session = current_session
         self.verb = verb
         self.asset_id = asset_id
         self.csv = csv
@@ -69,12 +66,7 @@ class Asset():
         if self.bulk:
             self.bulk_request = BulkRequest()
 
-        load_dotenv()
-
-        self.auth_url = kwargs.get('auth_url') or os.getenv('MVAPIAUTHURL')
-        self.base_url = kwargs.get('base_url') or os.getenv('MVAPIBASEURL')
-
-        self.sdk_handle = Client(auth_url=self.auth_url, base_url=self.base_url)
+        self.sdk_handle = sdk_handle
 
         self.existing_keywords = {}
 
@@ -132,7 +124,7 @@ class Asset():
         response = self.sdk_handle.asset.create_keywords(
             data=json.dumps(keywords.split(',')),
             object_id=asset_id,
-            auth=self.session["access_token"],
+            auth=current_session.access_token,
             bulk=bulk
             )
 
@@ -173,7 +165,7 @@ class Asset():
                 response = self.sdk_handle.asset.delete_keyword(
                     object_id=asset_id,
                     object_action=f'keywords/{self.existing_keywords[keyword]}',
-                    auth=self.session["access_token"],
+                    auth=current_session.access_token,
                     bulk=True if bulk else False
                     )
 
@@ -514,12 +506,13 @@ class Asset():
     def get_asset_keywords(self, asset_id: str, bulk: bool = False):
         response = self.sdk_handle.asset.get_keywords(
             object_id=asset_id,
-            auth=self.session["access_token"],
+            auth=current_session.access_token,
             bulk=bulk
             )
 
         if not bulk and response.status_code != 200:
             self.log.warning('API response to get existing asset keyword request not optimal: [%s]', response.status_code)
+            self.log.debug(response.text)
             self.log.info('Exiting...')
             exit()
 
@@ -575,7 +568,7 @@ class Asset():
     def get_asset_attributes(self, asset_id: str, bulk: bool = False):
         response = self.sdk_handle.asset.get_attributes(
             object_id=asset_id,
-            auth=self.session["access_token"],
+            auth=current_session.access_token,
             bulk=bulk
             )
 
