@@ -3,6 +3,7 @@ CATEGORY module containing Category class
 """
 import logger
 import pandas as pd
+import json
 
 from mvdam.session_manager import current_session
 from mvdam.sdk_handler import sdk_handle
@@ -79,6 +80,8 @@ class Category():
             for asset in self.get_category_assets():
                 assets[asset['id']] = ", ".join(asset['keywords'])
 
+            self.log.info(json.dumps(assets, indent=4))
+
             return assets
 
     def get_asset_attributes(self):
@@ -101,6 +104,8 @@ class Category():
 
             for asset in self.get_category_assets():
                 assets[asset['id']] = ", ".join(asset['keywords'])
+            
+            self.log.info(json.dumps(assets, indent=4))
 
             return assets
 
