@@ -73,12 +73,11 @@ set-keywords-with-csv"""
         ] = "",
     offset: Annotated[
         Optional[int],
-        typer.Option(
+        typer.Argument(
             help='The offset from which you would like your csv processing to start',
-            rich_help_panel="Single",
-            show_default=False
+            rich_help_panel="Single"
             )
-        ] = "",
+        ] = 0,
     verbose: Annotated[
         bool,
         typer.Option(
