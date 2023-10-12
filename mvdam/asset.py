@@ -274,7 +274,7 @@ class Asset():
         """
         # set the size of the bulk batches to post at any one time
         batch_size: int = 500
-        offset: int = self.offset or 0
+        offset: int = self.offset
         error_count: int = 0
         error_limit: int = 5
         loc: int = 0
@@ -328,7 +328,7 @@ class Asset():
                     try:
                         response = bulk_response.get_response[index % batch_size]
 
-                        if response['status_code'] >= 300:
+                        if int(response['status_code']) >= 300:
                             error_count += 1
                             self.dump_current_row(f'{row["System.Id"]} : {response}')
                             missing_keywords.append('')
