@@ -37,9 +37,9 @@ def asset(
         typer.Argument(
             help="""The action to be applied to the asset.
 Actions available are currently:
-get-attributes
 add-keywords
 delete-keywords
+get-attributes
 get-keywords
 set-keywords
 set-keywords-with-csv"""
@@ -71,6 +71,14 @@ set-keywords-with-csv"""
             show_default=False
             )
         ] = "",
+    offset: Annotated[
+        Optional[int],
+        typer.Option(
+            help='The offset from which you would like your csv processing to start',
+            rich_help_panel="Single",
+            show_default=False
+            )
+        ] = "",
     verbose: Annotated[
         bool,
         typer.Option(
@@ -95,7 +103,7 @@ set-keywords-with-csv"""
 
         log.debug('executing %s on %s', action, asset_id)
 
-        Asset(verb=action, asset_id=asset_id, csv=csv, keywords=keywords).action()
+        Asset(verb=action, asset_id=asset_id, csv=csv, keywords=keywords, offset=offset).action()
 
     else:
         log.info('Session expired.\
@@ -206,6 +214,63 @@ def auth(
     log.debug('executing auth (type: %s)', grant_type)
     Connect('auth', username=username, password=password, client_id=client_id, client_secret=client_secret,
             grant_type=grant_type).action()
+
+
+@app.command()
+def category(
+    action: Annotated[
+        str,
+        typer.Argument(
+            help="""The action to be applied to the asset.
+Actions available are currently:
+get"""
+            )
+        ],
+    category_id: Annotated[
+        Optional[str],
+        typer.Option(
+            help='The keyword group for the action to be taken upon as a comma separated \
+                string (eg: --keywords field,sky,road,sunset)',
+            rich_help_panel="Single",
+            show_default=False
+            )
+        ] = "",
+    csv: Annotated[
+        Optional[str],
+        typer.Option(
+            help='The filename of the csv for use with set-keywords-with-csv option.',
+            rich_help_panel="Single",
+            show_default=False
+            )
+        ] = "",
+    verbose: Annotated[
+        bool,
+        typer.Option(
+            help='Choose the verbosity of the response \
+                (eg: --verbosity [verbose, raw, bulk])',
+            show_default=False
+            )
+        ] = False
+        ):
+    """
+    The keyword operator acts upon keywords in the abstract.
+    """
+    if verbose:
+        logger.set_console_level('debug')
+        log.debug('Verbose console logging set')
+
+    log.debug("Category option executed")
+
+    if current_session.check_session():
+        log.debug("active session found")
+        from mvdam.category import Category
+        action = action.lower()
+        Category(action, category_id=category_id, csv=csv).action()
+
+    else:
+        log.debug("no active session found")
+
+        print('Session not valid. Please use "mvdam auth" to obtain a valid session first.')
 
 
 @app.command()

@@ -42,7 +42,8 @@ class Asset():
 
     """
 
-    def __init__(self, verb: str, asset_id: str, csv: str, keywords: str, bulk: bool = None, **kwargs):
+    def __init__(self, verb: str, asset_id: str, csv: str, keywords: str,
+                 offset: int = None, bulk: bool = None, **kwargs):
         """
         Initialise the Asset class
 
@@ -60,6 +61,7 @@ class Asset():
         self.verb = verb
         self.asset_id = asset_id
         self.csv = csv
+        self.offset = offset
         self.keywords = keywords
         self.bulk = bulk
 
@@ -271,8 +273,11 @@ class Asset():
         This is a purpose built, bulk only, method.
         """
         # set the size of the bulk batches to post at any one time
-        batch_size: int = 100
+        batch_size: int = 500
+        offset: int = self.offset or 0
         error_count: int = 0
+        error_limit: int = 5
+        loc: int = 0
 
         # initiate instance of bulk endpoint
         bulk = Bulk(self.session)
@@ -282,7 +287,12 @@ class Asset():
             df = pd.read_csv(f)
 
             # create batches of get keyword requests to calculate deltas
-            for i in range(0, len(df), batch_size):
+            for i in range(offset, len(df), batch_size):
+                self.log.info('Processing in batches of %s Batch: %s to %s', batch_size, loc*batch_size, (loc+1)*batch_size)
+                loc += 1
+
+                self.log.info('Error count: %s of %s allowable', error_count, error_limit)
+
                 df_batch = df.iloc[i:i + batch_size]
 
                 bulk_request = BulkRequest()
@@ -318,9 +328,9 @@ class Asset():
                     try:
                         response = bulk_response.get_response[index % batch_size]
 
-                        if int(response['status_code']) >= 300:
+                        if response['status_code'] >= 300:
                             error_count += 1
-                            self.dump_current_row(response)
+                            self.dump_current_row(f'{row["System.Id"]} : {response}')
                             missing_keywords.append('')
                             surplus_keywords.append('')
                         else:
@@ -370,24 +380,28 @@ class Asset():
                 if bulk_request.get_request_count():
                     request = bulk_request.get_payload()
                     self.log.debug(request)
+
+                    self.log.info('Making bulk addition request...')
+                    response = bulk.post(request)
+
+                    bulk_response = BulkResponse(response)
+
+                    self.log.info('Add Keywords Response status = [%s], returned in [%s]',
+                                response.status_code, response.elapsed)
+
+                    if response.status_code != 200:
+                        self.log.debug('Request:\n%s', request)
+                        self.log.debug('Response:\n%s', response.text)
+
+                    for response in bulk_response.post_response:
+                        if int(response['status_code']) >= 300:
+                            error_count += 1
+                            self.dump_current_row(request)
+                            self.dump_current_row(response.text)
                 else:
-                    self.log.debug('No requests to post. Skipping.')
+                    self.log.info('No change detected. Skipping.')
 
-                self.log.info('Making bulk addition request...')
-                response = bulk.post(request)
-
-                bulk_response = BulkResponse(response)
-
-                self.log.info('Add Keywords Response status = [%s], returned in [%s]',
-                              response.status_code, response.elapsed)
-
-                if response.status_code != 200:
-                    self.log.debug(response.text)
-
-                for response in bulk_response.post_response:
-                    if int(response['status_code']) >= 300:
-                        error_count += 1
-                        self.dump_current_row(response)
+                
 
                 #   Deletions second
                 bulk_request = BulkRequest()
@@ -416,25 +430,29 @@ class Asset():
                 #    First check there's anything to actually send
                 if bulk_request.get_request_count():
                     request = bulk_request.get_payload()
-                    self.log.debug(request)
+
+                    self.log.info('Making bulk deletion request...')
+                    response = bulk.post(request)
+
+                    bulk_response = BulkResponse(response)
+
+                    self.log.info('Delete Keywords Response status = [%s], returned in [%s]',
+                                response.status_code, response.elapsed)
+
+                    if response.status_code != 200:
+                        self.log.debug('Request:\n%s', request)
+                        self.log.debug('Response:\n%s', response.text)
+
+                    for response in bulk_response.post_response:
+                        if int(response['status_code']) >= 300:
+                            error_count += 1
+                            self.dump_current_row(request)
+                            self.dump_current_row(response.text)
+
                 else:
-                    self.log.debug('No requests to post. Skipping.')
+                    self.log.info('No change detected. Skipping.')
 
-                self.log.info('Making bulk deletion request...')
-                response = bulk.post(request)
-
-                bulk_response = BulkResponse(response)
-
-                self.log.info('Delete Keywords Response status = [%s], returned in [%s]',
-                              response.status_code, response.elapsed)
-
-                if response.status_code != 200:
-                    self.log.debug(response.text)
-
-                for response in bulk_response.post_response:
-                    if int(response['status_code']) >= 300:
-                        error_count += 1
-                        self.dump_current_row(response)
+                
 
     # --------------
     # ASSET ATTRIBUTES
@@ -561,7 +579,7 @@ class Asset():
 
         try:
             with file.open(mode='a') as f:
-                f.write(str(response))
+                f.write(f'{str(response)}\n\r')
         except OSError as error:
             self.log.error("Writing to file %s failed due to: %s", file, error)
 
