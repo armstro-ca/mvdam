@@ -288,7 +288,7 @@ class Asset():
 
             # create batches of get keyword requests to calculate deltas
             for i in range(offset, len(df), batch_size):
-                self.log.info('Processing in batches of %s Batch: %s to %s', batch_size, loc*batch_size, (loc+1)*batch_size)
+                self.log.info('Processing in batches of %s Batch: %s to %s', batch_size, offset+(loc*batch_size), offset+((loc+1)*batch_size))
                 loc += 1
 
                 self.log.info('Error count: %s of %s allowable', error_count, error_limit)
@@ -397,7 +397,7 @@ class Asset():
                         if int(response['status_code']) >= 300:
                             error_count += 1
                             self.dump_current_row(request)
-                            self.dump_current_row(response.text)
+                            self.dump_current_row(response)
                 else:
                     self.log.info('No change detected. Skipping.')
 
@@ -447,7 +447,7 @@ class Asset():
                         if int(response['status_code']) >= 300:
                             error_count += 1
                             self.dump_current_row(request)
-                            self.dump_current_row(response.text)
+                            self.dump_current_row(response)
 
                 else:
                     self.log.info('No change detected. Skipping.')
