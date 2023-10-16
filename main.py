@@ -273,6 +273,80 @@ get"""
 
 
 @app.command()
+def direct_link(
+    action: Annotated[
+        str,
+        typer.Argument(
+            help="""The action to be applied to the asset.
+Actions available are currently:
+get"""
+            )
+        ],
+    asset_id: Annotated[
+        Optional[str],
+        typer.Option(
+            help='The asset ID for the action to be taken upon (eg: --asset-id \
+                151b33b1-4c30-4968-bbd1-525ad812e357)',
+            rich_help_panel="Single",
+            show_default=False
+            )
+        ] = None,
+    input_csv: Annotated[
+        Optional[str],
+        typer.Option(
+            help='The filename of the input csv for use with get-direct-links-with-csv option.',
+            rich_help_panel="Single",
+            show_default=False
+            )
+        ] = "",
+    output_csv: Annotated[
+        Optional[str],
+        typer.Option(
+            help='The filename of the output csv for use with set-keywords-with-csv option.',
+            rich_help_panel="Single",
+            show_default=False
+            )
+        ] = "",
+    offset: Annotated[
+        Optional[int],
+        typer.Option(
+            help='The offset from which you would like your csv processing to start',
+            rich_help_panel="Single"
+            )
+        ] = 0,
+    verbose: Annotated[
+        bool,
+        typer.Option(
+            help='Choose the verbosity of the response \
+                (eg: --verbosity [verbose, raw, bulk])',
+            show_default=False
+            )
+        ] = False
+        ):
+    """
+    The keyword operator acts upon keywords in the abstract.
+    """
+    if verbose:
+        logger.set_console_level('debug')
+        log.debug('Verbose console logging set')
+
+    log.debug("Keyword option executed")
+
+    if current_session.check_session():
+        log.debug("active session found")
+        from mvdam.direct_link import DirectLink
+        action = action.lower()
+        DirectLink(action, asset_id=asset_id, input_csv=input_csv, output_csv=output_csv,
+                   offset=offset).action()
+
+    else:
+        log.debug("no active session found")
+
+        print('Session not valid. Please use "mvdam auth" to ',
+              'obtain a valid session first.')
+        
+
+@app.command()
 def keyword(
     action: Annotated[
         str,
