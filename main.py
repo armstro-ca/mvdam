@@ -233,15 +233,15 @@ get"""
             rich_help_panel="Single",
             show_default=False
             )
-        ] = "",
-    csv: Annotated[
+        ] = None,
+    output_csv: Annotated[
         Optional[str],
         typer.Option(
-            help='The filename of the csv for use with set-keywords-with-csv option.',
+            help='The filename of the output csv for use with set-keywords-with-csv option.',
             rich_help_panel="Single",
             show_default=False
             )
-        ] = "",
+        ] = None,
     verbose: Annotated[
         bool,
         typer.Option(
@@ -264,7 +264,7 @@ get"""
         log.debug("active session found")
         from mvdam.category import Category
         action = action.lower()
-        Category(action, category_id=category_id, csv=csv).action()
+        Category(action, category_id=category_id, output_csv=output_csv).action()
 
     else:
         log.debug("no active session found")

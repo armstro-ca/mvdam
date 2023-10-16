@@ -114,7 +114,7 @@ class DirectLink():
         This is a purpose built, bulk only, method.
         """
         # set the size of the bulk batches to post at any one time
-        batch_size: int = 10
+        batch_size: int = 100
         offset: int = self.offset
         error_count: int = 0
         error_limit: int = 5
@@ -127,7 +127,7 @@ class DirectLink():
         with open(self.input_csv, 'r') as f:
             df = pd.read_csv(f)
 
-            print(df)
+            df_export = pd.DataFrame()
 
             # create batches of get keyword requests to calculate deltas
             for i in range(offset, len(df), batch_size):
@@ -182,10 +182,11 @@ class DirectLink():
                         links.append('')
 
                 df_batch = df_batch.assign(Links=links)
+                df_export = pd.concat((df_export, df_batch), axis=0)
 
-                df = pd.merge(df, df_batch, on='System.Id')
+                self.log.info("Writing to %s", self.output_csv)
 
-            df.to_csv(self.output_csv)
+                df_export.to_csv(self.output_csv, index=False)
 
     # --------------
     # GENERIC ACTION
