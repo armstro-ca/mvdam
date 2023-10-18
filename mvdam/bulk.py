@@ -5,6 +5,8 @@ Recommendation (Felipe):
 Chunk up bulk requests by rate. n/y mins.
 """
 import logger
+from functools import wraps
+import time
 
 from mvdam.sdk_handler import sdk_handle
 
@@ -26,6 +28,31 @@ class Bulk():
     # --------------
     # BULK
     # --------------
+    @staticmethod
+    def retry(max_retries, initial_delay=20, backoff=3):
+        def decorator(func):
+            @wraps(func)
+            def wrapper(*args, **kwargs):
+                retries = 5
+                delay = initial_delay
+                while retries < max_retries:
+                    try:
+                        return func(*args, **kwargs)
+                    except ValueError as e:
+                        print(f"Caught an exception: {e}")
+                        retries += 1
+                        if retries < max_retries:
+                            print(f"Retrying in {delay} seconds...")
+                            time.sleep(delay)
+                            delay *= backoff
+                        else:
+                            raise  # If max_retries is reached, raise the exception
+
+            return wrapper
+
+        return decorator
+    
+    @retry(max_retries=3)
     def post(self, bulk_requests: dict):
         """
         """
@@ -35,4 +62,7 @@ class Bulk():
             auth=self.access_token
             )
 
-        return response
+        if response.status_code in [429, 500]:
+            raise ValueError('Response requires backoff')
+        else:
+            return response
