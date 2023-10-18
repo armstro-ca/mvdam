@@ -314,6 +314,14 @@ get"""
             rich_help_panel="Single"
             )
         ] = 0,
+    asset_identifier: Annotated[
+        Optional[str],
+        typer.Option(
+            help='The header of the column containing the asset IDs.',
+            rich_help_panel="Single",
+            show_default=False
+            )
+        ] = None,
     verbose: Annotated[
         bool,
         typer.Option(
@@ -337,7 +345,7 @@ get"""
         from mvdam.direct_link import DirectLink
         action = action.lower()
         DirectLink(action, asset_id=asset_id, input_csv=input_csv, output_csv=output_csv,
-                   offset=offset).action()
+                   offset=offset, asset_identifier=asset_identifier).action()
 
     else:
         log.debug("no active session found")

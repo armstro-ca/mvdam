@@ -6,6 +6,7 @@ import pathlib
 import logger
 import pandas as pd
 from tqdm import tqdm
+import uuid
 
 from mvdam.bulk import Bulk
 from mvdam.session_manager import current_session
@@ -36,17 +37,9 @@ class DirectLink():
         self.input_csv = kwargs.get('input_csv')
         self.output_csv = kwargs.get('output_csv')
         self.offset = kwargs.get('offset') or 0
+        self.asset_identifier = kwargs.get('asset_identifier') or None
 
-        self.isDevModeEnabled = False
-        self.isEmbedCode = False
-        self.isUniqueLink = False
-        self.linkName = 'Default'
-        self.turnSubtitlesOn = False
-        self.chosenLanguages = ''
         self.file_format = 'JPEG'
-        self.file_height = '316'
-        self.file_width = '259'
-        self.file_type = 'Original'
 
         self.sdk_handle = sdk_handle
 
@@ -114,7 +107,7 @@ class DirectLink():
         This is a purpose built, bulk only, method.
         """
         # set the size of the bulk batches to post at any one time
-        batch_size: int = 100
+        batch_size: int = 20
         offset: int = self.offset
         error_count: int = 0
         error_limit: int = 5
@@ -126,6 +119,17 @@ class DirectLink():
         # open the csv file within context
         with open(self.input_csv, 'r') as f:
             df = pd.read_csv(f)
+
+            if self.asset_identifier:
+                asset_column = self.asset_identifier
+            else:
+                asset_column = 'System.Id'
+            try:
+                df_temp = df[[asset_column]]
+            except KeyError:
+                self.log.error('Column %s not present in %s. Please use --asset-identifier to set asset-id containing column.',
+                               asset_column, self.input_csv)
+                exit()
 
             df_export = pd.DataFrame()
 
@@ -148,19 +152,32 @@ class DirectLink():
 
                 # Build a BulkRequest object to get the existing keywords for each asset_id
                 for index, row in tqdm(df_batch.iterrows(), total=df_batch.shape[0], desc='Building bulk request...'):
-                    asset_id = row['System.Id']
+                    asset_id = row[asset_column]
+
+                    try:
+                        _ = uuid.UUID(asset_id)
+                    except ValueError:
+                        self.log.error('Invalid ID in %s:%s. Please check an verify.', self.input_csv, i+index)
+                        exit()
+
+                    type = row['File Type']
                     self.log.debug('Processing #%s [%s]',
                                    index, asset_id)
-                    bulk_request.add_request(self.create_direct_link(asset_id=asset_id, bulk=True))
+                    bulk_request.add_request(self.create_direct_link(asset_id=asset_id, type=type, bulk=True))
 
                 # Send the BulkRequest object to the bulk handle
-                response = bulk.post(bulk_request.get_payload())
+                request = bulk_request.get_payload()
+                response = bulk.post(request)
 
                 bulk_response = BulkResponse(response)
 
-                self.log.info('Get Keywords Response status = [%s], returned in [%s]',
+                self.log.info('Create DirectLinks Response status = [%s], returned in [%s]',
                               response.status_code, response.elapsed)
-                self.log.debug(bulk_response.get_response)
+                try:
+                    self.log.debug(bulk_response.get_response)
+                except TypeError:
+                    self.log.error('Request:\n%s', request)
+                    self.log.error('Response:\n%s', response.text)
 
                 links = []
 
@@ -169,12 +186,16 @@ class DirectLink():
                     try:
                         response = bulk_response.post_response[index % batch_size]
 
-                        payload = response['payload']
-                        link = json.loads(payload)['cdnLink']
+                        try:
+                            payload = response['payload']
+                            link = json.loads(payload)['cdnLink']
+                        except KeyError as key_error:
+                            self.log.error('Cannot access payload of response; %s', key_error)
+                            link = None
 
                         if int(response['status_code']) >= 300:
                             error_count += 1
-                            self.dump_current_row(f'{row["System.Id"]} : {response}')
+                            self.dump_current_row(f'{row[asset_column]} : {response}')
                             links.append('')
                         else:
                             links.append(link)                            
@@ -209,16 +230,7 @@ class DirectLink():
     
     def create_direct_link(self, **kwargs):
 
-        isDevModeEnabled = kwargs.get('IsDevModeEnabled') or self.isDevModeEnabled
-        isEmbedCode = kwargs.get('IsEmbedCode') or self.isEmbedCode
-        isUniqueLink = kwargs.get('IsUniqueLink') or self.isUniqueLink
-        linkName = kwargs.get('LinkName') or self.linkName
-        turnSubtitlesOn = kwargs.get('TurnSubtitlesOn') or self.turnSubtitlesOn
-        chosenLanguages = kwargs.get('ChosenLanguages') or self.chosenLanguages
-        file_format = kwargs.get('Format') or self.file_format
-        file_height = kwargs.get('Height') or self.file_height
-        file_width = kwargs.get('Width') or self.file_width
-        file_type = kwargs.get('Type') or self.file_type
+        file_format = kwargs.get('format') or self.file_format
         asset_id = kwargs.get('asset_id') or self.asset_id
 
         bulk = kwargs.get('bulk') or False
@@ -227,22 +239,15 @@ class DirectLink():
             {
                 "renditionSettings": {
                     "size": {
-                        "type": file_type,
-                        "width": file_width,
-                        "height": file_height
-                        },
+                        "type": "Original"
+                    },
                     "format": file_format
                 },
                 "linkSettings": {
-                    "isDevModeEnabled": isDevModeEnabled,
-                    "linkName": linkName,
-                    "isEmbedCode": isEmbedCode,
-                    "isUniqueLink": isUniqueLink,
-                    "turnSubtitlesOn": turnSubtitlesOn,
-                    "chosenLanguages": chosenLanguages
+                    "linkName": "Default"
                 }
             }
-        
+
         response = self.sdk_handle.direct_link.create(
             auth=self.session.access_token,
             object_id=asset_id,
