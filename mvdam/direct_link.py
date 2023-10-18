@@ -7,6 +7,7 @@ import logger
 import pandas as pd
 from tqdm import tqdm
 import uuid
+import sys
 
 from mvdam.bulk import Bulk
 from mvdam.session_manager import current_session
@@ -34,10 +35,11 @@ class DirectLink():
         self.session = current_session
         self.verb = verb
         self.asset_id = kwargs.get('asset_id')
-        self.input_csv = kwargs.get('input_csv')
-        self.output_csv = kwargs.get('output_csv')
+        self.input_file = kwargs.get('input_file')
+        self.output_file = kwargs.get('output_file')
         self.offset = kwargs.get('offset') or 0
         self.asset_identifier = kwargs.get('asset_identifier') or None
+        self.sync = kwargs.get('sync') or False
 
         self.file_format = 'JPEG'
 
@@ -117,7 +119,7 @@ class DirectLink():
         bulk = Bulk(self.session)
 
         # open the csv file within context
-        with open(self.input_csv, 'r') as f:
+        with open(self.input_file, 'r') as f:
             df = pd.read_csv(f)
 
             if self.asset_identifier:
@@ -125,11 +127,11 @@ class DirectLink():
             else:
                 asset_column = 'System.Id'
             try:
-                df_temp = df[[asset_column]]
+                _ = df[[asset_column]]
             except KeyError:
                 self.log.error('Column %s not present in %s. Please use --asset-identifier to set asset-id containing column.',
-                               asset_column, self.input_csv)
-                exit()
+                               asset_column, self.input_file)
+                sys.exit()
 
             df_export = pd.DataFrame()
 
@@ -157,7 +159,7 @@ class DirectLink():
                     try:
                         _ = uuid.UUID(asset_id)
                     except ValueError:
-                        self.log.error('Invalid ID in %s:%s. Please check an verify.', self.input_csv, i+index)
+                        self.log.error('Invalid ID in %s:%s. Please check an verify.', self.input_file, i+index)
                         exit()
 
                     type = row['File Type']
@@ -167,47 +169,86 @@ class DirectLink():
 
                 # Send the BulkRequest object to the bulk handle
                 request = bulk_request.get_payload()
-                response = bulk.post(request)
 
-                bulk_response = BulkResponse(response)
+                if self.sync:
+                    response = ic(bulk.post(bulk_requests=request, sync=True))
 
-                self.log.info('Create DirectLinks Response status = [%s], returned in [%s]',
-                              response.status_code, response.elapsed)
-                try:
-                    self.log.debug(bulk_response.get_response)
-                except TypeError:
-                    self.log.error('Request:\n%s', request)
-                    self.log.error('Response:\n%s', response.text)
+                    bulk_response = BulkResponse(response)
 
-                links = []
-
-                # Process the response and add the links to the dataframe
-                for index, row in tqdm(df_batch.iterrows(), total=df_batch.shape[0], desc='Processing response...'):
+                    self.log.info('Create DirectLinks (synchronous) status = [%s], returned in [%s]',
+                                  response.status_code, response.elapsed)
                     try:
-                        response = bulk_response.post_response[index % batch_size]
+                        self.log.debug(bulk_response.get_response)
+                    except TypeError:
+                        self.log.error('Request:\n%s', request)
+                        self.log.error('Response:\n%s', response.text)
 
+                    links = []
+
+                    # Process the response and add the links to the dataframe
+                    for index, row in tqdm(df_batch.iterrows(), total=df_batch.shape[0], desc='Processing response...'):
                         try:
-                            payload = response['payload']
-                            link = json.loads(payload)['cdnLink']
-                        except KeyError as key_error:
-                            self.log.error('Cannot access payload of response; %s', key_error)
-                            link = None
+                            response = bulk_response.post_response[index % batch_size]
 
-                        if int(response['status_code']) >= 300:
-                            error_count += 1
-                            self.dump_current_row(f'{row[asset_column]} : {response}')
+                            try:
+                                payload = response['payload']
+                                link = json.loads(payload)['cdnLink']
+                            except KeyError as key_error:
+                                self.log.error('Cannot access payload of response; %s', key_error)
+                                link = None
+
+                            if int(response['status_code']) >= 300:
+                                error_count += 1
+                                self.dump_current_row(f'{row[asset_column]} : {response}')
+                                links.append('')
+                            else:
+                                links.append(link)                            
+                        except IndexError:
                             links.append('')
-                        else:
-                            links.append(link)                            
-                    except IndexError:
-                        links.append('')
 
-                df_batch = df_batch.assign(Links=links)
-                df_export = pd.concat((df_export, df_batch), axis=0)
+                    df_batch = df_batch.assign(Links=links)
+                    df_export = pd.concat((df_export, df_batch), axis=0)
 
-                self.log.info("Writing to %s", self.output_csv)
+                    self.log.info("Writing to %s", self.output_file)
 
-                df_export.to_csv(self.output_csv, index=False)
+                    df_export.to_csv(self.output_file, index=False)
+
+                else:
+                    response = bulk.post(bulk_requests=request, sync=False)
+
+                    print(response.text)
+
+                    self.log.info('Create DirectLinks (asynchronous) status = [%s], returned in [%s]',
+                                  response.status_code, response.elapsed)
+
+    def export(self):
+        """
+        Execute the asset GET call with the Asset object.
+        """
+        if not self.output_file:
+            self.log.error('No file specified for output. Please set --output-csv flag.')
+            sys.exit()
+
+        try:
+            with open(self.output_file, 'wb') as file: 
+                response = self.sdk_handle.direct_link.export(
+                    auth=self.session.access_token,
+                    object_id=self.asset_id
+                    )
+                
+                total_size_in_bytes = int(response.headers.get('content-length', 0))
+                block_size = 1024
+                progress_bar = tqdm(total=total_size_in_bytes, unit='iB', unit_scale=True)
+                with open(self.output_file, 'wb') as file:
+                    for data in response.iter_content(block_size):
+                        progress_bar.update(len(data))
+                        file.write(data)
+                progress_bar.close()
+                if total_size_in_bytes != 0 and progress_bar.n != total_size_in_bytes:
+                    self.log.error("ERROR, something went wrong")
+
+        except IOError:
+            self.log.error('Could not write to %s. Please check write permissions and try again.', self.output_file)
 
     # --------------
     # GENERIC ACTION

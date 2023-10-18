@@ -291,7 +291,7 @@ get"""
             show_default=False
             )
         ] = None,
-    input_csv: Annotated[
+    input_file: Annotated[
         Optional[str],
         typer.Option(
             help='The filename of the input csv for use with get-direct-links-with-csv option.',
@@ -299,7 +299,7 @@ get"""
             show_default=False
             )
         ] = "",
-    output_csv: Annotated[
+    output_file: Annotated[
         Optional[str],
         typer.Option(
             help='The filename of the output csv for use with set-keywords-with-csv option.',
@@ -322,6 +322,14 @@ get"""
             show_default=False
             )
         ] = None,
+    synchronous: Annotated[
+        Optional[bool],
+        typer.Option(
+            help='Option to indicating synchronous rather than asynchronous operation.',
+            rich_help_panel="Single",
+            show_default=False
+            )
+        ] = False,
     verbose: Annotated[
         bool,
         typer.Option(
@@ -344,8 +352,8 @@ get"""
         log.debug("active session found")
         from mvdam.direct_link import DirectLink
         action = action.lower()
-        DirectLink(action, asset_id=asset_id, input_csv=input_csv, output_csv=output_csv,
-                   offset=offset, asset_identifier=asset_identifier).action()
+        DirectLink(action, asset_id=asset_id, input_file=input_file, output_file=output_file,
+                   offset=offset, asset_identifier=asset_identifier, sync=synchronous).action()
 
     else:
         log.debug("no active session found")

@@ -33,7 +33,8 @@ class Bulk():
         def decorator(func):
             @wraps(func)
             def wrapper(*args, **kwargs):
-                retries = 5
+                retries = 0
+                max_retries = 5
                 delay = initial_delay
                 while retries < max_retries:
                     try:
@@ -53,13 +54,16 @@ class Bulk():
         return decorator
     
     @retry(max_retries=3)
-    def post(self, bulk_requests: dict):
+    def post(self, **kwargs):
         """
         """
+        bulk_requests: dict = kwargs.get('bulk_requests')
+        sync: bool = kwargs.get('sync')
         response = self.sdk_handle.bulk.post(
             headers=bulk_requests['headers'],
             data=bulk_requests['payload'],
-            auth=self.access_token
+            auth=self.access_token,
+            sync=sync
             )
 
         if response.status_code in [429, 500]:
