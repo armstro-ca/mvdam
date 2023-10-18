@@ -11,7 +11,7 @@ from mvdam.sdk_handler import sdk_handle
 
 class Category():
 
-    def __init__(self, verb: str, category_id: str, csv: str):
+    def __init__(self, verb: str, category_id: str, **kwargs):
         """
         Initialise the KeywordGroup class
 
@@ -28,7 +28,7 @@ class Category():
         self.session = current_session
         self.verb = verb
         self.category = category_id
-        self.csv = csv
+        self.output_csv = kwargs.get('output_csv') or None
 
         self.sdk_handle = sdk_handle
 
@@ -50,12 +50,20 @@ class Category():
         """
         assets = []
 
+        if self.output_csv:
+            try:
+                with open(self.output_csv, 'w') as f:
+                    pass
+            except IOError:
+                self.log.error('CSV file %s is not writable. Exiting...', self.output_csv)
+                exit()
+
         for asset in self.get_category_assets():
             assets.append(asset['id'])
 
-        if self.csv:
+        if self.output_csv:
             df = pd.DataFrame(assets, columns=['System.Id'])
-            df.to_csv(self.csv, index=False, encoding='utf-8')
+            df.to_csv(self.output_csv, index=False, encoding='utf-8')
 
         return assets
     
@@ -114,19 +122,19 @@ class Category():
     # --------------
 
     def get_category_assets(self) -> dict:
-        count = 100
+        batch_size = 1000
         offset = 0
 
         assets = []
 
         self.log.info('Discovering assets for category id [%s]', self.category)
         
-        while offset % count == 0:
+        while offset % batch_size == 0:
             response = self.sdk_handle.category.get_assets(
                 auth=self.session.access_token,
                 object_id=self.category,
                 params={
-                    'count': count,
+                    'count': batch_size,
                     'offset': offset
                     }
                 )
