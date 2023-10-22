@@ -8,6 +8,7 @@ import logger
 from functools import wraps
 import time
 
+from mvdam.session_manager import current_session
 from mvdam.sdk_handler import sdk_handle
 
 
@@ -17,11 +18,11 @@ class Bulk():
 
     """
 
-    def __init__(self, access_token: str):
+    def __init__(self):
 
         self.log = logger.get_logger(__name__)
 
-        self.access_token = access_token
+        self.session = current_session
 
         self.sdk_handle = sdk_handle
 
@@ -34,16 +35,20 @@ class Bulk():
             @wraps(func)
             def wrapper(*args, **kwargs):
                 retries = 0
-                max_retries = 5
                 delay = initial_delay
                 while retries < max_retries:
                     try:
                         return func(*args, **kwargs)
                     except ValueError as e:
-                        print(f"Caught an exception: {e}")
+                        print("Caught an exception: %s", e)
                         retries += 1
+                        if current_session.has_expired:
+                            print("Session has expired. Refreshing token.")
+                            session_refresh_success = current_session.refresh_session()
+                            print("Session refresh %s.", 'successful' if session_refresh_success else 'unsuccessful')
+
                         if retries < max_retries:
-                            print(f"Retrying in {delay} seconds...")
+                            print("Retrying in %s seconds...", delay)
                             time.sleep(delay)
                             delay *= backoff
                         else:
@@ -58,15 +63,14 @@ class Bulk():
         """
         """
         bulk_requests: dict = kwargs.get('bulk_requests')
-        sync: bool = kwargs.get('sync')
+
         response = self.sdk_handle.bulk.post(
             headers=bulk_requests['headers'],
             data=bulk_requests['payload'],
-            auth=self.access_token,
-            sync=sync
+            auth=self.session.access_token
             )
 
         if response.status_code in [429, 500]:
-            raise ValueError('Response requires backoff')
+            raise ValueError(f'Response requires backoff [{response.status_code}]')
         else:
             return response
