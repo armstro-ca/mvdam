@@ -50,8 +50,15 @@ class Session:
 
             return session_update
 
+    def refresh_session(self) -> bool:
+        try:
+            log.debug('Refreshing session...')
+            return Connect('refresh', client_id=None, client_secret=None, refresh_token=self.session['refresh_token']).action()
 
-        return False
+        except Exception as error:
+            log.error('Session refresh failed: %s', error)
+            return False
+
 
     def read_session(self) -> dict:
         try:
@@ -73,6 +80,13 @@ class Session:
         decoded_data = jwt.decode(jwt=token, algorithms='RS256', options={"verify_signature": False})
 
         return float(decoded_data['exp'])
+
+    @property
+    def has_expired(self) -> bool:
+        """
+        Takes JWT from auth token and returns the boolean to indicate whether it it valid
+        """
+        return True if self.expiry <= time.time() else False
 
     @property
     def access_token(self) -> str:
