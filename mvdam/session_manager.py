@@ -9,6 +9,7 @@ log = logger.get_logger(__name__)
 
 
 class Session:
+    
     def __init__(self):
         """
         Loads local session file
@@ -53,7 +54,12 @@ class Session:
     def refresh_session(self) -> bool:
         try:
             log.debug('Refreshing session...')
-            return Connect('refresh', client_id=None, client_secret=None, refresh_token=self.session['refresh_token']).action()
+            try:
+                Connect('refresh', client_id=None, client_secret=None, refresh_token=self.session['refresh_token']).action()
+                self.session = self.read_session()
+            except Exception:
+                return False
+            return True
 
         except Exception as error:
             log.error('Session refresh failed: %s', error)
@@ -93,6 +99,9 @@ class Session:
         """
         Returns raw JWT access token
         """
+        if self.has_expired:
+            self.refresh_session()
+
         return self.session["access_token"]
 
 

@@ -9,7 +9,7 @@ from functools import wraps
 import time
 
 from mvdam.session_manager import current_session
-from mvdam.sdk_handler import sdk_handle
+from mvdam.sdk_handler import SDK
 
 
 class Bulk():
@@ -22,9 +22,7 @@ class Bulk():
 
         self.log = logger.get_logger(__name__)
 
-        self.session = current_session
-
-        self.sdk_handle = sdk_handle
+        self.sdk_handle = SDK().handle
 
     # --------------
     # BULK
@@ -67,10 +65,11 @@ class Bulk():
         response = self.sdk_handle.bulk.post(
             headers=bulk_requests['headers'],
             data=bulk_requests['payload'],
-            auth=self.session.access_token
+            auth=current_session.access_token
             )
 
         if response.status_code in [429, 500]:
+            self.log.warn('API returned sub-optimal response [%s].', response.status_code)
             raise ValueError(f'Response requires backoff [{response.status_code}]')
         else:
             return response

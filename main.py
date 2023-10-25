@@ -11,12 +11,18 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-from mvdam.sdk_handler import initialise_sdk
+from mvdam.sdk_handler import SDK
+
+log = logger.get_logger(__name__)
+log.info("MVDAM initiated...")
 
 auth_url = os.getenv('MVAPIAUTHURL')
 base_url = os.getenv('MVAPIBASEURL')
 
-initialise_sdk(auth_url=auth_url, base_url=base_url)
+sdk = SDK(auth_url=auth_url, base_url=base_url)
+
+log.debug('Auth URL: %s', sdk.auth_url)
+log.debug('Base URL: %s', sdk.base_url)
 
 from mvdam.session_manager import initalise_session
 
@@ -24,8 +30,6 @@ initalise_session()
 
 from mvdam.session_manager import current_session
 
-log = logger.get_logger(__name__)
-log.info("MVDAM initiated...")
 
 app = typer.Typer()
 

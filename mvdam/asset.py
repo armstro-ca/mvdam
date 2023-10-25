@@ -10,7 +10,7 @@ from tqdm import tqdm
 from mvdam.bulk import Bulk
 from mvdam.attribute import Attribute
 from mvdam.session_manager import current_session
-from mvdam.sdk_handler import sdk_handle
+from mvdam.sdk_handler import SDK
 
 from mvsdk.rest.bulk import BulkRequest, BulkResponse
 
@@ -66,7 +66,7 @@ class Asset():
         if self.bulk:
             self.bulk_request = BulkRequest()
 
-        self.sdk_handle = sdk_handle
+        self.sdk_handle = SDK().handle
 
         self.existing_keywords = {}
 
@@ -271,14 +271,14 @@ class Asset():
         This is a purpose built, bulk only, method.
         """
         # set the size of the bulk batches to post at any one time
-        batch_size: int = 500
+        batch_size: int = 200
         offset: int = self.offset
         error_count: int = 0
         error_limit: int = 5
         loc: int = 0
 
         # initiate instance of bulk endpoint
-        bulk = Bulk(self.session)
+        bulk = Bulk()
 
         # open the csv file within context
         with open(self.csv, 'r') as f:
@@ -315,7 +315,7 @@ class Asset():
                 # Send the BulkRequest object to the bulk handle
                 request = bulk_request.get_payload()
 
-                response = bulk.post(request)
+                response = bulk.post(bulk_requests=request, sync=True)
 
                 bulk_response = BulkResponse(response)
 
@@ -385,7 +385,7 @@ class Asset():
                     self.log.debug(request)
 
                     self.log.info('Making bulk addition request...')
-                    response = bulk.post(request)
+                    response = bulk.post(bulk_requests=request)
 
                     bulk_response = BulkResponse(response)
 
@@ -435,7 +435,7 @@ class Asset():
                     request = bulk_request.get_payload()
 
                     self.log.info('Making bulk deletion request...')
-                    response = bulk.post(request)
+                    response = bulk.post(bulk_requests=request)
 
                     bulk_response = BulkResponse(response)
 
@@ -508,7 +508,7 @@ class Asset():
 
             if isinstance(response, BulkRequest):
                 # initiate instance of bulk endpoint
-                _bulk = Bulk(self.session)
+                _bulk = Bulk()
 
                 # get contents of bulk object and post to sdk
                 _bulk.post(response.get_payload())

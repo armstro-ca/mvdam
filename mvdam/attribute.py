@@ -5,7 +5,7 @@ import json
 import logger
 
 from mvdam.session_manager import current_session
-from mvdam.sdk_handler import sdk_handle
+from mvdam.sdk_handler import SDK
 
 
 class Attribute():
@@ -27,7 +27,7 @@ class Attribute():
         self.session = current_session
         self.verb = verb
 
-        self.sdk_handle = sdk_handle
+        self.sdk_handle = SDK().handle
 
         self.verbs = [
             'get',

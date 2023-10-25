@@ -7,7 +7,7 @@ import json
 import logger
 
 from dotenv import load_dotenv
-from mvdam.sdk_handler import sdk_handle
+from mvdam.sdk_handler import SDK
 
 
 class Connect():
@@ -43,9 +43,10 @@ class Connect():
         self.password = kwargs.get('password') or os.getenv('MVPASSWORD')
         self.client_id = kwargs.get('client_id') or os.getenv('MVCLIENTID')
         self.client_secret = kwargs.get('client_secret') or os.getenv('MVCLIENTSECRET')
+        self.subscription_key = kwargs.get('subscription_key') or os.getenv('MVSUBSCRIPTIONKEY')
         self.refresh_token = kwargs.get('refresh_token')
 
-        self.sdk_handle = sdk_handle
+        self.sdk_handle = SDK().handle
 
     def auth(self) -> bool:
         """
@@ -72,19 +73,24 @@ class Connect():
                 auth=auth
                 )
 
-            if response.status_code == 200:
-                session_file = open('.session', 'w')
-                response_json = response.json()
-
-                session_file.write(json.dumps(response_json, default=str))
-                self.log.info('Auth successful')
-                return True
-            else:
+            if response.status_code != 200:
                 self.log.warning('Auth API response: %s', response.status_code)
+                self.log.debug('Auth URL: %s', self.sdk_handle.auth_url)
+                self.log.debug('Base URL: %s', self.sdk_handle.base_url)
+                self.log.debug('Data: %s', data)
+                self.log.debug('Auth: %s', auth)
                 return False
-
-        elif self.grant_type == 'auth-code':
-            self.log.warning("Auth-Code flow not yet implemented. Please use password flow.")
+            else:
+                try:
+                    with open('.session', 'w') as file:
+                        file.write(json.dumps(response.json(), default=str))
+                    self.log.info('Auth successful')
+                    return True
+                except IOError as error:
+                    self.log.error('Failure to write to session file: %s', error)
+                
+        else:
+            self.log.warning("Grant type %s not supported. Please use password flow.", self.grant_type)
 
     def refresh(self) -> bool:
         """
@@ -102,12 +108,8 @@ class Connect():
             )
 
         if response.status_code == 200:
-            session_file = open('.session', 'w')
-            response_json = response.json()
-
-            session_expiry = time.time() + response_json['expires_in']
-            response_json['expires_at'] = session_expiry
-            session_file.write(json.dumps(response_json, default=str))
+            with open('.session', 'w') as file:
+                file.write(json.dumps(response.json(), default=str))
             self.log.info('Auth API response: %s', {response.status_code})
             return True
         else:

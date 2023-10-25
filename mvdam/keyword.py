@@ -5,7 +5,7 @@ import json
 import logger
 
 from mvdam.session_manager import current_session
-from mvdam.sdk_handler import sdk_handle
+from mvdam.sdk_handler import SDK
 
 
 class Keyword():
@@ -28,7 +28,7 @@ class Keyword():
         self.verb = verb
         self.keywords = keywords
 
-        self.sdk_handle = sdk_handle
+        self.sdk_handle = SDK().handle
 
         self.verbs = [
             'get',
@@ -69,7 +69,7 @@ class Keyword():
 
             return keywords
 
-        elif response['status'] == 404:
+        elif response.status_code == 404:
             self.log.warning('404 returned')
         else:
             self.log.error('Error: %s', response)
