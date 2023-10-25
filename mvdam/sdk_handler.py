@@ -28,7 +28,7 @@ class SDK(object):
     @property
     def base_url(self) -> str:
         return self._base_url
-    
+
     @base_url.setter
     def base_url(self, base_url: str):
         self._base_url = base_url
@@ -36,7 +36,7 @@ class SDK(object):
     @property
     def handle(self) -> Client:
         return self._handle
-    
+
     @handle.setter
     def handle(self, handle: Client):
         self._handle = handle

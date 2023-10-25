@@ -1,12 +1,12 @@
 """
 CATEGORY module containing Category class
 """
+import json
 import logger
 import pandas as pd
-import json
 
 from mvdam.session_manager import current_session
-from mvdam.sdk_handler import sdk_handle
+from mvdam.sdk_handler import SDK
 
 
 class Category():
@@ -25,12 +25,11 @@ class Category():
         """
         self.log = logger.get_logger(__name__)
 
-        self.session = current_session
         self.verb = verb
         self.category = category_id
         self.output_csv = kwargs.get('output_csv') or None
 
-        self.sdk_handle = sdk_handle
+        self.sdk_handle = SDK().handle
 
         self.verbs = [
             'get-assets'
@@ -52,7 +51,7 @@ class Category():
 
         if self.output_csv:
             try:
-                with open(self.output_csv, 'w') as f:
+                with open(self.output_csv, 'w') as _:
                     pass
             except IOError:
                 self.log.error('CSV file %s is not writable. Exiting...', self.output_csv)
@@ -66,12 +65,13 @@ class Category():
             df.to_csv(self.output_csv, index=False, encoding='utf-8')
 
         return assets
-    
+
     def get_asset_keywords(self):
         """
-        Execute the category GET assets call with the Category object and return asset ids and keywords.
+        Execute the category GET assets call with the Category object
+        and return asset ids and keywords.
         """
-        if self.csv:
+        if self.output_csv:
             assets = []
             keywords = []
 
@@ -80,8 +80,8 @@ class Category():
                 keywords.append(", ".join(asset['keywords']))
 
             df = pd.DataFrame({'System.Id': assets, 'Keywords': keywords})
-            df.to_csv(self.csv, index=False, encoding='utf-8')
-            self.log.info('Data written to %s', self.csv)
+            df.to_csv(self.output_csv, index=False, encoding='utf-8')
+            self.log.info('Data written to %s', self.output_csv)
         else:
             assets = {}
 
@@ -94,9 +94,10 @@ class Category():
 
     def get_asset_attributes(self):
         """
-        Execute the category GET assets call with the Category object and return asset ids and keywords.
+        Execute the category GET assets call with the Category object
+        and return asset ids and keywords.
         """
-        if self.csv:
+        if self.output_csv:
             assets = []
             attributes = []
 
@@ -105,14 +106,14 @@ class Category():
                 attributes.append(", ".join(asset['attributes']))
 
             df = pd.DataFrame({'System.Id': assets, 'Arributes': attributes})
-            df.to_csv(self.csv, index=False, encoding='utf-8')
-            self.log.info('Data written to %s', self.csv)
+            df.to_csv(self.output_csv, index=False, encoding='utf-8')
+            self.log.info('Data written to %s', self.output_csv)
         else:
             assets = {}
 
             for asset in self.get_category_assets():
                 assets[asset['id']] = ", ".join(asset['keywords'])
-            
+
             self.log.info(json.dumps(assets, indent=4))
 
             return assets
@@ -128,17 +129,17 @@ class Category():
         assets = []
 
         self.log.info('Discovering assets for category id [%s]', self.category)
-        
+
         while offset % batch_size == 0:
             response = self.sdk_handle.category.get_assets(
-                auth=self.session.access_token,
+                auth=current_session.access_token,
                 object_id=self.category,
                 params={
                     'count': batch_size,
                     'offset': offset
                     }
                 )
-            
+
             if 200 <= response.status_code < 300:
                 assets.extend(response.json()['payload']['assets'])
 

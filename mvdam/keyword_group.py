@@ -5,7 +5,7 @@ import json
 import logger
 
 from mvdam.session_manager import current_session
-from mvdam.sdk_handler import sdk_handle
+from mvdam.sdk_handler import SDK
 
 
 class KeywordGroup():
@@ -24,11 +24,10 @@ class KeywordGroup():
         """
         self.log = logger.get_logger(__name__)
 
-        self.session = current_session
         self.verb = verb
         self.keyword_group = keyword_group
 
-        self.sdk_handle = sdk_handle
+        self.sdk_handle = SDK().handle
 
         self.verbs = [
             'get',
@@ -45,16 +44,16 @@ class KeywordGroup():
         Execute the asset GET call with the Asset object.
         """
         response = self.sdk_handle.keyword_group.get(
-            auth=self.session.access_token
+            auth=current_session.access_token
             )
-        
+
         response_json = response.json()
 
         if 200 <= response.status_code < 300:
             keyword_groups = {}
             for keyword_group in response_json['payload']:
                 keyword_groups[keyword_group['id']] = keyword_group['name']
-            
+
             print(f'Keywords available:\n{json.dumps(keyword_groups, indent=4)}')
 
             return response

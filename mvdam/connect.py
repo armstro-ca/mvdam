@@ -2,7 +2,6 @@
 CONNECT module containing Connect class
 """
 import os
-import time
 import json
 import logger
 
@@ -88,9 +87,10 @@ class Connect():
                     return True
                 except IOError as error:
                     self.log.error('Failure to write to session file: %s', error)
-                
+
         else:
-            self.log.warning("Grant type %s not supported. Please use password flow.", self.grant_type)
+            self.log.warning("Grant type %s not supported. Please use password flow.",
+                             self.grant_type)
 
     def refresh(self) -> bool:
         """

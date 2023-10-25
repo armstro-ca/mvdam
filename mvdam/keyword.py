@@ -24,7 +24,6 @@ class Keyword():
         """
         self.log = logger.get_logger(__name__)
 
-        self.session = current_session
         self.verb = verb
         self.keywords = keywords
 
@@ -46,7 +45,7 @@ class Keyword():
         """
         for keyword in self.keywords.split(','):
             self.sdk_handle.keyword.create(
-                auth=self.session.access_token,
+                auth=current_session.access_token,
                 data=keyword)
 
     def get(self):
@@ -54,7 +53,7 @@ class Keyword():
         Execute the asset GET call with the Asset object.
         """
         response = self.sdk_handle.keyword.get(
-            auth=self.session.access_token
+            auth=current_session.access_token
             )
 
         if 200 <= response.status_code < 300:

@@ -55,7 +55,6 @@ class Asset():
         """
         self.log = logger.get_logger(__name__)
 
-        self.session = current_session
         self.verb = verb
         self.asset_id = asset_id
         self.csv = csv
@@ -87,9 +86,9 @@ class Asset():
         """
         Execute the GET asset call with the Asset object.
         """
-        ic(self.sdk_handle.asset.get(
+        self.sdk_handle.asset.get(
             object_id=self.asset_id
-            ))
+            )
 
     def delete(self):
         """
@@ -390,7 +389,7 @@ class Asset():
                     bulk_response = BulkResponse(response)
 
                     self.log.info('Add Keywords Response status = [%s], returned in [%s]',
-                                response.status_code, response.elapsed)
+                                  response.status_code, response.elapsed)
 
                     if response.status_code != 200:
                         self.log.debug('Request:\n%s', request)
@@ -403,8 +402,6 @@ class Asset():
                             self.dump_current_row(response)
                 else:
                     self.log.info('No change detected. Skipping.')
-
-                
 
                 #   Deletions second
                 bulk_request = BulkRequest()
@@ -440,7 +437,7 @@ class Asset():
                     bulk_response = BulkResponse(response)
 
                     self.log.info('Delete Keywords Response status = [%s], returned in [%s]',
-                                response.status_code, response.elapsed)
+                                  response.status_code, response.elapsed)
 
                     if response.status_code != 200:
                         self.log.debug('Request:\n%s', request)
@@ -470,7 +467,7 @@ class Asset():
 
         response = self.get_asset_attributes(asset_id=self.asset_id)
 
-        existing_attributes = Attribute(self.session).get()
+        existing_attributes = Attribute(current_session).get()
 
         attributes = {}
 
@@ -530,7 +527,8 @@ class Asset():
             )
 
         if not bulk and response.status_code != 200:
-            self.log.warning('API response to get existing asset keyword request not optimal: [%s]', response.status_code)
+            self.log.warning('API response to get existing asset keyword request not optimal: [%s]',
+                             response.status_code)
             self.log.debug(response.text)
             self.log.info('Exiting...')
             exit()

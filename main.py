@@ -24,9 +24,9 @@ sdk = SDK(auth_url=auth_url, base_url=base_url)
 log.debug('Auth URL: %s', sdk.auth_url)
 log.debug('Base URL: %s', sdk.base_url)
 
-from mvdam.session_manager import initalise_session
+from mvdam.session_manager import initialise_session
 
-initalise_session()
+initialise_session()
 
 from mvdam.session_manager import current_session
 
@@ -215,8 +215,8 @@ def auth(
     from mvdam.connect import Connect
 
     log.debug('executing auth (type: %s)', grant_type)
-    Connect('auth', username=username, password=password, client_id=client_id, client_secret=client_secret,
-            grant_type=grant_type).action()
+    Connect('auth', username=username, password=password, client_id=client_id,
+            client_secret=client_secret, grant_type=grant_type).action()
 
 
 @app.command()
@@ -364,7 +364,7 @@ get"""
 
         print('Session not valid. Please use "mvdam auth" to ',
               'obtain a valid session first.')
-        
+
 
 @app.command()
 def keyword(

@@ -9,7 +9,7 @@ log = logger.get_logger(__name__)
 
 
 class Session:
-    
+
     def __init__(self):
         """
         Loads local session file
@@ -24,7 +24,7 @@ class Session:
             if self.expiry >= time.time():
                 log.debug('Session expiry (%s) later than current time (%s)',
                           self.expiry, time.time())
-                
+
                 session_update = Connect('refresh', client_id=None, client_secret=None,
                                          refresh_token=self.session['refresh_token']).action()
 
@@ -45,7 +45,8 @@ class Session:
 
         except KeyError:
             log.info('No valid session found.')
-            session_update = Connect('auth', client_id=None, client_secret=None, grant_type='password').action()
+            session_update = Connect('auth', client_id=None, client_secret=None,
+                                     grant_type='password').action()
 
             self.session = self.read_session()
 
@@ -55,7 +56,8 @@ class Session:
         try:
             log.debug('Refreshing session...')
             try:
-                Connect('refresh', client_id=None, client_secret=None, refresh_token=self.session['refresh_token']).action()
+                Connect('refresh', client_id=None, client_secret=None,
+                        refresh_token=self.session['refresh_token']).action()
                 self.session = self.read_session()
             except Exception:
                 return False
@@ -64,7 +66,6 @@ class Session:
         except Exception as error:
             log.error('Session refresh failed: %s', error)
             return False
-
 
     def read_session(self) -> dict:
         try:
@@ -83,7 +84,8 @@ class Session:
         Takes JWT from auth token and returns the unix timestamp for the expiry
         """
         token = self.session['access_token']
-        decoded_data = jwt.decode(jwt=token, algorithms='RS256', options={"verify_signature": False})
+        decoded_data = jwt.decode(jwt=token, algorithms='RS256',
+                                  options={"verify_signature": False})
 
         return float(decoded_data['exp'])
 
@@ -108,7 +110,7 @@ class Session:
 current_session = None
 
 
-def initalise_session():
+def initialise_session():
     """
     Initialiser for Session object
     """

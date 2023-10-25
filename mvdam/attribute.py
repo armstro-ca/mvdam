@@ -24,7 +24,6 @@ class Attribute():
         """
         self.log = logger.get_logger(__name__)
 
-        self.session = current_session
         self.verb = verb
 
         self.sdk_handle = SDK().handle
@@ -44,7 +43,7 @@ class Attribute():
         Execute the asset GET call with the Asset object.
         """
         response = self.sdk_handle.attribute.get(
-            auth=self.session.access_token
+            auth=current_session.access_token
             )
 
         if 200 <= response.status_code < 300:
