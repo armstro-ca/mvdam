@@ -4,12 +4,13 @@ KEYWORD module containing Keyword class
 import json
 import logger
 
-from mvsdk.rest import Client
+from mvdam.session_manager import current_session
+from mvdam.sdk_handler import SDK
 
 
 class KeywordGroup():
 
-    def __init__(self, session: dict, verb: str, keyword_group: str):
+    def __init__(self, verb: str, keyword_group: str):
         """
         Initialise the KeywordGroup class
 
@@ -23,11 +24,10 @@ class KeywordGroup():
         """
         self.log = logger.get_logger(__name__)
 
-        self.session = session
         self.verb = verb
         self.keyword_group = keyword_group
 
-        self.sdk_handle = Client()
+        self.sdk_handle = SDK().handle
 
         self.verbs = [
             'get',
@@ -39,25 +39,22 @@ class KeywordGroup():
     # KEYWORD
     # --------------
 
-    def create(self):
-        """
-        Execute the asset GET call with the Asset object.
-        """
-        for keyword in self.keywords.split(','):
-            self.sdk_handle.keyword.create(
-                auth=self.session["json"]["access_token"],
-                data=keyword)
-
     def get(self):
         """
         Execute the asset GET call with the Asset object.
         """
         response = self.sdk_handle.keyword_group.get(
-            auth=self.session["access_token"]
+            auth=current_session.access_token
             )
 
+        response_json = response.json()
+
         if 200 <= response.status_code < 300:
-            self.log.info(json.dumps(response.json(), indent=4))
+            keyword_groups = {}
+            for keyword_group in response_json['payload']:
+                keyword_groups[keyword_group['id']] = keyword_group['name']
+
+            print(f'Keywords available:\n{json.dumps(keyword_groups, indent=4)}')
 
             return response
 

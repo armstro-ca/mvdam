@@ -5,17 +5,13 @@ import json
 import pathlib
 import logger
 import pandas as pd
-
-import os
-from dotenv import load_dotenv
-
-from icecream import ic
 from tqdm import tqdm
 
 from mvdam.bulk import Bulk
 from mvdam.attribute import Attribute
+from mvdam.session_manager import current_session
+from mvdam.sdk_handler import SDK
 
-from mvsdk.rest import Client
 from mvsdk.rest.bulk import BulkRequest, BulkResponse
 
 
@@ -44,8 +40,8 @@ class Asset():
 
     """
 
-    def __init__(self, session: dict, verb: str, asset_id: str,
-                 csv: str, keywords: str, bulk: bool = None, **kwargs):
+    def __init__(self, verb: str, asset_id: str, csv: str, keywords: str,
+                 offset: int = None, bulk: bool = None, **kwargs):
         """
         Initialise the Asset class
 
@@ -59,22 +55,17 @@ class Asset():
         """
         self.log = logger.get_logger(__name__)
 
-        self.session = session
         self.verb = verb
         self.asset_id = asset_id
         self.csv = csv
+        self.offset = offset
         self.keywords = keywords
         self.bulk = bulk
 
         if self.bulk:
             self.bulk_request = BulkRequest()
 
-        load_dotenv()
-
-        self.auth_url = kwargs.get('auth_url') or os.getenv('MVAPIAUTHURL')
-        self.base_url = kwargs.get('base_url') or os.getenv('MVAPIBASEURL')
-
-        self.sdk_handle = Client(auth_url=self.auth_url, base_url=self.base_url)
+        self.sdk_handle = SDK().handle
 
         self.existing_keywords = {}
 
@@ -95,9 +86,9 @@ class Asset():
         """
         Execute the GET asset call with the Asset object.
         """
-        ic(self.sdk_handle.asset.get(
+        self.sdk_handle.asset.get(
             object_id=self.asset_id
-            ))
+            )
 
     def delete(self):
         """
@@ -132,7 +123,7 @@ class Asset():
         response = self.sdk_handle.asset.create_keywords(
             data=json.dumps(keywords.split(',')),
             object_id=asset_id,
-            auth=self.session["access_token"],
+            auth=current_session.access_token,
             bulk=bulk
             )
 
@@ -173,7 +164,7 @@ class Asset():
                 response = self.sdk_handle.asset.delete_keyword(
                     object_id=asset_id,
                     object_action=f'keywords/{self.existing_keywords[keyword]}',
-                    auth=self.session["access_token"],
+                    auth=current_session.access_token,
                     bulk=True if bulk else False
                     )
 
@@ -279,18 +270,31 @@ class Asset():
         This is a purpose built, bulk only, method.
         """
         # set the size of the bulk batches to post at any one time
-        batch_size: int = 100
+        batch_size: int = 200
+        offset: int = self.offset
         error_count: int = 0
+        error_limit: int = 5
+        loc: int = 0
 
         # initiate instance of bulk endpoint
-        bulk = Bulk(self.session)
+        bulk = Bulk()
 
         # open the csv file within context
         with open(self.csv, 'r') as f:
             df = pd.read_csv(f)
 
             # create batches of get keyword requests to calculate deltas
-            for i in range(0, len(df), batch_size):
+            for i in range(offset, len(df), batch_size):
+                self.log.info('Processing in batches of %s Batch: %s to %s',
+                              batch_size,
+                              offset+(loc*batch_size),
+                              offset+((loc+1)*batch_size)
+                              )
+                loc += 1
+
+                if error_count > 0:
+                    self.log.info('Error encountered: %s of %s allowable', error_count, error_limit)
+
                 df_batch = df.iloc[i:i + batch_size]
 
                 bulk_request = BulkRequest()
@@ -310,7 +314,7 @@ class Asset():
                 # Send the BulkRequest object to the bulk handle
                 request = bulk_request.get_payload()
 
-                response = bulk.post(request)
+                response = bulk.post(bulk_requests=request, sync=True)
 
                 bulk_response = BulkResponse(response)
 
@@ -328,7 +332,7 @@ class Asset():
 
                         if int(response['status_code']) >= 300:
                             error_count += 1
-                            self.dump_current_row(response)
+                            self.dump_current_row(f'{row["System.Id"]} : {response}')
                             missing_keywords.append('')
                             surplus_keywords.append('')
                         else:
@@ -378,24 +382,26 @@ class Asset():
                 if bulk_request.get_request_count():
                     request = bulk_request.get_payload()
                     self.log.debug(request)
+
+                    self.log.info('Making bulk addition request...')
+                    response = bulk.post(bulk_requests=request)
+
+                    bulk_response = BulkResponse(response)
+
+                    self.log.info('Add Keywords Response status = [%s], returned in [%s]',
+                                  response.status_code, response.elapsed)
+
+                    if response.status_code != 200:
+                        self.log.debug('Request:\n%s', request)
+                        self.log.debug('Response:\n%s', response.text)
+
+                    for response in bulk_response.post_response:
+                        if int(response['status_code']) >= 300:
+                            error_count += 1
+                            self.dump_current_row(request)
+                            self.dump_current_row(response)
                 else:
-                    self.log.debug('No requests to post. Skipping.')
-
-                self.log.info('Making bulk addition request...')
-                response = bulk.post(request)
-
-                bulk_response = BulkResponse(response)
-
-                self.log.info('Add Keywords Response status = [%s], returned in [%s]',
-                              response.status_code, response.elapsed)
-
-                if response.status_code != 200:
-                    self.log.debug(response.text)
-
-                for response in bulk_response.post_response:
-                    if int(response['status_code']) >= 300:
-                        error_count += 1
-                        self.dump_current_row(response)
+                    self.log.info('No change detected. Skipping.')
 
                 #   Deletions second
                 bulk_request = BulkRequest()
@@ -424,25 +430,27 @@ class Asset():
                 #    First check there's anything to actually send
                 if bulk_request.get_request_count():
                     request = bulk_request.get_payload()
-                    self.log.debug(request)
+
+                    self.log.info('Making bulk deletion request...')
+                    response = bulk.post(bulk_requests=request)
+
+                    bulk_response = BulkResponse(response)
+
+                    self.log.info('Delete Keywords Response status = [%s], returned in [%s]',
+                                  response.status_code, response.elapsed)
+
+                    if response.status_code != 200:
+                        self.log.debug('Request:\n%s', request)
+                        self.log.debug('Response:\n%s', response.text)
+
+                    for response in bulk_response.post_response:
+                        if int(response['status_code']) >= 300:
+                            error_count += 1
+                            self.dump_current_row(request)
+                            self.dump_current_row(response)
+
                 else:
-                    self.log.debug('No requests to post. Skipping.')
-
-                self.log.info('Making bulk deletion request...')
-                response = bulk.post(request)
-
-                bulk_response = BulkResponse(response)
-
-                self.log.info('Delete Keywords Response status = [%s], returned in [%s]',
-                              response.status_code, response.elapsed)
-
-                if response.status_code != 200:
-                    self.log.debug(response.text)
-
-                for response in bulk_response.post_response:
-                    if int(response['status_code']) >= 300:
-                        error_count += 1
-                        self.dump_current_row(response)
+                    self.log.info('No change detected. Skipping.')
 
     # --------------
     # ASSET ATTRIBUTES
@@ -459,7 +467,7 @@ class Asset():
 
         response = self.get_asset_attributes(asset_id=self.asset_id)
 
-        existing_attributes = Attribute(self.session).get()
+        existing_attributes = Attribute(current_session).get()
 
         attributes = {}
 
@@ -497,7 +505,7 @@ class Asset():
 
             if isinstance(response, BulkRequest):
                 # initiate instance of bulk endpoint
-                _bulk = Bulk(self.session)
+                _bulk = Bulk()
 
                 # get contents of bulk object and post to sdk
                 _bulk.post(response.get_payload())
@@ -514,12 +522,14 @@ class Asset():
     def get_asset_keywords(self, asset_id: str, bulk: bool = False):
         response = self.sdk_handle.asset.get_keywords(
             object_id=asset_id,
-            auth=self.session["access_token"],
+            auth=current_session.access_token,
             bulk=bulk
             )
 
         if not bulk and response.status_code != 200:
-            self.log.warning('API response to get existing asset keyword request not optimal: [%s]', response.status_code)
+            self.log.warning('API response to get existing asset keyword request not optimal: [%s]',
+                             response.status_code)
+            self.log.debug(response.text)
             self.log.info('Exiting...')
             exit()
 
@@ -568,14 +578,14 @@ class Asset():
 
         try:
             with file.open(mode='a') as f:
-                f.write(str(response))
+                f.write(f'{str(response)}\n\r')
         except OSError as error:
             self.log.error("Writing to file %s failed due to: %s", file, error)
 
     def get_asset_attributes(self, asset_id: str, bulk: bool = False):
         response = self.sdk_handle.asset.get_attributes(
             object_id=asset_id,
-            auth=self.session["access_token"],
+            auth=current_session.access_token,
             bulk=bulk
             )
 

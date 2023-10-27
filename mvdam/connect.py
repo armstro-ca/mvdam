@@ -2,12 +2,11 @@
 CONNECT module containing Connect class
 """
 import os
-import time
 import json
 import logger
 
 from dotenv import load_dotenv
-from mvsdk.rest import Client
+from mvdam.sdk_handler import SDK
 
 
 class Connect():
@@ -43,13 +42,12 @@ class Connect():
         self.password = kwargs.get('password') or os.getenv('MVPASSWORD')
         self.client_id = kwargs.get('client_id') or os.getenv('MVCLIENTID')
         self.client_secret = kwargs.get('client_secret') or os.getenv('MVCLIENTSECRET')
-        self.auth_url = kwargs.get('auth_url') or os.getenv('MVAPIAUTHURL')
-        self.base_url = kwargs.get('base_url') or os.getenv('MVAPIBASEURL')
+        self.subscription_key = kwargs.get('subscription_key') or os.getenv('MVSUBSCRIPTIONKEY')
         self.refresh_token = kwargs.get('refresh_token')
 
-        self.sdk_handle = Client(auth_url=self.auth_url, base_url=self.base_url)
+        self.sdk_handle = SDK().handle
 
-    def auth(self):
+    def auth(self) -> bool:
         """
         Authorize the user by call with the Connect object.
         """
@@ -74,19 +72,27 @@ class Connect():
                 auth=auth
                 )
 
-            if response.status_code == 200:
-                session_file = open('.session', 'w')
-                response_json = response.json()
-
-                session_file.write(json.dumps(response_json, default=str))
-                self.log.info('Auth successful')
-            else:
+            if response.status_code != 200:
                 self.log.warning('Auth API response: %s', response.status_code)
+                self.log.debug('Auth URL: %s', self.sdk_handle.auth_url)
+                self.log.debug('Base URL: %s', self.sdk_handle.base_url)
+                self.log.debug('Data: %s', data)
+                self.log.debug('Auth: %s', auth)
+                return False
+            else:
+                try:
+                    with open('.session', 'w') as file:
+                        file.write(json.dumps(response.json(), default=str))
+                    self.log.info('Auth successful')
+                    return True
+                except IOError as error:
+                    self.log.error('Failure to write to session file: %s', error)
 
-        elif self.grant_type == 'auth-code':
-            self.log.warning("Auth-Code flow not yet implemented. Please use password flow.")
+        else:
+            self.log.warning("Grant type %s not supported. Please use password flow.",
+                             self.grant_type)
 
-    def refresh(self):
+    def refresh(self) -> bool:
         """
         Execute the auth GET call with the Connect object.
         """
@@ -102,22 +108,21 @@ class Connect():
             )
 
         if response.status_code == 200:
-            session_file = open('.session', 'w')
-            response_json = response.json()
-
-            session_expiry = time.time() + response_json['expires_in']
-            response_json['expires_at'] = session_expiry
-            session_file.write(json.dumps(response_json, default=str))
+            with open('.session', 'w') as file:
+                file.write(json.dumps(response.json(), default=str))
+            self.log.info('Auth API response: %s', {response.status_code})
+            return True
         else:
             self.log.info('Auth API response: %s', {response.status_code})
+            self.log.debug(response.text)
+            return False
 
-    def action(self):
+    def action(self) -> bool:
         """
         Passthrough function calling the verb required
         """
         self.verb = self.verb.replace("-", "_")
         if hasattr(self, self.verb) and callable(func := getattr(self, self.verb)):
-            func()
+            return func()
         else:
             self.log.warning('Action %s did not match any of the valid options.', self.verb)
-            self.log.warning('Did you mean %s?', " or".join(", ".join(self.verbs).rsplit(",", 1)))

@@ -1,13 +1,15 @@
 # MediaValet MVDAM CLI
 
-[![Lint & Unit Tests](https://github.com/armstro-ca/mvdam/actions/workflows/unittest.yml/badge.svg)](https://github.com/armstro-ca/mvdam/actions/workflows/unittest.yml)
-
-[![Compile EXE binary](https://github.com/armstro-ca/mvdam/actions/workflows/compile_binary.yml/badge.svg?event=release)](https://github.com/armstro-ca/mvdam/actions/workflows/compile_binary.yml)
+[![Lint & Unit Tests](https://github.com/armstro-ca/mvdam/actions/workflows/unittest.yml/badge.svg)](https://github.com/armstro-ca/mvdam/actions/workflows/unittest.yml) [![Compile EXE binary](https://github.com/armstro-ca/mvdam/actions/workflows/compile_binary.yml/badge.svg?event=release)](https://github.com/armstro-ca/mvdam/actions/workflows/compile_binary.yml)
 
 A Command Line Interface (CLI) to your MediaValet DAM instance. Interact with your assets and metadata via this CLI.
 
 ## ⚡️ Quick start
+### Executable
 
+Download the executable binary that matches your operating system (Windows, MacOS, Linux) from <insert link here> and jump to [Commands & Options](#⚙️-commands--options).
+
+### Python
 First, download and install **Python**. Version `3.10` or 
 higher is required. The simply pip install the MVDAM module and start using it!
 
@@ -25,15 +27,6 @@ Ensure you have the following details for your MediaValet Instance:
 (If you don’t have these to hand, please contact support@mediavalet.com)
 
 That's all you need to know to start! 🎉
-
-## 🐳 Docker quick start
-
-If you don't want to install Python and the MVDAM CLI module to your system, you should feel free to using our official [Docker image] and run CLI from isolated 
-container:
-``` bash
-# Run the mvdam make script to kick off the docker container
-docker run --rm -it -v ${PWD}:${PWD} -w ${PWD} nomadicj/mediavalet:latest 
-```
 
 ## ⚙️ Commands & Options
 

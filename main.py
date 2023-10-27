@@ -6,14 +6,33 @@ import logger
 from typing_extensions import Annotated
 import typer
 
-from mvdam import session as se
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
+
+from mvdam.sdk_handler import SDK
 
 log = logger.get_logger(__name__)
 log.info("MVDAM initiated...")
 
+auth_url = os.getenv('MVAPIAUTHURL')
+base_url = os.getenv('MVAPIBASEURL')
+
+sdk = SDK(auth_url=auth_url, base_url=base_url)
+
+log.debug('Auth URL: %s', sdk.auth_url)
+log.debug('Base URL: %s', sdk.base_url)
+
+from mvdam.session_manager import initialise_session
+
+initialise_session()
+
+from mvdam.session_manager import current_session
+
+
 app = typer.Typer()
 
-session = {}
 
 @app.command()
 def asset(
@@ -22,9 +41,9 @@ def asset(
         typer.Argument(
             help="""The action to be applied to the asset.
 Actions available are currently:
-get-attributes
 add-keywords
 delete-keywords
+get-attributes
 get-keywords
 set-keywords
 set-keywords-with-csv"""
@@ -56,6 +75,13 @@ set-keywords-with-csv"""
             show_default=False
             )
         ] = "",
+    offset: Annotated[
+        Optional[int],
+        typer.Option(
+            help='The offset from which you would like your csv processing to start',
+            rich_help_panel="Single"
+            )
+        ] = 0,
     verbose: Annotated[
         bool,
         typer.Option(
@@ -68,23 +94,21 @@ set-keywords-with-csv"""
     The `asset` operator gives you access to the assets and all aspects related to them.
     """
     if verbose:
-        logger.set_console_verbose()
+        logger.set_console_level('debug')
         log.debug('Verbose console logging set')
 
     log.debug("Asset option executed")
 
-    if se.check_session(session):
+    if current_session.check_session():
         log.debug("active session found")
         from mvdam.asset import Asset
         action = action.lower()
 
         log.debug('executing %s on %s', action, asset_id)
 
-        Asset(session=session, verb=action, asset_id=asset_id, csv=csv, keywords=keywords).action()
+        Asset(verb=action, asset_id=asset_id, csv=csv, keywords=keywords, offset=offset).action()
 
     else:
-        log.debug("no active session found")
-
         log.info('Session expired.\
               Please use "mvdam auth" to obtain a valid session.')
 
@@ -99,15 +123,6 @@ Actions available are currently:
 get"""
         )
     ],
-    asset_id: Annotated[
-        Optional[str],
-        typer.Option(
-            help='The asset ID for the action to be taken upon (eg: --asset-id \
-                151b33b1-4c30-4968-bbd1-525ad812e357)',
-            rich_help_panel="Single",
-            show_default=False
-            )
-        ] = None,
     verbose: Annotated[
         bool,
         typer.Option(
@@ -120,23 +135,21 @@ get"""
     The `attribute` operator gives you access to the assets and all aspects related to them.
     """
     if verbose:
-        logger.set_console_verbose()
+        logger.set_console_level('debug')
         log.debug('Verbose console logging set')
 
     log.debug("Attribute option executed")
 
-    if se.check_session(session):
+    if current_session.check_session():
         log.debug("active session found")
         from mvdam.attribute import Attribute
         action = action.lower()
 
-        log.debug('executing %s on %s', action, asset_id)
+        log.debug('executing %s', action)
 
-        Attribute(session, action).action()
+        Attribute(action).action()
 
     else:
-        log.debug("no active session found")
-
         log.info('Session expired.\
               Please use "mvdam auth" to obtain a valid session.')
 
@@ -194,7 +207,7 @@ def auth(
     can be set as environment variables or can be set in a .env file
     """
     if verbose:
-        logger.set_console_verbose()
+        logger.set_console_level('debug')
         log.debug('Verbose console logging set')
 
     log.debug("Connect option executed")
@@ -202,8 +215,155 @@ def auth(
     from mvdam.connect import Connect
 
     log.debug('executing auth (type: %s)', grant_type)
-    Connect('auth', username=username, password=password, client_id=client_id, client_secret=client_secret,
-            grant_type=grant_type).action()
+    Connect('auth', username=username, password=password, client_id=client_id,
+            client_secret=client_secret, grant_type=grant_type).action()
+
+
+@app.command()
+def category(
+    action: Annotated[
+        str,
+        typer.Argument(
+            help="""The action to be applied to the asset.
+Actions available are currently:
+get"""
+            )
+        ],
+    category_id: Annotated[
+        Optional[str],
+        typer.Option(
+            help='The keyword group for the action to be taken upon as a comma separated \
+                string (eg: --keywords field,sky,road,sunset)',
+            rich_help_panel="Single",
+            show_default=False
+            )
+        ] = None,
+    output_csv: Annotated[
+        Optional[str],
+        typer.Option(
+            help='The filename of the output csv for use with set-keywords-with-csv option.',
+            rich_help_panel="Single",
+            show_default=False
+            )
+        ] = None,
+    verbose: Annotated[
+        bool,
+        typer.Option(
+            help='Choose the verbosity of the response \
+                (eg: --verbosity [verbose, raw, bulk])',
+            show_default=False
+            )
+        ] = False
+        ):
+    """
+    The keyword operator acts upon keywords in the abstract.
+    """
+    if verbose:
+        logger.set_console_level('debug')
+        log.debug('Verbose console logging set')
+
+    log.debug("Category option executed")
+
+    if current_session.check_session():
+        log.debug("active session found")
+        from mvdam.category import Category
+        action = action.lower()
+        Category(action, category_id=category_id, output_csv=output_csv).action()
+
+    else:
+        log.debug("no active session found")
+
+        print('Session not valid. Please use "mvdam auth" to obtain a valid session first.')
+
+
+@app.command()
+def direct_link(
+    action: Annotated[
+        str,
+        typer.Argument(
+            help="""The action to be applied to the asset.
+Actions available are currently:
+get"""
+            )
+        ],
+    asset_id: Annotated[
+        Optional[str],
+        typer.Option(
+            help='The asset ID for the action to be taken upon (eg: --asset-id \
+                151b33b1-4c30-4968-bbd1-525ad812e357)',
+            rich_help_panel="Single",
+            show_default=False
+            )
+        ] = None,
+    input_file: Annotated[
+        Optional[str],
+        typer.Option(
+            help='The filename of the input csv for use with get-direct-links-with-csv option.',
+            rich_help_panel="Single",
+            show_default=False
+            )
+        ] = "",
+    output_file: Annotated[
+        Optional[str],
+        typer.Option(
+            help='The filename of the output csv for use with set-keywords-with-csv option.',
+            rich_help_panel="Single",
+            show_default=False
+            )
+        ] = "",
+    offset: Annotated[
+        Optional[int],
+        typer.Option(
+            help='The offset from which you would like your csv processing to start',
+            rich_help_panel="Single"
+            )
+        ] = 0,
+    asset_identifier: Annotated[
+        Optional[str],
+        typer.Option(
+            help='The header of the column containing the asset IDs.',
+            rich_help_panel="Single",
+            show_default=False
+            )
+        ] = None,
+    synchronous: Annotated[
+        Optional[bool],
+        typer.Option(
+            help='Option to indicating synchronous rather than asynchronous operation.',
+            rich_help_panel="Single",
+            show_default=False
+            )
+        ] = False,
+    verbose: Annotated[
+        bool,
+        typer.Option(
+            help='Choose the verbosity of the response \
+                (eg: --verbosity [verbose, raw, bulk])',
+            show_default=False
+            )
+        ] = False
+        ):
+    """
+    The keyword operator acts upon keywords in the abstract.
+    """
+    if verbose:
+        logger.set_console_level('debug')
+        log.debug('Verbose console logging set')
+
+    log.debug("Keyword option executed")
+
+    if current_session.check_session():
+        log.debug("active session found")
+        from mvdam.direct_link import DirectLink
+        action = action.lower()
+        DirectLink(action, asset_id=asset_id, input_file=input_file, output_file=output_file,
+                   offset=offset, asset_identifier=asset_identifier, sync=synchronous).action()
+
+    else:
+        log.debug("no active session found")
+
+        print('Session not valid. Please use "mvdam auth" to ',
+              'obtain a valid session first.')
 
 
 @app.command()
@@ -238,16 +398,16 @@ get"""
     The keyword operator acts upon keywords in the abstract.
     """
     if verbose:
-        logger.set_console_verbose()
+        logger.set_console_level('debug')
         log.debug('Verbose console logging set')
 
     log.debug("Keyword option executed")
 
-    if se.check_session(session):
+    if current_session.check_session():
         log.debug("active session found")
         from mvdam.keyword import Keyword
         action = action.lower()
-        Keyword(session, action, keywords).action()
+        Keyword(action, keywords).action()
 
     else:
         log.debug("no active session found")
@@ -288,16 +448,16 @@ get"""
     The keyword operator acts upon keywords in the abstract.
     """
     if verbose:
-        logger.set_console_verbose()
+        logger.set_console_level('debug')
         log.debug('Verbose console logging set')
 
     log.debug("KeywordGroup option executed")
 
-    if se.check_session(session):
+    if current_session.check_session():
         log.debug("active session found")
         from mvdam.keyword_group import KeywordGroup
         action = action.lower()
-        KeywordGroup(session, action, group).action()
+        KeywordGroup(action, group).action()
 
     else:
         log.debug("no active session found")
@@ -306,5 +466,4 @@ get"""
 
 
 if __name__ == "__main__":
-    session = se.get_session()
     app()
