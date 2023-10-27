@@ -40,7 +40,7 @@ class Asset():
 
     """
 
-    def __init__(self, verb: str, asset_id: str, csv: str, keywords: str,
+    def __init__(self, verb: str, asset_id: str, input_csv: str, keywords: str,
                  offset: int = None, bulk: bool = None, **kwargs):
         """
         Initialise the Asset class
@@ -57,7 +57,7 @@ class Asset():
 
         self.verb = verb
         self.asset_id = asset_id
-        self.csv = csv
+        self.input_csv = input_csv
         self.offset = offset
         self.keywords = keywords
         self.bulk = bulk
@@ -263,7 +263,7 @@ class Asset():
 
         return self.bulk_request if self.bulk else True
 
-    def set_keywords_with_csv(self):
+    def set_keywords_with_input_csv(self):
         """
         Execute the SET asset keywords call with the Asset object.
 
@@ -279,8 +279,8 @@ class Asset():
         # initiate instance of bulk endpoint
         bulk = Bulk()
 
-        # open the csv file within context
-        with open(self.csv, 'r') as f:
+        # open the input_csv file within context
+        with open(self.input_csv, 'r') as f:
             df = pd.read_csv(f)
 
             # create batches of get keyword requests to calculate deltas

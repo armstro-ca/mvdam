@@ -67,7 +67,7 @@ set-keywords-with-csv"""
             show_default=False
             )
         ] = "",
-    csv: Annotated[
+    input_csv: Annotated[
         Optional[str],
         typer.Option(
             help='The filename of the csv for use with set-keywords-with-csv option.',
@@ -81,7 +81,14 @@ set-keywords-with-csv"""
             help='The offset from which you would like your csv processing to start',
             rich_help_panel="Single"
             )
-        ] = 0,
+        ] = None,
+    batch_size: Annotated[
+        Optional[int],
+        typer.Option(
+            help='The offset from which you would like your csv processing to start',
+            rich_help_panel="Single"
+            )
+        ] = None,
     verbose: Annotated[
         bool,
         typer.Option(
@@ -106,7 +113,7 @@ set-keywords-with-csv"""
 
         log.debug('executing %s on %s', action, asset_id)
 
-        Asset(verb=action, asset_id=asset_id, csv=csv, keywords=keywords, offset=offset).action()
+        Asset(verb=action, asset_id=asset_id, input_csv=input_csv, keywords=keywords, batch_size=batch_size, offset=offset).action()
 
     else:
         log.info('Session expired.\
