@@ -54,100 +54,56 @@ mvdam --help
 
 You can use the `--help` option at any time to get more information on the action you are looking at.
 
-### `connect`
+### `auth`
 
-Initialise a session/verify
-Connect the CLI to your MediaValet instance by authenticating it and creating a session.
+Initialise a session or verify credential validity. 
 
 ```bash
-mvdam auth
+mvdam auth [PARAMETER]
 ```
 
-| Action            | Description                                                  |
-|-------------------|--------------------------------------------------------------|
-| `auth`            | Get the asset set in `—asset-id`                             |
-| `delete`          | Delete the asset set in `—asset-id`                          |
-| `add-keywords`    | Adds the keywords set by `--keywords` for a given asset set in `--asset-id` |
-| `delete-keywords` | Deletes the keywords set by `—keywords` for a given asset set in `—asset-id` |
-| `get-keywords`    | Gets all keywords for a given asset set in `—asset-id`       |
-| `set-keywords`    | Sets the keywords set by `—keywords` for a given asset set in `—asset-id` |
-
-| Option            | Description                                                  | Type     | Required? |
-|-------------------|--------------------------------------------------------------|----------|-----------|
-| `--client-id`     | Set the `client-id` for your MediaValet instance             | `string` | No        |
-| `--client-secret` | Set the `client-secret` for your MediaValet instance         | `string` | No        |
-| `--username`      | Set the `username` for your MediaValet instance              | `string` | No        |
-| `--password`      | Set the `password` for your MediaValet instance              | `string` | No        |
-| `--verbosity`     | Set the verbosity level for elevated verbosity in the interaction. Options are [verbose, raw] | `string` | No        |
-
-### `asset`
+### [`asset`](./docs/asset.md)
 The `asset` operator gives you access to the assets and all aspects related to them.
-[asset](./docs/asset.md)
 
 ```bash
 mvdam asset [ACTION] [PARAMETER]
 ```
-#### Asset Actions
-| Action            | Description                                                  |
-|-------------------|--------------------------------------------------------------|
-| `get`             | Get the asset set in `—asset-id`                             |
-| `delete`          | Delete the asset set in `—asset-id`                          |
-| `rename`          | [not yet implemented]                                        |
 
-#### Asset Meta Action
-| Action            | Description                                                  |
-|-------------------|--------------------------------------------------------------|
-| `find-duplicates` | Find all duplicates (by hash)                                |
+### [`attribute`](./docs/attribute.md)
+The `attribute` operator gives you access to the assets and all aspects related to them.
 
-#### Asset Keyword Actions
-| Action            | Description                                                  |
-|-------------------|--------------------------------------------------------------|
-| `add-keywords`    | Adds the keywords set by `--keywords` for a given asset set in `--asset-id` |
-| `delete-keywords` | Deletes the keywords set by `—keywords` for a given asset set in `--asset-id` |
-| `get-keywords`    | Gets all keywords for a given asset set in `—asset-id` |
-| `get-keywords-with-category`    | Gets all keywords for assets in a given category set in `—category-id` |
-| `set-keywords`    | Sets the keywords set by `—keywords` for a given asset set in `--asset-id` |
-| `set-keywords-with-csv`    | Sets the keywords and for the assets defined in a CSV |
+```bash
+mvdam attribute [ACTION] [PARAMETER]
+```
 
-#### Asset Attribute Actions
-| Action            | Description                                                  |
-|-------------------|--------------------------------------------------------------|
-| `get-attributes`  | Gets the attributes for a given asset set in `--asset-id` |
-| `get-attributes-with-category`    | Gets all attributes for assets in a given category set in `—category-id` |
+### [`category`](./docs/category.md)
+The category operator acts upon categories in the abstract, separate from their interaction with the asset <> keyword association.
 
-#### Parameters
-| Parameter     | Description                                                  | Type     | Required? | Example |
-|---------------|--------------------------------------------------------------|----------|-----------|---------|
-| `--asset-id`  | Sets the asset-id for the action to be operated upon         | `string` | No        | `--asset-id 6099da71-4802-49dd-a963-2beae240ed2` |
-| `--keywords`  | Sets the keywords for the action to operate with             | `string` | No        | `--keywords Cloud,Snowy\ Mountains,Lake` |
-| `--input_csv` | Sets the CSV file used for actions using batch inputs        | `string` | No        | `--csv data/assets_w_keywords.csv` |
-| `--batch-size` | Sets the size of the batches to be used when processing batch inputs      | `int`    | No        | `--batch-size 200` |
-| `--offset`    | Sets the offset to be used when processing batch inputs      | `int`    | No        | `--offset 2000` |
-| `--verbose` | Set the verbosity level for elevated verbosity in the interaction. Options are [verbose, raw] | `string` | No        | `-- verbose` |
-| `--help`      | Get this set of options                                      |          |           | `--help` |
+```bash
+mvdam category [ACTION] [PARAMETER]
+```
 
+### [`direct-link`](./docs/direct_link.md)
+The keyword operator acts upon direct links.
 
-### `keywords`
+```bash
+mvdam direct-link [ACTION] [PARAMETER]
+```
+
+### [`keyword`](./docs/keyword.md)
 The keyword operator acts upon keywords in the abstract, separate from their interaction with the asset <> keyword association.
 
 ```bash
 mvdam keyword [ACTION] [PARAMETER]
 ```
 
-#### Category Actions
-| Action   | Description                                                  |
-|----------|--------------------------------------------------------------|
-| `create` | [to be implemented]                                          |
-| `get`    | Get all keywords available along with their internal `keyword-id` |
-| `update` | [to be implemented]                                          |
+### [`keyword-group`](./docs/keyword-group.md)
+The keyword group operator acts upon keyword groups.
 
-| Parameter     | Description                                                  | Type     | Required? |
-|---------------|--------------------------------------------------------------|----------|-----------|
-| `--keywords`  | Sets the keywords for the action to operate with             | `string` | No        |
-| `--verbosity` | Set the verbosity level for elevated verbosity in the interaction. Options are [verbose, raw] | `string` | No        |
-| `--help`      | Get this set of options                                      |          |           |
+```bash
+mvdam keyword-group [ACTION] [PARAMETER]
+```
 
-Connect the CLI to your MediaValet instance by authenticating it and creating a session.
 ## Product support
 
 Say something about the right way to get support for this service
