@@ -39,39 +39,39 @@ def asset(
     action: Annotated[
         str,
         typer.Argument(
-            help="""The action to be applied to the asset.
-Actions available are currently:
-add-keywords
-delete-keywords
-get-attributes
-get-keywords
-set-keywords
+            help="""
+Actions available are:\r\n
+add-keywords\r\n
+delete-keywords\r\n
+get-attributes\r\n
+get-keywords\r\n
+set-keywords\r\n
 set-keywords-with-csv"""
         )
     ],
     asset_id: Annotated[
         Optional[str],
         typer.Option(
-            help='The asset ID for the action to be taken upon (eg: --asset-id \
-                151b33b1-4c30-4968-bbd1-525ad812e357)',
-            rich_help_panel="Single",
+            help='The asset ID for the action to be taken upon (eg: --asset-id ' +
+            '151b33b1-4c30-4968-bbd1-525ad812e357)',
+            rich_help_panel="Single Asset",
             show_default=False
             )
         ] = None,
     keywords: Annotated[
         Optional[str],
         typer.Option(
-            help='The keywords for the action to be taken upon as a comma separated \
-                string (eg: --keywords field,sky,road,sunset)',
-            rich_help_panel="Single",
+            help='The keywords for the action to be taken upon as a ' +
+            'comma separated string (eg: --keywords field,sky,road,sunset)',
+            rich_help_panel="Single Asset",
             show_default=False
             )
         ] = "",
-    input_csv: Annotated[
+    input_file: Annotated[
         Optional[str],
         typer.Option(
-            help='The filename of the csv for use with set-keywords-with-csv option.',
-            rich_help_panel="Single",
+            help='The filename of the csv for use with and batch option option.',
+            rich_help_panel="Batch",
             show_default=False
             )
         ] = "",
@@ -79,16 +79,16 @@ set-keywords-with-csv"""
         Optional[int],
         typer.Option(
             help='The offset from which you would like your csv processing to start',
-            rich_help_panel="Single"
+            rich_help_panel="Batch"
             )
-        ] = None,
+        ] = 0,
     batch_size: Annotated[
         Optional[int],
         typer.Option(
-            help='The offset from which you would like your csv processing to start',
-            rich_help_panel="Single"
+            help='The size of the batch to be processed. Default is the recommended value',
+            rich_help_panel="Batch"
             )
-        ] = None,
+        ] = 200,
     verbose: Annotated[
         bool,
         typer.Option(
@@ -98,7 +98,7 @@ set-keywords-with-csv"""
         ] = False
         ):
     """
-    The `asset` operator gives you access to the assets and all aspects related to them.
+    Provides access to the assets and all aspects related to them.
     """
     if verbose:
         logger.set_console_level('debug')
@@ -113,7 +113,7 @@ set-keywords-with-csv"""
 
         log.debug('executing %s on %s', action, asset_id)
 
-        Asset(verb=action, asset_id=asset_id, input_csv=input_csv, keywords=keywords, batch_size=batch_size, offset=offset).action()
+        Asset(verb=action, asset_id=asset_id, input_file=input_file, keywords=keywords, batch_size=batch_size, offset=offset).action()
 
     else:
         log.info('Session expired.\
@@ -125,9 +125,8 @@ def attribute(
     action: Annotated[
         str,
         typer.Argument(
-            help="""The action to be applied to the asset.
-Actions available are currently:
-get"""
+            help='Actions available are:\r\n' +
+            'get'
         )
     ],
     verbose: Annotated[
@@ -139,7 +138,7 @@ get"""
         ] = False
         ):
     """
-    The `attribute` operator gives you access to the assets and all aspects related to them.
+    Provides access to the attributes and all aspects related to them.
     """
     if verbose:
         logger.set_console_level('debug')
@@ -207,6 +206,8 @@ def auth(
         ] = False
         ):
     """
+    Provides access to authentication verification and session management
+    
     Connect the CLI to your MediaValet instance by authenticating.
 
     Create an authenticated session.
@@ -231,21 +232,20 @@ def category(
     action: Annotated[
         str,
         typer.Argument(
-            help="""The action to be applied to the asset.
-Actions available are currently:
-get"""
+            help='Actions available are:\r\n' +
+            'get'
             )
         ],
     category_id: Annotated[
         Optional[str],
         typer.Option(
-            help='The keyword group for the action to be taken upon as a comma separated \
-                string (eg: --keywords field,sky,road,sunset)',
+            help='The keyword group for the action to be taken upon as a comma separated ' +
+            'string (eg: --keywords field,sky,road,sunset)',
             rich_help_panel="Single",
             show_default=False
             )
         ] = None,
-    output_csv: Annotated[
+    output_file: Annotated[
         Optional[str],
         typer.Option(
             help='The filename of the output csv for use with set-keywords-with-csv option.',
@@ -256,14 +256,14 @@ get"""
     verbose: Annotated[
         bool,
         typer.Option(
-            help='Choose the verbosity of the response \
-                (eg: --verbosity [verbose, raw, bulk])',
+            help='Choose the verbosity of the response ' +
+            '(eg: --verbosity [verbose, raw, bulk])',
             show_default=False
             )
         ] = False
         ):
     """
-    The keyword operator acts upon keywords in the abstract.
+    Provides access to keywords and all aspects related to them.
     """
     if verbose:
         logger.set_console_level('debug')
@@ -275,7 +275,7 @@ get"""
         log.debug("active session found")
         from mvdam.category import Category
         action = action.lower()
-        Category(action, category_id=category_id, output_csv=output_csv).action()
+        Category(action, category_id=category_id, output_file=output_file).action()
 
     else:
         log.debug("no active session found")
@@ -288,33 +288,36 @@ def direct_link(
     action: Annotated[
         str,
         typer.Argument(
-            help="""The action to be applied to the asset.
-Actions available are currently:
-get"""
+            help="""
+Actions available are:\r\n
+get\r\n
+create\r\n
+create-with-csv (batch)\r\n
+export"""
             )
         ],
     asset_id: Annotated[
         Optional[str],
         typer.Option(
-            help='The asset ID for the action to be taken upon (eg: --asset-id \
-                151b33b1-4c30-4968-bbd1-525ad812e357)',
-            rich_help_panel="Single",
+            help='The asset ID for the action to be taken upon (eg: --asset-id ' +
+            '151b33b1-4c30-4968-bbd1-525ad812e357)',
+            rich_help_panel="Single Asset",
             show_default=False
             )
         ] = None,
     input_file: Annotated[
         Optional[str],
         typer.Option(
-            help='The filename of the input csv for use with get-direct-links-with-csv option.',
-            rich_help_panel="Single",
+            help='The filename of the input csv for use with batch options.',
+            rich_help_panel="Batch",
             show_default=False
             )
         ] = "",
     output_file: Annotated[
         Optional[str],
         typer.Option(
-            help='The filename of the output csv for use with set-keywords-with-csv option.',
-            rich_help_panel="Single",
+            help='The filename of the output csv for use with batch options.',
+            rich_help_panel="Batch",
             show_default=False
             )
         ] = "",
@@ -322,14 +325,14 @@ get"""
         Optional[int],
         typer.Option(
             help='The offset from which you would like your csv processing to start',
-            rich_help_panel="Single"
+            rich_help_panel="Batch"
             )
         ] = 0,
     asset_identifier: Annotated[
         Optional[str],
         typer.Option(
             help='The header of the column containing the asset IDs.',
-            rich_help_panel="Single",
+            rich_help_panel="Batch",
             show_default=False
             )
         ] = None,
@@ -337,21 +340,21 @@ get"""
         Optional[bool],
         typer.Option(
             help='Option to indicating synchronous rather than asynchronous operation.',
-            rich_help_panel="Single",
+            rich_help_panel="Batch",
             show_default=False
             )
         ] = False,
     verbose: Annotated[
         bool,
         typer.Option(
-            help='Choose the verbosity of the response \
-                (eg: --verbosity [verbose, raw, bulk])',
+            help='Choose the verbosity of the response ' +
+            '(eg: --verbosity [verbose, raw, bulk])',
             show_default=False
             )
         ] = False
         ):
     """
-    The keyword operator acts upon keywords in the abstract.
+    Provides access to the direct links and all aspects related to them.
     """
     if verbose:
         logger.set_console_level('debug')
@@ -378,16 +381,16 @@ def keyword(
     action: Annotated[
         str,
         typer.Argument(
-            help="""The action to be applied to the asset.
-Actions available are currently:
+            help="""
+Actions available are:\r\n
 get"""
             )
         ],
     keywords: Annotated[
         Optional[str],
         typer.Option(
-            help='The keywords for the action to be taken upon as a comma separated \
-                string (eg: --keywords field,sky,road,sunset)',
+            help='The keywords for the action to be taken upon as a comma separated ' +
+            'string (eg: --keywords field,sky,road,sunset)',
             rich_help_panel="Single",
             show_default=False
             )
@@ -395,14 +398,14 @@ get"""
     verbose: Annotated[
         bool,
         typer.Option(
-            help='Choose the verbosity of the response \
-                (eg: --verbosity [verbose, raw, bulk])',
+            help='Choose the verbosity of the response ' +
+            '(eg: --verbosity [verbose, raw, bulk])',
             show_default=False
             )
         ] = False
         ):
     """
-    The keyword operator acts upon keywords in the abstract.
+    Provides access to the keywords and all aspects related to them.
     """
     if verbose:
         logger.set_console_level('debug')
@@ -436,23 +439,22 @@ get"""
     group: Annotated[
         Optional[str],
         typer.Option(
-            help='The keyword group for the action to be taken upon as a comma separated \
-                string (eg: --keywords field,sky,road,sunset)',
-            rich_help_panel="Single",
+            help='The keyword group for the action to be taken upon as a comma separated ' +
+            'string (eg: --keywords field,sky,road,sunset)',
             show_default=False
             )
         ] = "",
     verbose: Annotated[
         bool,
         typer.Option(
-            help='Choose the verbosity of the response \
-                (eg: --verbosity [verbose, raw, bulk])',
+            help='Choose the verbosity of the response ' +
+            '(eg: --verbosity [verbose, raw, bulk])',
             show_default=False
             )
         ] = False
         ):
     """
-    The keyword operator acts upon keywords in the abstract.
+    Provides access to the keyword groups and all aspects related to them.
     """
     if verbose:
         logger.set_console_level('debug')
