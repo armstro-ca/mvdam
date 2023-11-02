@@ -52,6 +52,27 @@ mvdam --help
 ╰─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯
 ```
 
+```bash
+❯ mvdam --help
+
+MVDAM initiated...
+
+ Usage: main.py [OPTIONS] COMMAND [ARGS]...
+
+╭─ Options ─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╮
+│ --help                        Show this message and exit.                                                                             │
+╰───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯
+╭─ Commands ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╮
+│ asset                                   Provides access to the assets and all aspects related to them.                                │
+│ attribute                               Provides access to the attributes and all aspects related to them.                            │
+│ auth                                    Provides access to authentication verification and session management                         │
+│ category                                Provides access to keywords and all aspects related to them.                                  │
+│ direct-link                             Provides access to the direct links and all aspects related to them.                          │
+│ keyword                                 Provides access to the keywords and all aspects related to them.                              │
+│ keyword-group                           Provides access to the keyword groups and all aspects related to them.                        │
+╰───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯
+```
+
 You can use the `--help` option at any time to get more information on the action you are looking at.
 
 ### `auth`
