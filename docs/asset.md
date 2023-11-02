@@ -4,7 +4,39 @@ The `asset` operator gives you access to the assets and all aspects related to t
 ```bash
 mvdam asset [ACTION] [PARAMETER]
 ```
-#### Asset Actions
+
+```bash
+> mvdam asset --help
+MVDAM initiated...
+                                                                                                                                                                           
+ Usage: main.py asset [OPTIONS] ACTION                                                                                                                                     
+                                                                                                                                                                           
+ Provides access to the assets and all aspects related to them.           
+                                                                                                 
+╭─ Arguments ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╮
+│ *    action      TEXT  Actions available are: [default: None] [required]                                                               │
+│                        add-keywords                                                                                                    │
+│                        delete-keywords                                                                                                 │
+│                        get-attributes                                                                                                  │
+│                        get-keywords                                                                                                    │
+│                        set-keywords                                                                                                    │
+│                        set-keywords-with-csv                                                                                           │
+╰────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯
+╭─ Options ──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╮
+│ --verbose    --no-verbose      Set the output to increased verbosity                                                                   │
+│ --help                         Show this message and exit.                                                                             │
+╰─────────────────────────────────-----──────────────────────────────────────────────────────────────────────────────────────────────────╯
+╭─ Single Asset ───────────────────────────────────────────────────────────--------──────────────────────────────────────────────────────╮
+│ --asset-id        TEXT  The asset ID for the action to be taken upon (eg: --asset-id 151b33b1-4c30-4968-bbd1-525ad812e357)             │
+│ --keywords        TEXT  The keywords for the action to be taken upon as a comma separated string (eg: --keywords field,sky,road,sunset)│
+╰────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯
+╭─ Batch ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╮
+│ --input-file        TEXT     The filename of the csv for use with and batch option option.                                             │
+│ --offset            INTEGER  The offset from which you would like your csv processing to start [default: 0]                            │
+│ --batch-size        INTEGER  The size of the batch to be processed. Default is the recommended value [default: 200]                    │
+╰────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯
+```
+### Asset Actions
 | Action            | Description                                                  |
 |-------------------|--------------------------------------------------------------|
 | `get`             | Get the asset set in `—asset-id`                             |

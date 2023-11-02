@@ -4,6 +4,36 @@ The `direct-link` operator gives you access to the direct-links and all aspects 
 ```bash
 mvdam category [ACTION] [PARAMETER]
 ```
+```bash
+❯ mvdam direct-link --help
+MVDAM initiated...
+                                                                                                                                                                                       
+ Usage: main.py direct-link [OPTIONS] ACTION                                                                                                                                           
+                                                                                                                                                                                       
+ Provides access to the direct links and all aspects related to them.                                                                                                                  
+                                                                                                                                                                                       
+╭─ Arguments ─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╮
+│ *    action      TEXT  Actions available are:  [default: None] [required]                                                                                                           │
+│                        get                                                                                                                                                          │
+│                        create                                                                                                                                                       │
+│                        create-with-csv (batch)                                                                                                                                      │
+│                        export                                                                                                                                                       │
+╰─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯
+╭─ Options ───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╮
+│ --verbose    --no-verbose      Choose the verbosity of the response (eg: --verbosity [verbose, raw, bulk])                                                                          │
+│ --help                         Show this message and exit.                                                                                                                          │
+╰─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯
+╭─ Single Asset ──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╮
+│ --asset-id        TEXT  The asset ID for the action to be taken upon (eg: --asset-id 151b33b1-4c30-4968-bbd1-525ad812e357)                                                          │
+╰─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯
+╭─ Batch ─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╮
+│ --input-file                              TEXT     The filename of the input csv for use with batch options.                                                                        │
+│ --output-file                             TEXT     The filename of the output csv for use with batch options.                                                                       │
+│ --offset                                  INTEGER  The offset from which you would like your csv processing to start [default: 0]                                                   │
+│ --asset-identifier                        TEXT     The header of the column containing the asset IDs.                                                                               │
+│ --synchronous         --no-synchronous             Option to indicating synchronous rather than asynchronous operation.                                                             │
+╰─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯
+```
 #### Category Actions
 | Action            | Description                                                  |
 |-------------------|--------------------------------------------------------------|

@@ -4,15 +4,27 @@ The `attribute` operator gives you access to the assets and all aspects related 
 ```bash
 mvdam attribute [ACTION] [PARAMETER]
 ```
+```bash
+> mvdam asset --help
+MVDAM initiated...
+                                                                                                                                                                           
+ Usage: main.py attribute [OPTIONS] ACTION                                                                                                                                     
+                                                                                                                                                                           
+ Provides access to the attributes and all aspects related to them.           
+                                                                                                 
+╭─ Arguments ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╮
+│ *    action      TEXT  Actions available are: [default: None] [required]                                                               │
+│                        get                                                                                           │
+╰────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯
+╭─ Options ──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╮
+│ --verbose    --no-verbose      Set the output to increased verbosity                                                                   │
+│ --help                         Show this message and exit.                                                                             │
+╰─────────────────────────────────-----──────────────────────────────────────────────────────────────────────────────────────────────────╯
+```
 #### Attribute Actions
 | Action            | Description                                                  |
 |-------------------|--------------------------------------------------------------|
 | `get`             | Get the asset set in `—asset-id`                             |
-
-| Parameter     | Description                                                  | Type     | Required? | Example |
-|---------------|--------------------------------------------------------------|----------|-----------|---------|
-| `--verbose` | Set the verbosity level for elevated verbosity in the interaction. Options are [verbose, raw] | `string` | No        | `-- verbose` |
-| `--help`      | Get this set of options                                      |          |           | `--help` |
 
 
 #### get

@@ -5,6 +5,36 @@ Initialise a session or verify credential validity.
 ```bash
 mvdam auth [PARAMETER]
 ```
+```bash
+> mvdam auth --help
+MVDAM initiated...
+
+ Usage: main.py auth [OPTIONS]           
+
+ Provides access to the assets and all aspects related to them.           
+
+╭─ Arguments ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╮
+│ *    action      TEXT  Actions available are: [default: None] [required]                                                               │
+│                        add-keywords                                                                                                    │
+│                        delete-keywords                                                                                                 │
+│                        get-attributes                                                                                                  │
+│                        get-keywords                                                                                                    │
+│                        set-keywords                                                                                                    │
+│                        set-keywords-with-csv                                                                                           │
+╰────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯
+╭─ Options ──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╮
+│ --grant-type                    TEXT  Either password or auth-code flow                                                                │
+│ --verbose       --no-verbose          Set the output to increased verbosity                                                            │
+│ --help                                Show this message and exit.                                                                      │
+╰─────────────────────────────────-----──────────────────────────────────────────────────────────────────────────────────────────────────╯
+╭─ Password Flow ───────────────────────────────────────────────────────────--------─────────────────────────────────────────────────────╮
+│ --username             TEXT  The username to be used with password flow [default: None]                                                │
+│ --password             TEXT  The password to be used with password flow [default: None]                                                │
+│ --client-id            TEXT  The clientId to be used with password flow [default: None]                                                │
+│ --client-secret        TEXT  The clientSecret to be used with password flow [default: None]                                            │
+╰────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯
+
+```
 As long as the session is valid, the session created by calling this method is persisted and renewed as long as is possible in the local file `.session`. If this is not called before other interactions, it will be invoked silently with environment variables.
 
 Parameters can be presented in one of three ways:

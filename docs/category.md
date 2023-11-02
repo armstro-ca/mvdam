@@ -4,6 +4,26 @@ The `category` operator gives you access to the categories and all aspects relat
 ```bash
 mvdam category [ACTION] [PARAMETER]
 ```
+```bash
+❯ python main.py category --help
+MVDAM initiated...
+                                                                                                                                                                                       
+ Usage: main.py category [OPTIONS] ACTION                                                                                                                                              
+                                                                                                                                                                                       
+ Provides access to keywords and all aspects related to them.                                                                                                                          
+                                                                                                                                                                                       
+╭─ Arguments ─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╮
+│ *    action      TEXT  Actions available are: get [default: None] [required]                                                                                                        │
+╰─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯
+╭─ Options ───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╮
+│ --verbose    --no-verbose      Choose the verbosity of the response (eg: --verbosity [verbose, raw, bulk])                                                                          │
+│ --help                         Show this message and exit.                                                                                                                          │
+╰─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯
+╭─ Single ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╮
+│ --category-id        TEXT  The keyword group for the action to be taken upon as a comma separated string (eg: --keywords field,sky,road,sunset)                                     │
+│ --output-file        TEXT  The filename of the output csv for use with set-keywords-with-csv option.                                                                                │
+╰─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯
+```
 #### Category Actions
 | Action            | Description                                                  |
 |-------------------|--------------------------------------------------------------|
