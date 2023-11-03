@@ -3,6 +3,9 @@ ASSET module containing Asset class
 """
 import json
 import pathlib
+import sys
+
+import pendulum as pdl
 import logger
 import pandas as pd
 from tqdm import tqdm
@@ -40,8 +43,8 @@ class Asset():
 
     """
 
-    def __init__(self, verb: str, asset_id: str, input_csv: str, keywords: str,
-                 offset: int = None, bulk: bool = None, **kwargs):
+    def __init__(self, verb: str, asset_id: str, input_file: str, output_location: str, keywords: str,
+                 offset: int = None, bulk: bool = None, raw: bool = False, **kwargs):
         """
         Initialise the Asset class
 
@@ -57,10 +60,12 @@ class Asset():
 
         self.verb = verb
         self.asset_id = asset_id
-        self.input_csv = input_csv
+        self.input_file = input_file
+        self.output_location = output_location
         self.offset = offset
         self.keywords = keywords
         self.bulk = bulk
+        self.raw = raw
 
         if self.bulk:
             self.bulk_request = BulkRequest()
@@ -86,9 +91,34 @@ class Asset():
         """
         Execute the GET asset call with the Asset object.
         """
-        self.sdk_handle.asset.get(
-            object_id=self.asset_id
-            )
+        if not self.output_location:
+            self.log.error('No file specified for output. Please set --output_location flag.')
+            sys.exit()
+
+        try:
+            with open(self.output_location, 'wb') as file:
+                response = self.sdk_handle.asset.get(
+                    auth=current_session.access_token,
+                    object_id=self.asset_id
+                    )
+                
+                self.log.debug(json.dumps(response.json(), indent=4))
+
+                total_size_in_bytes = int(response.headers.get('content-length', 0))
+                block_size = 1024
+                progress_bar = tqdm(response.iter_content(), total=total_size_in_bytes,
+                                    unit='iB', unit_scale=True)
+                with open(self.output_location, 'wb') as file:
+                    for data in response.iter_content(block_size):
+                        progress_bar.update(len(data))
+                        file.write(data)
+                progress_bar.close()
+                if total_size_in_bytes != 0 and progress_bar.n != total_size_in_bytes:
+                    self.log.error("ERROR, something went wrong")
+
+        except IOError:
+            self.log.error('Could not write to %s. Please check write permissions and try again.',
+                           self.output_location)
 
     def delete(self):
         """
@@ -104,6 +134,194 @@ class Asset():
         """
         Composite method to RENAME asset with the Asset object.
         """
+
+    def get_related(self):
+        """
+        Execute the GET asset related asset call with the Asset object.
+        """
+        response = self.sdk_handle.asset.get_related(
+            object_id=self.asset_id,
+            params={'count': 200},
+            auth=current_session.access_token,
+            )
+        
+        if response.status_code == 200:
+            self.log.debug(json.dumps(response.json(), indent=4))
+
+            self.log.info('Related assets\r\n%s', json.dumps(response.json()['payload'], indent=4))
+
+        elif response.status_code == 404:
+            self.log.warning('Asset with ID %s was not found.', self.asset_id)
+
+        else:
+            self.log.error('Error %s: %s', response.status_code, response.text)
+
+    # --------------
+    # ASSET ATTRIBUTES
+    # --------------
+
+    def get_attributes(self):
+        """
+        Execute the GET asset keywords call with the Asset object.
+        """
+        if self.asset_id is None:
+            self.log.info('AssetID required to get asset keywords. '
+                          'Please retry with --asset-id assetID as a parameter.')
+            return
+
+        response = self.get_asset_attributes(asset_id=self.asset_id)
+
+        existing_attributes = Attribute(current_session).get()
+
+        attributes = {}
+
+        if self.bulk:
+            self.bulk_request.add_request(response)
+            return self.bulk_request
+
+        if response.status_code == 200:
+            self.log.debug(json.dumps(response.json(), indent=4))
+
+            for attribute_id in response.json()['payload']['attributes']:
+                attributes[existing_attributes[attribute_id]] = response.json()['payload']['attributes'][attribute_id]
+
+            self.log.info('Attributes for asset %s:\n%s', self.asset_id, json.dumps(attributes, indent=4))
+
+        elif response.status_code == 404:
+            self.log.warning('Asset with ID %s was not found.', self.asset_id)
+
+        else:
+            self.log.error('Error %s: %s', response.status_code, response.text)
+
+        return attributes
+
+    # --------------
+    # ASSET CATEGORIES
+    # --------------
+
+    def get_categories(self):
+        response = self.sdk_handle.asset.get_categories(
+            object_id=self.asset_id,
+            auth=current_session.access_token
+            )
+
+        if response.status_code == 200:
+            self.log.debug(json.dumps(response.json(), indent=4))
+
+            self.log.info('Asset Categories\n%s', json.dumps(response.json()['payload'], indent=4))
+
+        elif response.status_code == 404:
+            self.log.warning('Asset with ID %s was not found.', self.asset_id)
+
+        else:
+            self.log.error('Error %s: %s', response.status_code, response.text)
+
+    # --------------
+    # ASSET COMMENTS
+    # --------------
+
+    def get_comments(self):
+        response = self.sdk_handle.asset.get_comments(
+            object_id=self.asset_id,
+            auth=current_session.access_token
+            )
+
+        if response.status_code == 200:
+            self.log.debug(json.dumps(response.json(), indent=4))
+
+            if self.raw:
+                self.log.info('Asset Comments\r\n%s', json.dumps(response.json()['payload'], indent=4))
+                return response.json()['payload']
+            else:
+                self.log.info('Asset Comments:')
+                # Parse the dictionary of events from the response json
+                comments = response.json()['payload']
+
+                # Define a function to parse the date in the format provided in the JSON elements.
+                def parse_date(date_string):
+                    return pdl.parse(date_string)
+
+                # Sort the data by date.
+                sorted_comments = sorted(comments, key=lambda x: parse_date(x["addedAt"]))
+
+                # Iterate through and express comment elements.
+                comment_lines = []
+                for element in sorted_comments:
+                    line = f'@ {pdl.parse(element["addedAt"]).to_day_datetime_string()} : {element["addedBy"]["username"]}'
+                    if element["commentType"] == 'General':
+                        line += f' commented "{element["comment"]}" on the file.'
+                    elif element["commentType"] == 'CheckOut':
+                        line += f' commented "{element["comment"]}" while checking out the file.'
+                    elif element["comment"]:
+                        line += f' commented "{element["comment"]}".'
+
+                    comment_lines.append(line)
+                
+                self.log.info("\r\n".join(comment_lines))
+                return comment_lines
+
+        elif response.status_code == 404:
+            self.log.warning('Asset with ID %s was not found.', self.asset_id)
+
+        else:
+            self.log.error('Error %s: %s', response.status_code, response.text)
+
+    # --------------
+    # ASSET HISTORY
+    # --------------
+
+    def get_history(self):
+        response = self.sdk_handle.asset.get_history(
+            object_id=self.asset_id,
+            auth=current_session.access_token
+            )
+
+        if response.status_code == 200:
+            self.log.debug(json.dumps(response.json(), indent=4))
+
+            if self.raw:
+                self.log.info('Asset History\n%s', json.dumps(response.json()['payload'], indent=4))
+                return response.json()['payload']
+            else:
+                # Parse the dictionary of events from the response json
+                history = response.json()['payload'][0]['assetHistoryDetail']
+
+                # Define a function to parse the date in the format provided in the JSON elements.
+                def parse_date(date_string):
+                    return pdl.parse(date_string)
+
+                # Sort the data by date.
+                sorted_history = sorted(history, key=lambda x: parse_date(x["date"]))
+
+                # Iterate through and express history elements.
+                history_lines = []
+                for element in sorted_history:
+                    line = f'@ {pdl.parse(element["date"]).to_day_datetime_string()} : {element["user"]["username"]}'
+                    if element["type"] == 'View':
+                        line += ' viewed the file.'
+                    elif element["type"] == 'CheckOut':
+                        line += ' checked out the file.'
+                    elif element["type"] == 'Upload':
+                        line += ' uploaded the file.'
+                    elif element["type"] == 'Approve':
+                        line += ' approved the file'
+                    elif element["type"] == 'Shared via Web Gallery':
+                        line += ' share the file via Web Gallery'
+                        if element['sharedTo']:
+                            line += f' with {element["sharedTo"]}.'
+                        else:
+                            line += '.'
+
+                    history_lines.append(line)
+                
+                self.log.info("\r\n".join(history_lines))
+                return history_lines
+
+        elif response.status_code == 404:
+            self.log.warning('Asset with ID %s was not found.', self.asset_id)
+
+        else:
+            self.log.error('Error %s: %s', response.status_code, response.text)
 
     # --------------
     # ASSET KEYWORDS
@@ -263,7 +481,7 @@ class Asset():
 
         return self.bulk_request if self.bulk else True
 
-    def set_keywords_with_input_csv(self):
+    def set_keywords_with_csv(self):
         """
         Execute the SET asset keywords call with the Asset object.
 
@@ -279,8 +497,8 @@ class Asset():
         # initiate instance of bulk endpoint
         bulk = Bulk()
 
-        # open the input_csv file within context
-        with open(self.input_csv, 'r') as f:
+        # open the csv file within context
+        with open(self.input_file, 'r') as f:
             df = pd.read_csv(f)
 
             # create batches of get keyword requests to calculate deltas
@@ -453,35 +671,19 @@ class Asset():
                     self.log.info('No change detected. Skipping.')
 
     # --------------
-    # ASSET ATTRIBUTES
+    # ASSET RENDITIONS
     # --------------
 
-    def get_attributes(self):
-        """
-        Execute the GET asset keywords call with the Asset object.
-        """
-        if self.asset_id is None:
-            self.log.info('AssetID required to get asset keywords. '
-                          'Please retry with --asset-id assetID as a parameter.')
-            return
-
-        response = self.get_asset_attributes(asset_id=self.asset_id)
-
-        existing_attributes = Attribute(current_session).get()
-
-        attributes = {}
-
-        if self.bulk:
-            self.bulk_request.add_request(response)
-            return self.bulk_request
+    def get_renditions(self):
+        response = self.sdk_handle.asset.get_renditions(
+            object_id=self.asset_id,
+            auth=current_session.access_token
+            )
 
         if response.status_code == 200:
             self.log.debug(json.dumps(response.json(), indent=4))
 
-            for attribute_id in response.json()['payload']['attributes']:
-                attributes[existing_attributes[attribute_id]] = response.json()['payload']['attributes'][attribute_id]
-
-            self.log.info('Attributes for asset %s:\n%s', self.asset_id, json.dumps(attributes, indent=4))
+            self.log.info('Asset Video Intelligence Status\n%s', json.dumps(response.json()['payload'], indent=4))
 
         elif response.status_code == 404:
             self.log.warning('Asset with ID %s was not found.', self.asset_id)
@@ -489,7 +691,26 @@ class Asset():
         else:
             self.log.error('Error %s: %s', response.status_code, response.text)
 
-        return attributes
+    # --------------
+    # ASSET VIDEO INTELLIGENCE
+    # --------------
+
+    def get_video_intelligence_status(self):
+        response = self.sdk_handle.asset.get_video_intelligence_status(
+            object_id=self.asset_id,
+            auth=current_session.access_token
+            )
+
+        if response.status_code == 200:
+            self.log.debug(json.dumps(response.json(), indent=4))
+
+            self.log.info('Asset Comments\n%s', json.dumps(response.json()['payload'], indent=4))
+
+        elif response.status_code == 404:
+            self.log.warning('Asset with ID %s was not found.', self.asset_id)
+
+        else:
+            self.log.error('Error %s: %s', response.status_code, response.text)
 
     # --------------
     # GENERIC ACTION
