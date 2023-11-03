@@ -70,8 +70,16 @@ set-keywords-with-csv"""
     input_file: Annotated[
         Optional[str],
         typer.Option(
-            help='The filename of the csv for use with and batch option option.',
+            help='The filename of the csv for use with and batch option.',
             rich_help_panel="Batch",
+            show_default=False
+            )
+        ] = "",
+    output_location: Annotated[
+        Optional[str],
+        typer.Option(
+            help='The directory for use with and get file option.',
+            rich_help_panel="Single",
             show_default=False
             )
         ] = "",
@@ -89,6 +97,13 @@ set-keywords-with-csv"""
             rich_help_panel="Batch"
             )
         ] = 200,
+    raw: Annotated[
+        bool,
+        typer.Option(
+            help='Get the raw json response',
+            show_default=False
+            )
+        ] = False,
     verbose: Annotated[
         bool,
         typer.Option(
@@ -113,7 +128,8 @@ set-keywords-with-csv"""
 
         log.debug('executing %s on %s', action, asset_id)
 
-        Asset(verb=action, asset_id=asset_id, input_file=input_file, keywords=keywords, batch_size=batch_size, offset=offset).action()
+        Asset(verb=action, asset_id=asset_id, input_file=input_file, keywords=keywords,
+              output_location=output_location, batch_size=batch_size, offset=offset, raw=raw).action()
 
     else:
         log.info('Session expired.\
