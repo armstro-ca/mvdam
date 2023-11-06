@@ -53,8 +53,8 @@ class User():
 
             return response.json()
 
-        elif response.status_code == 404:
-            self.log.warning('404 returned')
+        elif response.status_code == 400:
+            self.log.warning('Permission denied; you do not have permission to make this request')
         else:
             self.log.error('Error: %s', response)
 
@@ -73,8 +73,8 @@ class User():
 
             return response.json()
 
-        elif response.status_code == 404:
-            self.log.warning('404 returned')
+        elif response.status_code == 401:
+            self.log.warning('Permission denied; you do not have permission to make this request.')
         else:
             self.log.error('Error: %s', response)
 
@@ -133,8 +133,8 @@ class User():
 
             return response.json()
 
-        elif response.status_code == 404:
-            self.log.warning('404 returned')
+        elif response.status_code == 400:
+            self.log.warning('Permission denied; you do not have permission to make this request')
         else:
             self.log.error('Error: %s', response)
 

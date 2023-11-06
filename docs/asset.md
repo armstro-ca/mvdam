@@ -40,13 +40,13 @@ MVDAM initiated...
 | Action            | Description                                                  |
 |-------------------|--------------------------------------------------------------|
 | `get`             | Get the asset set in `—asset-id`                             |
-| `delete`          | Delete the asset set in `—asset-id`                          |
 | `rename`          | [not yet implemented]                                        |
 
 #### get
 ```txt
-mvdam asset get --asset-id xxxx
+mvdam asset get --output-location ./ --asset-id xxxx
 ```
+Returns the asset in the location specified
 
 
 ### Asset Meta Action

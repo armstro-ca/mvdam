@@ -459,7 +459,8 @@ Actions available are:\r\n
 get-all\r\n
 get-approvers\r\n
 get-current\r\n
-get-current-permissions"""
+get-current-permissions\r\n
+get-groups"""
             )
         ],
     verbose: Annotated[
@@ -472,7 +473,7 @@ get-current-permissions"""
         ] = False
         ):
     """
-    Provides access to keywords and all aspects related to them.
+    Provides access to users and all aspects related to them.
     """
     if verbose:
         logger.set_console_level('debug')
