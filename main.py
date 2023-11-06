@@ -449,6 +449,87 @@ get-groups"""
         print('Session not valid. Please use "mvdam auth" to ',
               'obtain a valid session first.')
 
+@app.command()
+def user(
+    action: Annotated[
+        str,
+        typer.Argument(
+            help="""
+Actions available are:\r\n
+get-all\r\n
+get-approvers\r\n
+get-current\r\n
+get-current-permissions"""
+            )
+        ],
+    verbose: Annotated[
+        bool,
+        typer.Option(
+            help='Choose the verbosity of the response ' +
+            '(eg: --verbosity [verbose, raw, bulk])',
+            show_default=False
+            )
+        ] = False
+        ):
+    """
+    Provides access to keywords and all aspects related to them.
+    """
+    if verbose:
+        logger.set_console_level('debug')
+        log.debug('Verbose console logging set')
+
+    log.debug("User option executed")
+
+    if current_session.check_session():
+        log.debug("active session found")
+        from mvdam.user import User
+        action = action.lower()
+        User(action).action()
+
+    else:
+        log.debug("no active session found")
+
+        print('Session not valid. Please use "mvdam auth" to obtain a valid session first.')
+
+@app.command()
+def org_unit(
+    action: Annotated[
+        str,
+        typer.Argument(
+            help="""
+Actions available are:\r\n
+get-current"""
+            )
+        ],
+    verbose: Annotated[
+        bool,
+        typer.Option(
+            help='Choose the verbosity of the response ' +
+            '(eg: --verbosity [verbose, raw, bulk])',
+            show_default=False
+            )
+        ] = False
+        ):
+    """
+    Provides access to keywords and all aspects related to them.
+    """
+    if verbose:
+        logger.set_console_level('debug')
+        log.debug('Verbose console logging set')
+
+    log.debug("OrgUnit option executed")
+
+    if current_session.check_session():
+        log.debug("active session found")
+        from mvdam.org_unit import OrgUnit
+        action = action.lower()
+        OrgUnit(action).action()
+
+    else:
+        log.debug("no active session found")
+
+        print('Session not valid. Please use "mvdam auth" to obtain a valid session first.')
+
 
 if __name__ == "__main__":
     app()
