@@ -73,6 +73,30 @@ class Keyword():
         else:
             self.log.error('Error: %s', response)
 
+    def get_group(self):
+        """
+        Execute the asset GET call with the Asset object.
+        """
+        response = self.sdk_handle.keyword_group.get(
+            auth=current_session.access_token
+            )
+
+        response_json = response.json()
+
+        if 200 <= response.status_code < 300:
+            keyword_groups = {}
+            for keyword_group in response_json['payload']:
+                keyword_groups[keyword_group['id']] = keyword_group['name']
+
+            print(f'Keywords available:\n{json.dumps(keyword_groups, indent=4)}')
+
+            return response
+
+        elif response.status_code == 404:
+            self.log.warning('404 returned')
+        else:
+            self.log.error('Error: %s', response)
+
     # --------------
     # GENERIC ACTION
     # --------------

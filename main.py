@@ -442,53 +442,5 @@ get"""
               'obtain a valid session first.')
 
 
-@app.command()
-def keyword_group(
-    action: Annotated[
-        str,
-        typer.Argument(
-            help="""The action to be applied to the asset.
-Actions available are currently:
-get"""
-            )
-        ],
-    group: Annotated[
-        Optional[str],
-        typer.Option(
-            help='The keyword group for the action to be taken upon as a comma separated ' +
-            'string (eg: --keywords field,sky,road,sunset)',
-            show_default=False
-            )
-        ] = "",
-    verbose: Annotated[
-        bool,
-        typer.Option(
-            help='Choose the verbosity of the response ' +
-            '(eg: --verbosity [verbose, raw, bulk])',
-            show_default=False
-            )
-        ] = False
-        ):
-    """
-    Provides access to the keyword groups and all aspects related to them.
-    """
-    if verbose:
-        logger.set_console_level('debug')
-        log.debug('Verbose console logging set')
-
-    log.debug("KeywordGroup option executed")
-
-    if current_session.check_session():
-        log.debug("active session found")
-        from mvdam.keyword_group import KeywordGroup
-        action = action.lower()
-        KeywordGroup(action, group).action()
-
-    else:
-        log.debug("no active session found")
-
-        print('Session not valid. Please use "mvdam auth" to obtain a valid session first.')
-
-
 if __name__ == "__main__":
     app()
