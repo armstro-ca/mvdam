@@ -4,6 +4,7 @@ ASSET module containing Asset class
 import json
 import pathlib
 import sys
+import requests
 
 import pendulum as pdl
 import logger
@@ -95,30 +96,33 @@ class Asset():
             self.log.error('No file specified for output. Please set --output_location flag.')
             sys.exit()
 
-        try:
-            with open(self.output_location, 'wb') as file:
-                response = self.sdk_handle.asset.get(
-                    auth=current_session.access_token,
-                    object_id=self.asset_id
-                    )
-                
-                self.log.debug(json.dumps(response.json(), indent=4))
+        response = self.sdk_handle.asset.get(
+            auth=current_session.access_token,
+            object_id=self.asset_id
+            )
+            
+        self.log.debug(json.dumps(response.json(), indent=4))
 
-                total_size_in_bytes = int(response.headers.get('content-length', 0))
-                block_size = 1024
-                progress_bar = tqdm(response.iter_content(), total=total_size_in_bytes,
-                                    unit='iB', unit_scale=True)
-                with open(self.output_location, 'wb') as file:
-                    for data in response.iter_content(block_size):
-                        progress_bar.update(len(data))
-                        file.write(data)
-                progress_bar.close()
-                if total_size_in_bytes != 0 and progress_bar.n != total_size_in_bytes:
-                    self.log.error("ERROR, something went wrong")
+        filename = self.output_location + response.json()['payload']['file']['fileName']
+
+        file_response = requests.get(response.json()['payload']['media']['download'])
+
+        try:
+            total_size_in_bytes = int(file_response.headers.get('content-length', 0))
+            block_size = 1024
+            progress_bar = tqdm(file_response.iter_content(), total=total_size_in_bytes,
+                                unit='iB', unit_scale=True)
+            with open(filename, 'wb') as file:
+                for data in file_response.iter_content(block_size):
+                    progress_bar.update(len(data))
+                    file.write(data)
+            progress_bar.close()
+            if total_size_in_bytes != 0 and progress_bar.n != total_size_in_bytes:
+                self.log.error("ERROR, something went wrong")
 
         except IOError:
             self.log.error('Could not write to %s. Please check write permissions and try again.',
-                           self.output_location)
+                           filename)
 
     def delete(self):
         """
