@@ -41,12 +41,19 @@ def asset(
         typer.Argument(
             help="""
 Actions available are:\r\n
+get\r\n
+get-related\r\n
+get-attributes\r\n
+get-categories\r\n
+get-comments\r\n
+get-history\r\n
 add-keywords\r\n
 delete-keywords\r\n
-get-attributes\r\n
 get-keywords\r\n
 set-keywords\r\n
-set-keywords-with-csv"""
+set-keywords-with-csv\r\n
+get-renditions\r\n
+get-video-intelligence-status"""
         )
     ],
     asset_id: Annotated[
@@ -399,7 +406,8 @@ def keyword(
         typer.Argument(
             help="""
 Actions available are:\r\n
-get"""
+get\r\n
+get-groups"""
             )
         ],
     keywords: Annotated[
