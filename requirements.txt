@@ -9,7 +9,7 @@ executing==2.0.1
 idna==3.4
 markdown-it-py==3.0.0
 mdurl==0.1.2
-mvsdk==0.0.8
+mvsdk==0.0.9
 numpy==1.26.1
 pandas==2.1.1
 parse==1.19.1
