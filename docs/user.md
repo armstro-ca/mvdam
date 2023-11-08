@@ -69,7 +69,7 @@ Usage:
 ```txt
 mvdam user get-current
 ```
-Returns details of current user
+Returns details of current user.
 
 Example:
 ```json
