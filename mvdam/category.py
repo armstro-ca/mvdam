@@ -27,7 +27,7 @@ class Category():
 
         self.verb = verb
         self.category = category_id
-        self.output_csv = kwargs.get('output_csv') or None
+        self.output_file = kwargs.get('output_file') or None
 
         self.sdk_handle = SDK().handle
 
@@ -49,20 +49,16 @@ class Category():
         """
         assets = []
 
-        if self.output_csv:
-            try:
-                with open(self.output_csv, 'w') as _:
-                    pass
-            except IOError:
-                self.log.error('CSV file %s is not writable. Exiting...', self.output_csv)
-                exit()
-
         for asset in self.get_category_assets():
             assets.append(asset['id'])
 
-        if self.output_csv:
+        if self.output_file:
+            self.verify_output_file(self.output_file)
             df = pd.DataFrame(assets, columns=['System.Id'])
-            df.to_csv(self.output_csv, index=False, encoding='utf-8')
+            df.to_csv(self.output_file, index=False, encoding='utf-8')
+            self.log.info('Output written to %s', self.output_file)
+        else:
+            self.log.info('Assets in category:\n%s', json.dumps(assets, indent=4))
 
         return assets
 
@@ -71,7 +67,9 @@ class Category():
         Execute the category GET assets call with the Category object
         and return asset ids and keywords.
         """
-        if self.output_csv:
+        if self.output_file:
+            self.verify_output_file(self.output_file)
+
             assets = []
             keywords = []
 
@@ -80,8 +78,8 @@ class Category():
                 keywords.append(", ".join(asset['keywords']))
 
             df = pd.DataFrame({'System.Id': assets, 'Keywords': keywords})
-            df.to_csv(self.output_csv, index=False, encoding='utf-8')
-            self.log.info('Data written to %s', self.output_csv)
+            df.to_csv(self.output_file, index=False, encoding='utf-8')
+            self.log.info('Data written to %s', self.output_file)
         else:
             assets = {}
 
@@ -97,7 +95,9 @@ class Category():
         Execute the category GET assets call with the Category object
         and return asset ids and keywords.
         """
-        if self.output_csv:
+        if self.output_file:
+            self.verify_output_file(self.output_file)
+
             assets = []
             attributes = []
 
@@ -106,8 +106,8 @@ class Category():
                 attributes.append(", ".join(asset['attributes']))
 
             df = pd.DataFrame({'System.Id': assets, 'Arributes': attributes})
-            df.to_csv(self.output_csv, index=False, encoding='utf-8')
-            self.log.info('Data written to %s', self.output_csv)
+            df.to_csv(self.output_file, index=False, encoding='utf-8')
+            self.log.info('Data written to %s', self.output_file)
         else:
             assets = {}
 
@@ -150,6 +150,14 @@ class Category():
                 self.log.info('err')
 
         return assets
+    
+    def verify_output_file(self, output_file: str) -> bool:
+        try:
+            with open(output_file, 'w') as _:
+                pass
+        except IOError:
+            self.log.error('CSV file %s is not writable. Exiting...', output_file)
+            exit()
 
     # --------------
     # GENERIC ACTION
