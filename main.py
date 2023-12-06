@@ -255,8 +255,11 @@ def category(
     action: Annotated[
         str,
         typer.Argument(
-            help='Actions available are:\r\n' +
-            'get'
+            help="""
+Actions available are:\r\n
+get-assets\r\n
+get_asset_keywords\r\n
+get_asset_attributes"""
             )
         ],
     category_id: Annotated[
