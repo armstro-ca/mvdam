@@ -10,6 +10,8 @@ import uuid
 import sys
 
 from mvdam.bulk import Bulk
+from mvdam.asset import Asset
+from mvdam.attribute import Attribute
 from mvdam.session_manager import current_session
 from mvdam.sdk_handler import SDK
 
@@ -31,6 +33,8 @@ class DirectLink():
 
         """
         self.log = logger.get_logger(__name__)
+        self.attribute = Attribute()
+        self.asset = Asset()
 
         self.verb = verb
         self.asset_id = kwargs.get('asset_id')
@@ -163,11 +167,13 @@ class DirectLink():
                     try:
                         _ = uuid.UUID(asset_id)
                     except ValueError:
-                        self.log.error('Invalid ID in %s:%s. Please check an verify.',
+                        self.log.error('Invalid ID in %s:%s. Please check and verify.',
                                        self.input_file, i+index)
                         exit()
 
-                    format = row['File Type']
+                    file_attributes = self.asset.get_attributes(asset_id=asset_id)
+                    format = file_attributes['File Type']
+
                     self.log.debug('Processing #%s [%s]',
                                    index, asset_id)
                     bulk_request.add_request(self.create_direct_link(

@@ -44,8 +44,7 @@ class Asset():
 
     """
 
-    def __init__(self, verb: str, asset_id: str, input_file: str, output_location: str, keywords: str,
-                 offset: int = None, bulk: bool = None, raw: bool = False, **kwargs):
+    def __init__(self, *args, **kwargs):
         """
         Initialise the Asset class
 
@@ -59,14 +58,14 @@ class Asset():
         """
         self.log = logger.get_logger(__name__)
 
-        self.verb = verb
-        self.asset_id = asset_id
-        self.input_file = input_file
-        self.output_location = output_location
-        self.offset = offset
-        self.keywords = keywords
-        self.bulk = bulk
-        self.raw = raw
+        self.verb = kwargs.get('verb')
+        self.asset_id = kwargs.get('asset_id')
+        self.input_file = kwargs.get('input_file')
+        self.output_location = kwargs.get('output_location')
+        self.offset = kwargs.get('offset')
+        self.keywords = kwargs.get('keywords')
+        self.bulk = kwargs.get('bulk')
+        self.raw = kwargs.get('raw')
 
         if self.bulk:
             self.bulk_request = BulkRequest()
@@ -164,16 +163,18 @@ class Asset():
     # ASSET ATTRIBUTES
     # --------------
 
-    def get_attributes(self):
+    def get_attributes(self, asset_id: str = None):
         """
         Execute the GET asset keywords call with the Asset object.
         """
-        if self.asset_id is None:
+        asset_id = asset_id or self.asset_id
+
+        if asset_id is None:
             self.log.info('AssetID required to get asset keywords. '
                           'Please retry with --asset-id assetID as a parameter.')
             return
 
-        response = self.get_asset_attributes(asset_id=self.asset_id)
+        response = self.get_asset_attributes(asset_id=asset_id)
 
         existing_attributes = Attribute(current_session).get()
 
@@ -189,15 +190,15 @@ class Asset():
             for attribute_id in response.json()['payload']['attributes']:
                 attributes[existing_attributes[attribute_id]] = response.json()['payload']['attributes'][attribute_id]
 
-            self.log.info('Attributes for asset %s:\n%s', self.asset_id, json.dumps(attributes, indent=4))
+            self.log.info('Attributes for asset %s:\n%s', asset_id, json.dumps(attributes, indent=4))
+
+            return attributes
 
         elif response.status_code == 404:
-            self.log.warning('Asset with ID %s was not found.', self.asset_id)
+            self.log.warning('Asset with ID %s was not found.', asset_id)
 
         else:
             self.log.error('Error %s: %s', response.status_code, response.text)
-
-        return attributes
 
     # --------------
     # ASSET CATEGORIES
