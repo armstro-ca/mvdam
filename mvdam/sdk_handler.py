@@ -2,7 +2,6 @@ from mvsdk.rest import Client
 
 
 class SDK(object):
-
     _instance = None
     _auth_url = None
     _base_url = None
@@ -10,8 +9,8 @@ class SDK(object):
     def __new__(cls, **kwargs):
         if cls._instance is None:
             cls._instance = super(SDK, cls).__new__(cls)
-            cls.auth_url = kwargs.get('auth_url')
-            cls.base_url = kwargs.get('base_url')
+            cls.auth_url = kwargs.get("auth_url")
+            cls.base_url = kwargs.get("base_url")
 
             cls._instance.handle = Client(auth_url=cls.auth_url, base_url=cls.base_url)
 

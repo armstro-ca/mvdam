@@ -1,0 +1,11 @@
+[tool.black]
+line-length = 119
+
+[tool.flake8]
+max-line-length = 119
+exclude = [
+    # No need to traverse our git directory
+    ".git",
+    # There's no value in checking cache directories
+    "__pycache__"
+]

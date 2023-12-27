@@ -8,8 +8,7 @@ from mvdam.session_manager import current_session
 from mvdam.sdk_handler import SDK
 
 
-class Attribute():
-
+class Attribute:
     def __init__(self, verb: str = None):
         """
         Initialise the Attribute class
@@ -28,11 +27,7 @@ class Attribute():
 
         self.sdk_handle = SDK().handle
 
-        self.verbs = [
-            'get',
-            'post',
-            'delete'
-            ]
+        self.verbs = ["get", "post", "delete"]
 
     # --------------
     # ATTRIBUTE
@@ -42,26 +37,24 @@ class Attribute():
         """
         Execute the asset GET call with the Asset object.
         """
-        response = self.sdk_handle.attribute.get(
-            auth=current_session.access_token
-            )
+        response = self.sdk_handle.attribute.get(auth=current_session.access_token)
 
         if 200 <= response.status_code < 300:
             response_json = response.json()
             self.log.debug(json.dumps(response_json, indent=4))
 
             attributes = {}
-            for attribute in response_json['payload']:
-                attributes[attribute['id']] = attribute['name']
+            for attribute in response_json["payload"]:
+                attributes[attribute["id"]] = attribute["name"]
 
-            self.log.info('Attributes available:\n%s', json.dumps(attributes, indent=4))
+            self.log.info("Attributes available:\n%s", json.dumps(attributes, indent=4))
 
             return attributes
 
         elif response.status_code == 404:
-            self.log.warning('404 returned')
+            self.log.warning("404 returned")
         else:
-            self.log.error('Error: %s', response)
+            self.log.error("Error: %s", response)
             self.log.debug(response.text)
 
     # --------------
@@ -76,5 +69,5 @@ class Attribute():
         if hasattr(self, self.verb) and callable(func := getattr(self, self.verb)):
             func()
         else:
-            self.log.warning('Action %s did not match any of the valid options.', self.verb)
-            self.log.warning('Did you mean %s?', " or".join(", ".join(self.verbs).rsplit(",", 1)))
+            self.log.warning("Action %s did not match any of the valid options.", self.verb)
+            self.log.warning("Did you mean %s?", " or".join(", ".join(self.verbs).rsplit(",", 1)))

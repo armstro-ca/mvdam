@@ -8,8 +8,7 @@ from mvdam.session_manager import current_session
 from mvdam.sdk_handler import SDK
 
 
-class OrgUnit():
-
+class OrgUnit:
     def __init__(self, verb: str):
         """
         Initialise the OrgUnit class
@@ -28,11 +27,7 @@ class OrgUnit():
 
         self.sdk_handle = SDK().handle
 
-        self.verbs = [
-            'get',
-            'post',
-            'delete'
-            ]
+        self.verbs = ["get", "post", "delete"]
 
     # --------------
     # ORGUNIT
@@ -42,9 +37,7 @@ class OrgUnit():
         """
         Execute the orgunit GET call with the OrgUnit object.
         """
-        response = self.sdk_handle.org_unit.get_current(
-            auth=current_session.access_token
-            )
+        response = self.sdk_handle.org_unit.get_current(auth=current_session.access_token)
 
         if 200 <= response.status_code < 300:
             self.log.debug(json.dumps(response.json(), indent=4))
@@ -54,9 +47,9 @@ class OrgUnit():
             return response.json()
 
         elif response.status_code == 404:
-            self.log.warning('404 returned')
+            self.log.warning("404 returned")
         else:
-            self.log.error('Error: %s', response)
+            self.log.error("Error: %s", response)
 
     # --------------
     # GENERIC ACTION
@@ -70,5 +63,5 @@ class OrgUnit():
         if hasattr(self, self.verb) and callable(func := getattr(self, self.verb)):
             func()
         else:
-            self.log.warning('Action %s did not match any of the valid options.', self.verb)
-            self.log.warning('Did you mean %s?', " or".join(", ".join(self.verbs).rsplit(",", 1)))
+            self.log.warning("Action %s did not match any of the valid options.", self.verb)
+            self.log.warning("Did you mean %s?", " or".join(", ".join(self.verbs).rsplit(",", 1)))

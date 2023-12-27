@@ -18,8 +18,7 @@ from mvdam.sdk_handler import SDK
 from mvsdk.rest.bulk import BulkRequest, BulkResponse
 
 
-class DirectLink():
-
+class DirectLink:
     def __init__(self, verb: str, **kwargs):
         """
         Initialise the DirectLink class
@@ -37,22 +36,18 @@ class DirectLink():
         self.asset = Asset()
 
         self.verb = verb
-        self.asset_id = kwargs.get('asset_id')
-        self.input_file = kwargs.get('input_file')
-        self.output_file = kwargs.get('output_file')
-        self.offset = kwargs.get('offset') or 0
-        self.asset_identifier = kwargs.get('asset_identifier') or None
-        self.sync = kwargs.get('sync') or False
+        self.asset_id = kwargs.get("asset_id")
+        self.input_file = kwargs.get("input_file")
+        self.output_file = kwargs.get("output_file")
+        self.offset = kwargs.get("offset") or 0
+        self.asset_identifier = kwargs.get("asset_identifier") or None
+        self.sync = kwargs.get("sync") or False
 
-        self.file_format = 'JPEG'
+        self.file_format = "JPEG"
 
         self.sdk_handle = SDK().handle
 
-        self.verbs = [
-            'get',
-            'post',
-            'delete'
-            ]
+        self.verbs = ["get", "post", "delete"]
 
     # --------------
     # KEYWORD
@@ -62,32 +57,27 @@ class DirectLink():
         """
         Execute the asset GET call with the Asset object.
         """
-        response = self.sdk_handle.direct_link.get(
-            auth=current_session.access_token,
-            object_id=self.asset_id
-            )
+        response = self.sdk_handle.direct_link.get(auth=current_session.access_token, object_id=self.asset_id)
 
         response_json = response.json()
 
         if 200 <= response.status_code < 300:
-            if response_json['recordCount']['totalRecordsFound'] == 0:
-                self.log.info('Asset %s has no Direct Link. Use "create" to create one.',
-                              self.asset_id)
+            if response_json["recordCount"]["totalRecordsFound"] == 0:
+                self.log.info('Asset %s has no Direct Link. Use "create" to create one.', self.asset_id)
             else:
                 links = {}
 
-                for link in response_json['payload']:
-                    links[link['cdnLink']] = link['linkName']
+                for link in response_json["payload"]:
+                    links[link["cdnLink"]] = link["linkName"]
 
-                self.log.info('Direct Link(s) for %s: \n%s', self.asset_id,
-                              json.dumps(links, indent=4))
+                self.log.info("Direct Link(s) for %s: \n%s", self.asset_id, json.dumps(links, indent=4))
 
             return response_json
 
         elif response.status_code == 404:
-            self.log.warning('404 returned')
+            self.log.warning("404 returned")
         else:
-            self.log.error('Error: %s', response)
+            self.log.error("Error: %s", response)
 
     def create(self):
         """
@@ -98,15 +88,14 @@ class DirectLink():
         response_json = response.json()
 
         if 200 <= response.status_code < 300:
-            self.log.info('Direct Link for %s: %s', self.asset_id,
-                          response_json['payload']['cdnLink'])
+            self.log.info("Direct Link for %s: %s", self.asset_id, response_json["payload"]["cdnLink"])
 
             return response_json
 
         elif response.status_code == 404:
-            self.log.warning('404 returned')
+            self.log.warning("404 returned")
         else:
-            self.log.error('Error: %s:\n%s', response, response.text)
+            self.log.error("Error: %s:\n%s", response, response.text)
 
     def create_with_csv(self):
         """
@@ -125,63 +114,59 @@ class DirectLink():
         bulk = Bulk()
 
         # open the csv file within context
-        with open(self.input_file, 'r') as f:
+        with open(self.input_file, "r") as f:
             df = pd.read_csv(f)
 
             if self.asset_identifier:
                 asset_column = self.asset_identifier
             else:
-                asset_column = 'System.Id'
+                asset_column = "System.Id"
             try:
                 _ = df[[asset_column]]
             except KeyError:
-                self.log.error('Column %s not present in %s. Please use --asset-identifier to set \
-                               asset-id containing column.',
-                               asset_column, self.input_file)
+                self.log.error(
+                    "Column %s not present in %s. Please use --asset-identifier to set \
+                               asset-id containing column.",
+                    asset_column,
+                    self.input_file,
+                )
                 sys.exit()
 
             df_export = pd.DataFrame()
 
             # create batches of get keyword requests to calculate deltas
             for i in range(offset, len(df), batch_size):
-                self.log.info('Processing batch of %s records (batch: %s to %s) of %s total.',
-                              batch_size,
-                              offset+(loc*batch_size),
-                              offset+((loc+1)*batch_size),
-                              len(df)
-                              )
+                self.log.info(
+                    "Processing batch of %s records (batch: %s to %s) of %s total.",
+                    batch_size,
+                    offset + (loc * batch_size),
+                    offset + ((loc + 1) * batch_size),
+                    len(df),
+                )
                 loc += 1
 
                 if error_count > 0:
-                    self.log.info('Error encountered: %s of %s allowable', error_count, error_limit)
+                    self.log.info("Error encountered: %s of %s allowable", error_count, error_limit)
 
-                df_batch = df.iloc[i:i + batch_size]
+                df_batch = df.iloc[i : i + batch_size]
 
                 bulk_request = BulkRequest()
 
                 # Build a BulkRequest object to get the existing keywords for each asset_id
-                for index, row in tqdm(df_batch.iterrows(), total=df_batch.shape[0],
-                                       desc='Building bulk request...'):
+                for index, row in tqdm(df_batch.iterrows(), total=df_batch.shape[0], desc="Building bulk request..."):
                     asset_id = row[asset_column]
 
                     try:
                         _ = uuid.UUID(asset_id)
                     except ValueError:
-                        self.log.error('Invalid ID in %s:%s. Please check and verify.',
-                                       self.input_file, i+index)
+                        self.log.error("Invalid ID in %s:%s. Please check and verify.", self.input_file, i + index)
                         exit()
 
                     file_attributes = self.asset.get_attributes(asset_id=asset_id)
-                    format = file_attributes['File Type']
+                    format = file_attributes["File Type"]
 
-                    self.log.debug('Processing #%s [%s]',
-                                   index, asset_id)
-                    bulk_request.add_request(self.create_direct_link(
-                            asset_id=asset_id,
-                            format=format,
-                            bulk=True
-                        )
-                    )
+                    self.log.debug("Processing #%s [%s]", index, asset_id)
+                    bulk_request.add_request(self.create_direct_link(asset_id=asset_id, format=format, bulk=True))
 
                 # Send the BulkRequest object to the bulk handle
                 request = bulk_request.get_payload()
@@ -190,37 +175,39 @@ class DirectLink():
 
                 bulk_response = BulkResponse(response)
 
-                self.log.info('Create DirectLinks (synchronous) status = [%s], returned in [%s]',
-                              response.status_code, response.elapsed)
+                self.log.info(
+                    "Create DirectLinks (synchronous) status = [%s], returned in [%s]",
+                    response.status_code,
+                    response.elapsed,
+                )
                 try:
                     self.log.debug(bulk_response.get_response)
                 except TypeError:
-                    self.log.error('Request:\n%s', request)
-                    self.log.error('Response:\n%s', response.text)
+                    self.log.error("Request:\n%s", request)
+                    self.log.error("Response:\n%s", response.text)
 
                 links = []
 
                 # Process the response and add the links to the dataframe
-                for index, row in tqdm(df_batch.iterrows(), total=df_batch.shape[0],
-                                       desc='Processing response...'):
+                for index, row in tqdm(df_batch.iterrows(), total=df_batch.shape[0], desc="Processing response..."):
                     try:
                         response = bulk_response.post_response[index % batch_size]
 
                         try:
-                            payload = response['payload']
-                            link = json.loads(payload)['cdnLink']
+                            payload = response["payload"]
+                            link = json.loads(payload)["cdnLink"]
                         except KeyError as key_error:
-                            self.log.error('Cannot access payload of response; %s', key_error)
+                            self.log.error("Cannot access payload of response; %s", key_error)
                             link = None
 
-                        if int(response['status_code']) >= 300:
+                        if int(response["status_code"]) >= 300:
                             error_count += 1
-                            self.dump_current_row(f'{row[asset_column]} : {response}')
-                            links.append('')
+                            self.dump_current_row(f"{row[asset_column]} : {response}")
+                            links.append("")
                         else:
                             links.append(link)
                     except IndexError:
-                        links.append('')
+                        links.append("")
 
                 df_batch = df_batch.assign(Links=links)
                 df_export = pd.concat((df_export, df_batch), axis=0)
@@ -234,21 +221,19 @@ class DirectLink():
         Execute the asset GET call with the Asset object.
         """
         if not self.output_file:
-            self.log.error('No file specified for output. Please set --output-csv flag.')
+            self.log.error("No file specified for output. Please set --output-csv flag.")
             sys.exit()
 
         try:
-            with open(self.output_file, 'wb') as file:
+            with open(self.output_file, "wb") as file:
                 response = self.sdk_handle.direct_link.export(
-                    auth=current_session.access_token,
-                    object_id=self.asset_id
-                    )
+                    auth=current_session.access_token, object_id=self.asset_id
+                )
 
-                total_size_in_bytes = int(response.headers.get('content-length', 0))
+                total_size_in_bytes = int(response.headers.get("content-length", 0))
                 block_size = 1024
-                progress_bar = tqdm(response.iter_content(), total=total_size_in_bytes,
-                                    unit='iB', unit_scale=True)
-                with open(self.output_file, 'wb') as file:
+                progress_bar = tqdm(response.iter_content(), total=total_size_in_bytes, unit="iB", unit_scale=True)
+                with open(self.output_file, "wb") as file:
                     for data in response.iter_content(block_size):
                         progress_bar.update(len(data))
                         file.write(data)
@@ -257,8 +242,7 @@ class DirectLink():
                     self.log.error("ERROR, something went wrong")
 
         except IOError:
-            self.log.error('Could not write to %s. Please check write permissions and try again.',
-                           self.output_file)
+            self.log.error("Could not write to %s. Please check write permissions and try again.", self.output_file)
 
     # --------------
     # GENERIC ACTION
@@ -272,40 +256,31 @@ class DirectLink():
         if hasattr(self, self.verb) and callable(func := getattr(self, self.verb)):
             func()
         else:
-            self.log.warning('Action %s did not match any of the valid options.', self.verb)
-            self.log.warning('Did you mean %s?', " or".join(", ".join(self.verbs).rsplit(",", 1)))
+            self.log.warning("Action %s did not match any of the valid options.", self.verb)
+            self.log.warning("Did you mean %s?", " or".join(", ".join(self.verbs).rsplit(",", 1)))
 
     # --------------
     # Abstractions
     # --------------
 
     def create_direct_link(self, **kwargs):
+        file_format = kwargs.get("format") or self.file_format
+        asset_id = kwargs.get("asset_id") or self.asset_id
 
-        file_format = kwargs.get('format') or self.file_format
-        asset_id = kwargs.get('asset_id') or self.asset_id
+        bulk = kwargs.get("bulk") or False
 
-        bulk = kwargs.get('bulk') or False
-
-        create_json = \
-            {
-                "renditionSettings": {
-                    "size": {
-                        "type": "Original"
-                    },
-                    "format": file_format
-                },
-                "linkSettings": {
-                    "linkName": "Default"
-                }
-            }
+        create_json = {
+            "renditionSettings": {"size": {"type": "Original"}, "format": file_format},
+            "linkSettings": {"linkName": "Default"},
+        }
 
         response = self.sdk_handle.direct_link.create(
             auth=current_session.access_token,
             object_id=asset_id,
             data=json.dumps(create_json),
             bulk=bulk,
-            sync=self.sync
-            )
+            sync=self.sync,
+        )
 
         return response
 
@@ -313,7 +288,7 @@ class DirectLink():
         file = pathlib.Path("exceptions.log")
 
         try:
-            with file.open(mode='a') as f:
-                f.write(f'{str(response)}\n\r')
+            with file.open(mode="a") as f:
+                f.write(f"{str(response)}\n\r")
         except OSError as error:
             self.log.error("Writing to file %s failed due to: %s", file, error)
