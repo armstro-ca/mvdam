@@ -255,6 +255,30 @@ get_asset_attributes"""
             show_default=False,
         ),
     ] = None,
+    filter_by: Annotated[
+        Optional[str],
+        typer.Option(
+            help="The datapoint to be filtered by.",
+            rich_help_panel="Single",
+            show_default=False,
+        ),
+    ] = None,
+    start_date: Annotated[
+        Optional[str],
+        typer.Option(
+            help="The start data by which the date filter is to be applied.",
+            rich_help_panel="Single",
+            show_default=False,
+        ),
+    ] = None,
+    end_date: Annotated[
+        Optional[str],
+        typer.Option(
+            help="The end date to which the date filter is to be applied.",
+            rich_help_panel="Single",
+            show_default=False,
+        ),
+    ] = None,
     verbose: Annotated[
         bool,
         typer.Option(
@@ -276,7 +300,7 @@ get_asset_attributes"""
         from mvdam.category import Category
 
         action = action.lower()
-        Category(action, category_id=category_id, output_file=output_file).action()
+        Category(action, category_id=category_id, output_file=output_file, filter_by=filter_by, start_date=start_date, end_date=end_date).action()
 
     else:
         log.debug("no active session found")
