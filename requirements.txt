@@ -4,7 +4,7 @@ cffi==1.16.0
 charset-normalizer==3.3.1
 click==8.1.7
 colorama==0.4.6
-cryptography==41.0.6
+cryptography==42.0.0
 executing==2.0.1
 idna==3.4
 markdown-it-py==3.0.0
